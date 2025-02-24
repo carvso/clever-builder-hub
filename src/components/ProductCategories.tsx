@@ -1,5 +1,5 @@
 
-import { Building, Tools } from "lucide-react";
+import { Building, Truck } from "lucide-react";
 
 const categories = [
   {
@@ -10,7 +10,7 @@ const categories = [
   {
     title: "Noleggio Macchinari",
     description: "Escavatori, gru e attrezzature specializzate",
-    icon: Tools,
+    icon: Truck,
   },
   {
     title: "Materiali da Costruzione",
@@ -20,7 +20,7 @@ const categories = [
   {
     title: "Noleggio Macchinari",
     description: "Escavatori, gru e attrezzature specializzate",
-    icon: Tools,
+    icon: Truck,
   },
 ];
 
