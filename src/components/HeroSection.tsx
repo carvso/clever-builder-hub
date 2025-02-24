@@ -29,12 +29,28 @@ export default function HeroSection() {
               </button>
             </div>
           </div>
-          <div className="hidden lg:block">
+          <div className="hidden lg:block relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-2xl"></div>
             <img
-              src="https://images.unsplash.com/photo-1487958449943-2429e8be8625"
-              alt="Cantiere edile"
+              src="/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png"
+              alt="Materiali edili e macchinari"
               className="rounded-2xl shadow-2xl w-full object-cover h-[600px]"
             />
+            <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-dark mb-1">
+                    Consegna Rapida
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Materiali disponibili in pronta consegna
+                  </p>
+                </div>
+                <button className="px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium">
+                  Ordina Ora
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
