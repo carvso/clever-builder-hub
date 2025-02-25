@@ -19,8 +19,8 @@ export default function LocationSection() {
                 <div>
                   <h3 className="font-semibold text-dark mb-2">Il Nostro Magazzino</h3>
                   <p className="text-gray-600">
-                    Via Roma 123<br />
-                    00100 Roma (RM)<br />
+                    Via Vittorio Veneto 114<br />
+                    96010 Solarino (SR)<br />
                     Italia
                   </p>
                 </div>
@@ -34,7 +34,7 @@ export default function LocationSection() {
                   <h3 className="font-semibold text-dark mb-2">Contatti</h3>
                   <p className="text-gray-600">
                     Tel: +39 06 1234567<br />
-                    Cell: +39 333 1234567
+                    Cell: +39 389 2310650
                   </p>
                 </div>
               </div>
