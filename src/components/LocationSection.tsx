@@ -56,7 +56,7 @@ export default function LocationSection() {
 
           <div className="rounded-2xl overflow-hidden shadow-lg h-[400px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11880.492291371716!2d12.4922309!3d41.8902102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f61b6532013ad%3A0x28f1c82e908503c4!2sColosseo!5e0!3m2!1sit!2sit!4v1679907632203!5m2!1sit!2sit"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d281.2745041980095!2d15.126434138104223!3d37.09898159043219!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1313d7999f91a9e5%3A0xcb3c7fd09b9e1d4b!2serede%20di%20Mangiafico%20Paolo%20fornitura%20di%20materiale%20edile%2C%20lavori%20con%20gru%2C%20lavori%20di%20sbancamento%20e%20movimento%20terra!5e0!3m2!1sit!2ses!4v1740464220611!5m2!1sit!2ses"
               width="100%"
               height="100%"
               style={{ border: 0 }}
