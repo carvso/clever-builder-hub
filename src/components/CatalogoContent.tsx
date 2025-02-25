@@ -163,9 +163,10 @@ export default function CatalogoContent() {
                 </span>
                 <button
                   onClick={() => handleAddToCart(product)}
-                  className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium"
+                  className="inline-flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
                 >
-                  Aggiungi al Carrello
+                  <ShoppingCart className="w-4 h-4" />
+                  Aggiungi
                 </button>
               </div>
             </div>
