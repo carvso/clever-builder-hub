@@ -12,39 +12,37 @@ export default function Navbar() {
             EdilP2
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/ordina"
-              className="text-dark hover:text-primary transition-colors font-medium"
-            >
-              Ordina
-            </Link>
-            <Link
-              to="/catalogo"
-              className="text-dark hover:text-primary transition-colors font-medium"
-            >
-              Catalogo
-            </Link>
-            <Link
-              to="/servizi"
-              className="text-dark hover:text-primary transition-colors font-medium"
-            >
-              Servizi
-            </Link>
-          </div>
-
-          {/* Search Bar */}
-          <div className="hidden md:flex items-center">
-            <div className="relative">
+          {/* Search Bar and Navigation Links */}
+          <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
+            <div className="relative w-64">
               <input
                 type="text"
                 placeholder="Cerca..."
-                className="w-48 px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
               />
               <button className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
                 <Search className="w-4 h-4" />
               </button>
+            </div>
+            <div className="flex items-center space-x-6">
+              <Link
+                to="/ordina"
+                className="text-dark hover:text-primary transition-colors font-medium"
+              >
+                Ordina
+              </Link>
+              <Link
+                to="/catalogo"
+                className="text-dark hover:text-primary transition-colors font-medium"
+              >
+                Catalogo
+              </Link>
+              <Link
+                to="/servizi"
+                className="text-dark hover:text-primary transition-colors font-medium"
+              >
+                Servizi
+              </Link>
             </div>
           </div>
 

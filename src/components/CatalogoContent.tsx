@@ -1,5 +1,7 @@
 
 import { Filter, Search } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const products = [
   {
@@ -55,6 +57,19 @@ const products = [
 const categories = ["Tutti", "Mattoni", "Calcestruzzo", "Cementi", "Inerti"];
 
 export default function CatalogoContent() {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Tutti");
+
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "Tutti" || product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <div className="container mx-auto px-6 py-12">
       {/* Header */}
@@ -72,6 +87,8 @@ export default function CatalogoContent() {
             <input
               type="text"
               placeholder="Cerca materiali..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-3 pl-12 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -81,7 +98,12 @@ export default function CatalogoContent() {
           {categories.map((category) => (
             <button
               key={category}
-              className="px-4 py-2 rounded-full border border-gray-200 hover:border-primary hover:bg-primary/5 text-sm font-medium whitespace-nowrap transition-colors"
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full border ${
+                selectedCategory === category
+                  ? "border-primary bg-primary/5 text-primary"
+                  : "border-gray-200 hover:border-primary hover:bg-primary/5"
+              } text-sm font-medium whitespace-nowrap transition-colors`}
             >
               {category}
             </button>
@@ -95,7 +117,7 @@ export default function CatalogoContent() {
 
       {/* Products Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div
             key={product.id}
             className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100"
@@ -124,7 +146,10 @@ export default function CatalogoContent() {
                 <span className="text-lg font-semibold text-dark">
                   {product.price}
                 </span>
-                <button className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium">
+                <button
+                  onClick={() => navigate("/checkout")}
+                  className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium"
+                >
                   Ordina
                 </button>
               </div>
