@@ -23,7 +23,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-6">Azienda</h4>
             <ul className="space-y-4 text-gray-400">
               <li>Chi Siamo</li>
-              <li>Lavora con Noi</li>
+              <li>Catalogo</li>
               <li>Contatti</li>
               <li>Privacy Policy</li>
             </ul>
@@ -31,14 +31,14 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-6">Contatti</h4>
             <ul className="space-y-4 text-gray-400">
-              <li>info@edilpro.it</li>
+              <li>info@edilp2.it</li>
               <li>+39 02 1234567</li>
-              <li>Via Roma 123, Milano</li>
+              <li>Via Roma 123, Solarino</li>
             </ul>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>© 2024 EdilPro. Tutti i diritti riservati.</p>
+          <p>© 2025 EdilP2. Tutti i diritti riservati.</p>
         </div>
       </div>
     </footer>
