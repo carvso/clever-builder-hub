@@ -20,7 +20,7 @@ const products = [
     description: "Calcestruzzo preconfezionato per strutture",
     price: "85€/m³",
     category: "Calcestruzzo",
-    image: "https://www.vimark.com/it/prodotti/calcestruzzo/",
+    image: "https://www.ediliziaeferramenta.com/3647/calcestruzzo-rck-30-sac-da-kg25.jpg",
   },
   {
     id: 3,
