@@ -1,10 +1,24 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 
 export default function Checkout() {
+  const { state, removeItem, updateQuantity } = useCart();
+
+  const calculateTotal = () => {
+    return state.items.reduce((total, item) => {
+      const price = parseFloat(item.price.replace("€/pz", ""));
+      return total + price * item.quantity;
+    }, 0);
+  };
+
+  const total = calculateTotal();
+  const iva = total * 0.22;
+  const totalWithIva = total + iva;
+
   return (
     <div className="min-h-screen bg-light">
       <Navbar />
@@ -63,20 +77,57 @@ export default function Checkout() {
                 <h2 className="text-lg font-semibold mb-4">
                   Riepilogo Ordine
                 </h2>
-                <div className="bg-gray-50 rounded-xl p-6">
+                <div className="space-y-4">
+                  {state.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                    >
+                      <div>
+                        <h3 className="font-medium">{item.name}</h3>
+                        <p className="text-sm text-gray-600">{item.price}</p>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                            className="px-2 py-1 bg-gray-200 rounded"
+                          >
+                            -
+                          </button>
+                          <span className="w-8 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="px-2 py-1 bg-gray-200 rounded"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => removeItem(item.id)}
+                          className="text-red-500 hover:text-red-600"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 bg-gray-50 rounded-xl p-6">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="font-medium">Prodotti</span>
-                      <span>€240.00</span>
+                      <span>{total.toFixed(2)}€</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="font-medium">IVA (22%)</span>
-                      <span>€52.80</span>
+                      <span>{iva.toFixed(2)}€</span>
                     </div>
                     <div className="border-t border-gray-200 pt-4">
                       <div className="flex items-center justify-between font-semibold">
                         <span>Totale</span>
-                        <span>€292.80</span>
+                        <span>{totalWithIva.toFixed(2)}€</span>
                       </div>
                     </div>
                   </div>

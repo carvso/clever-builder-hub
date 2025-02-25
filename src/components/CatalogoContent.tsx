@@ -1,7 +1,9 @@
 
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
+import { useToast } from "@/components/ui/use-toast";
 
 const products = [
   {
@@ -58,6 +60,8 @@ const categories = ["Tutti", "Mattoni", "Calcestruzzo", "Cementi", "Inerti"];
 
 export default function CatalogoContent() {
   const navigate = useNavigate();
+  const { addItem } = useCart();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tutti");
 
@@ -69,6 +73,14 @@ export default function CatalogoContent() {
       selectedCategory === "Tutti" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleAddToCart = (product: any) => {
+    addItem(product);
+    toast({
+      title: "Prodotto aggiunto al carrello",
+      description: `${product.name} è stato aggiunto al carrello`,
+    });
+  };
 
   return (
     <div className="container mx-auto px-6 py-12">
@@ -108,9 +120,12 @@ export default function CatalogoContent() {
               {category}
             </button>
           ))}
-          <button className="px-4 py-2 rounded-full border border-gray-200 hover:border-primary hover:bg-primary/5 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-2">
-            <Filter className="w-4 h-4" />
-            Filtri
+          <button 
+            onClick={() => navigate("/checkout")}
+            className="px-4 py-2 rounded-full border border-gray-200 hover:border-primary hover:bg-primary/5 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-2"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            Carrello
           </button>
         </div>
       </div>
@@ -147,10 +162,10 @@ export default function CatalogoContent() {
                   {product.price}
                 </span>
                 <button
-                  onClick={() => navigate("/checkout")}
+                  onClick={() => handleAddToCart(product)}
                   className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium"
                 >
-                  Ordina
+                  Aggiungi al Carrello
                 </button>
               </div>
             </div>
