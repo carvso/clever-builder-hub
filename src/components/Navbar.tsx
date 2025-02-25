@@ -1,8 +1,20 @@
 
-import { Search } from "lucide-react";
+import { Search, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
+import { useState } from "react";
 
 export default function Navbar() {
+  const { state } = useCart();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const calculateTotal = () => {
+    return state.items.reduce((total, item) => {
+      const price = parseFloat(item.price.replace("€/pz", ""));
+      return total + price * item.quantity;
+    }, 0);
+  };
+
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-6">
@@ -44,6 +56,72 @@ export default function Navbar() {
                 Servizi
               </Link>
             </div>
+          </div>
+
+          {/* Cart */}
+          <div className="relative">
+            <button
+              className="p-2 hover:bg-gray-100 rounded-full relative"
+              onMouseEnter={() => setIsCartOpen(true)}
+              onMouseLeave={() => setIsCartOpen(false)}
+            >
+              <ShoppingCart className="w-6 h-6 text-gray-700" />
+              {state.items.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {state.items.length}
+                </span>
+              )}
+            </button>
+
+            {/* Cart Dropdown */}
+            {isCartOpen && (
+              <div
+                className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden"
+                onMouseEnter={() => setIsCartOpen(true)}
+                onMouseLeave={() => setIsCartOpen(false)}
+              >
+                <div className="p-4">
+                  <h3 className="font-semibold text-gray-900 mb-4">Il tuo carrello</h3>
+                  {state.items.length === 0 ? (
+                    <p className="text-gray-500 text-sm">Il carrello è vuoto</p>
+                  ) : (
+                    <>
+                      <div className="space-y-3 max-h-64 overflow-y-auto">
+                        {state.items.map((item) => (
+                          <div key={item.id} className="flex items-center gap-3">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-12 h-12 object-cover rounded-lg"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-medium text-gray-900 truncate">
+                                {item.name}
+                              </h4>
+                              <p className="text-sm text-gray-500">
+                                {item.quantity} x {item.price}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <div className="flex items-center justify-between text-sm mb-4">
+                          <span className="font-medium">Totale</span>
+                          <span className="font-semibold">{calculateTotal().toFixed(2)}€</span>
+                        </div>
+                        <Link
+                          to="/checkout"
+                          className="block w-full py-2 px-4 bg-primary text-white text-center rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                        >
+                          Vai al checkout
+                        </Link>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
