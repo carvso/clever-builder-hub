@@ -20,7 +20,7 @@ const products = [
     description: "Calcestruzzo preconfezionato per strutture",
     price: "85€/m³",
     category: "Calcestruzzo",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
+    image: "https://www.vimark.com/it/prodotti/calcestruzzo/",
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const products = [
     description: "Cemento tipo 32.5R in sacchi da 25kg",
     price: "4.50€/sacco",
     category: "Cementi",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
+    image: "https://zini.re.it/wp-content/uploads/2024/04/zini-dino-cemento-colacem-425-1.webp",
   },
   {
     id: 4,
@@ -36,7 +36,7 @@ const products = [
     description: "Sabbione per malte e intonaci",
     price: "45€/m³",
     category: "Inerti",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
+    image: "https://images.ctfassets.net/j4m9q0fykyy4/7vBcsGChlMKJkMKoFRlEOC/a133824242e696055060f9a061a57b8d/2020-08-mortier-b_C3_A9ton.jpg",
   },
   {
     id: 5,
@@ -44,7 +44,7 @@ const products = [
     description: "Blocchi in laterizio per tamponature",
     price: "1.20€/pz",
     category: "Mattoni",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
+    image: "https://www.danesilaterizi.it/wp-content/uploads/2020/01/Quattro-fori-8.12.24.jpg",
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ const products = [
     description: "Cemento a presa rapida per riparazioni",
     price: "6.90€/sacco",
     category: "Cementi",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
+    image: "https://m.media-amazon.com/images/I/71aHBRxYmxL._AC_UF894,1000_QL80_.jpg",
   },
 ];
 
