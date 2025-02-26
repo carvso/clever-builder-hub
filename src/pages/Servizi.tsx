@@ -250,4 +250,18 @@ export default function Servizi() {
                         {withDriver ? "Conducente e assicurazione inclusi" : "Assicurazione inclusa"}
                       </span>
                     </div>
-                    <button className="px-6 py-2 bg-primary text-
+                    <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium">
+                      Prenota ora
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
