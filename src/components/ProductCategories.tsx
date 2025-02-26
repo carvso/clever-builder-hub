@@ -1,26 +1,31 @@
 
-import { Building, Truck } from "lucide-react";
+import { Building, Truck, User, PenTool } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const categories = [
   {
     title: "Materiali da Costruzione",
     description: "Cemento, mattoni, e tutto per le fondamenta",
     icon: Building,
+    link: "/catalogo"
   },
   {
     title: "Noleggio Macchinari",
     description: "Escavatori, gru e attrezzature specializzate",
     icon: Truck,
+    link: "/servizi"
   },
   {
-    title: "Materiali da Costruzione",
-    description: "Cemento, mattoni, e tutto per le fondamenta",
-    icon: Building,
+    title: "Mezzi con Conducente",
+    description: "Personale qualificato per grandi lavori",
+    icon: User,
+    link: "/servizi"
   },
   {
-    title: "Noleggio Macchinari",
-    description: "Escavatori, gru e attrezzature specializzate",
-    icon: Truck,
+    title: "Consulenza Tecnica",
+    description: "Supporto specializzato per il tuo progetto",
+    icon: PenTool,
+    link: "/servizi"
   },
 ];
 
@@ -38,7 +43,8 @@ export default function ProductCategories() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((category, index) => (
-            <div
+            <Link
+              to={category.link}
               key={index}
               className="group bg-light rounded-2xl p-8 transition-all duration-300 hover:bg-primary hover:text-white"
             >
@@ -47,10 +53,10 @@ export default function ProductCategories() {
               <p className="text-gray-600 group-hover:text-white/90 mb-6">
                 {category.description}
               </p>
-              <button className="px-6 py-2 bg-primary text-white rounded-xl group-hover:bg-white group-hover:text-primary transition-colors">
+              <span className="inline-block px-6 py-2 bg-primary text-white rounded-xl group-hover:bg-white group-hover:text-primary transition-colors">
                 Scopri di più
-              </button>
-            </div>
+              </span>
+            </Link>
           ))}
         </div>
       </div>

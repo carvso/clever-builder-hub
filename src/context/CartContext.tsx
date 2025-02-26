@@ -7,6 +7,7 @@ type Product = {
   price: string;
   category: string;
   quantity: number;
+  image: string;  // Aggiunta proprietà mancante
 };
 
 type CartItem = Product;
