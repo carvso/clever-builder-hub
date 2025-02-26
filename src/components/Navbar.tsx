@@ -20,8 +20,14 @@ export default function Navbar() {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-primary">
-            EdilP2
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg">
+              <span className="text-white font-bold text-xl">E2</span>
+            </div>
+            <div>
+              <span className="text-xl font-bold text-dark">Edil<span className="text-primary">P2</span></span>
+              <span className="block text-xs text-gray-500 -mt-1">Dal 1998</span>
+            </div>
           </Link>
 
           {/* Search Bar and Navigation Links */}
@@ -30,9 +36,9 @@ export default function Navbar() {
               <input
                 type="text"
                 placeholder="Cerca..."
-                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                className="w-full px-4 py-2 pl-12 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
               />
-              <button className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
+              <button className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
                 <Search className="w-4 h-4" />
               </button>
             </div>
