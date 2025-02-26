@@ -2,7 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Check, Star, User, Filter } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const vehicles = [
   {
@@ -118,6 +118,15 @@ const vehicles = [
 export default function Servizi() {
   const [selectedCategory, setSelectedCategory] = useState("Tutti i mezzi");
   const [withDriver, setWithDriver] = useState(false);
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
+    // Trigger animations
+    setIsPageLoaded(true);
+  }, []);
 
   const filteredVehicles = vehicles.filter((vehicle) => {
     if (selectedCategory !== "Tutti i mezzi" && vehicle.category !== selectedCategory) {
@@ -129,12 +138,12 @@ export default function Servizi() {
   const categories = ["Tutti i mezzi", "Movimento terra", "Sollevamento", "Trasporto", "Compattazione"];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       <Navbar />
       
       <main className="py-12">
         <div className="container mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className={`text-center max-w-2xl mx-auto mb-12 ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Noleggio Automezzi
             </h1>
@@ -145,10 +154,10 @@ export default function Servizi() {
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-xl shadow-sm p-4 mb-8">
+          <div className={`bg-white rounded-xl shadow-sm p-4 mb-8 ${isPageLoaded ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex gap-4 overflow-x-auto pb-4 md:pb-0">
-                {categories.map((category) => (
+                {categories.map((category, index) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
@@ -156,7 +165,7 @@ export default function Servizi() {
                       selectedCategory === category 
                         ? "border-primary bg-primary/10 text-primary" 
                         : "border-gray-200 text-gray-700 hover:border-primary hover:text-primary"
-                    } transition-colors whitespace-nowrap text-sm font-medium`}
+                    } transition-colors whitespace-nowrap text-sm font-medium hover-lift`}
                   >
                     {category}
                   </button>
@@ -170,7 +179,7 @@ export default function Servizi() {
                     withDriver 
                       ? "border-primary bg-primary/10 text-primary" 
                       : "border-gray-200 text-gray-700 hover:border-primary hover:text-primary"
-                  } transition-colors text-sm font-medium`}
+                  } transition-colors text-sm font-medium hover-lift`}
                 >
                   <User className="w-4 h-4" />
                   {withDriver ? "Con conducente" : "Senza conducente"}
@@ -181,10 +190,12 @@ export default function Servizi() {
 
           {/* Vehicle Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredVehicles.map((vehicle) => (
+            {filteredVehicles.map((vehicle, index) => (
               <div
                 key={vehicle.id}
-                className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow"
+                className={`bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow hover-lift ${
+                  isPageLoaded ? `animate-fade-in delay-${Math.min(index * 100, 500)}` : 'opacity-0'
+                }`}
               >
                 <div className="aspect-video relative overflow-hidden">
                   <img
@@ -222,8 +233,8 @@ export default function Servizi() {
                   <p className="text-gray-600 mb-4">{vehicle.description}</p>
                   
                   <ul className="space-y-2 mb-6">
-                    {vehicle.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2 text-sm text-gray-700">
+                    {vehicle.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center gap-2 text-sm text-gray-700">
                         <Check className="w-4 h-4 text-primary" />
                         {feature}
                       </li>
@@ -239,18 +250,4 @@ export default function Servizi() {
                         {withDriver ? "Conducente e assicurazione inclusi" : "Assicurazione inclusa"}
                       </span>
                     </div>
-                    <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium">
-                      Prenota ora
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
-  );
-}
+                    <button className="px-6 py-2 bg-primary text-
