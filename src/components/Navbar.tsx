@@ -44,10 +44,10 @@ export default function Navbar() {
             </div>
             <div className="flex items-center space-x-6">
               <Link
-                to="/ordina"
+                to="/progetti"
                 className="text-dark hover:text-primary transition-colors font-medium"
               >
-                Ordina
+                Progetti
               </Link>
               <Link
                 to="/catalogo"
@@ -59,7 +59,7 @@ export default function Navbar() {
                 to="/servizi"
                 className="text-dark hover:text-primary transition-colors font-medium"
               >
-                Servizi
+                Noleggio
               </Link>
             </div>
           </div>

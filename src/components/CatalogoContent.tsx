@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/ui/use-toast";
+import NoleggioCtaSection from "@/components/NoleggioCtaSection";
 
 const products = [
   {
@@ -85,7 +86,7 @@ export default function CatalogoContent() {
   return (
     <div className="container mx-auto px-6 py-12">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8 animate-fade-in">
         <h1 className="text-3xl font-bold text-dark mb-4">Catalogo Materiali</h1>
         <p className="text-gray-600">
           Scopri la nostra selezione di materiali edili di alta qualità
@@ -93,7 +94,7 @@ export default function CatalogoContent() {
       </div>
 
       {/* Filters and Search */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
+      <div className="flex flex-col md:flex-row gap-4 mb-8 animate-slide-in-left">
         <div className="flex-1">
           <div className="relative">
             <input
@@ -115,14 +116,14 @@ export default function CatalogoContent() {
                 selectedCategory === category
                   ? "border-primary bg-primary/5 text-primary"
                   : "border-gray-200 hover:border-primary hover:bg-primary/5"
-              } text-sm font-medium whitespace-nowrap transition-colors`}
+              } text-sm font-medium whitespace-nowrap transition-colors hover-lift`}
             >
               {category}
             </button>
           ))}
           <button 
             onClick={() => navigate("/checkout")}
-            className="px-4 py-2 rounded-full border border-gray-200 hover:border-primary hover:bg-primary/5 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-2"
+            className="px-4 py-2 rounded-full border border-gray-200 hover:border-primary hover:bg-primary/5 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-2 hover-lift"
           >
             <ShoppingCart className="w-4 h-4" />
             Carrello
@@ -132,10 +133,11 @@ export default function CatalogoContent() {
 
       {/* Products Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => (
+        {filteredProducts.map((product, index) => (
           <div
             key={product.id}
-            className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+            className={`bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 animate-fade-in hover-lift`}
+            style={{ animationDelay: `${index * 100}ms` }}
           >
             <div className="aspect-video relative overflow-hidden">
               <img
@@ -173,6 +175,9 @@ export default function CatalogoContent() {
           </div>
         ))}
       </div>
+
+      {/* Noleggio CTA */}
+      <NoleggioCtaSection />
     </div>
   );
 }
