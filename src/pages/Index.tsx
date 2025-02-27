@@ -9,6 +9,8 @@ import MaterialsCTASection from "@/components/MaterialsCTASection";
 import DriverRentalSection from "@/components/DriverRentalSection";
 import LocationSection from "@/components/LocationSection";
 import Footer from "@/components/Footer";
+import NoleggioCtaSection from "@/components/NoleggioCtaSection";
+import CatalogoCtaSection from "@/components/CatalogoCtaSection";
 
 const Index = () => {
   // Aggiungi animazione al caricamento della pagina
@@ -27,10 +29,19 @@ const Index = () => {
     <main className="min-h-screen overflow-hidden">
       <Navbar />
       <HeroSection />
-      <PartnerCarousel />
-      <Showcase />
       <ProductCategories />
       <MaterialsCTASection />
+      <PartnerCarousel />
+      <Showcase />
+      <div className="py-12 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-center mb-12">I nostri servizi</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <NoleggioCtaSection />
+            <CatalogoCtaSection />
+          </div>
+        </div>
+      </div>
       <DriverRentalSection />
       <LocationSection />
       <Footer />

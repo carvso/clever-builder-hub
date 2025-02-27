@@ -1,3 +1,4 @@
+
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -49,17 +50,17 @@ export default function HeroSection() {
               <span 
                 className={`inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6 ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}
               >
-                Leader nel settore edile
+                Leader nel settore edile dal 1998
               </span>
               <h1 
                 className={`text-4xl md:text-5xl font-bold text-dark mb-6 leading-tight ${isVisible ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}
               >
-                Materiali edili di qualità per il tuo cantiere
+                Materiali e macchinari professionali per il tuo cantiere
               </h1>
               <p 
                 className={`text-lg text-gray-600 mb-8 ${isVisible ? 'animate-slide-in-left delay-200' : 'opacity-0'}`}
               >
-                Scopri i migliori materiali e macchinari per costruzioni sicure e resistenti.
+                Scopri i migliori materiali edili e macchinari per costruzioni sicure e di qualità. Consegna rapida direttamente in cantiere!
               </p>
             </div>
             <div 
@@ -67,14 +68,14 @@ export default function HeroSection() {
             >
               <input
                 type="text"
-                placeholder="Cerca materiali..."
+                placeholder="Cerca materiali o macchinari..."
                 value={searchQuery}
                 onChange={handleSearch}
-                className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-dark hover-glow"
+                className="w-full px-6 py-4 pr-16 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-dark hover-glow"
               />
               <button 
                 onClick={() => navigate("/catalogo")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white p-3 rounded-xl hover:bg-primary/90 transition-colors animate-pulse-slow"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white p-3 rounded-xl hover:bg-primary/90 transition-colors"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -106,6 +107,26 @@ export default function HeroSection() {
                 </div>
               )}
             </div>
+            <div className={`flex flex-wrap gap-4 mt-6 ${isVisible ? 'animate-fade-in delay-400' : 'opacity-0'}`}>
+              <button 
+                onClick={() => navigate("/catalogo")}
+                className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium hover-lift flex items-center gap-2"
+              >
+                Esplora materiali
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button 
+                onClick={() => navigate("/servizi")}
+                className="px-6 py-3 bg-white border border-primary text-primary rounded-xl hover:bg-primary/5 transition-colors font-medium hover-lift flex items-center gap-2"
+              >
+                Noleggia macchinari
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
           </div>
           <div 
             className={`hidden lg:block relative ${isVisible ? 'animate-slide-in-right delay-200' : 'opacity-0'}`}
@@ -128,7 +149,9 @@ export default function HeroSection() {
                     Materiali disponibili in pronta consegna
                   </p>
                 </div>
-                <button className="px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium hover-lift">
+                <button 
+                  onClick={() => navigate("/catalogo")}
+                  className="px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium hover-lift">
                   Ordina Ora
                 </button>
               </div>

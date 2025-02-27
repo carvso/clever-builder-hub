@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowRight, Building, Calendar, Construction, User } from "lucide-react";
+import { ArrowRight, Building, Calendar, Construction, User, Truck, Package } from "lucide-react";
 import { Link } from "react-router-dom";
+import NoleggioCtaSection from "@/components/NoleggioCtaSection";
+import CatalogoCtaSection from "@/components/CatalogoCtaSection";
 
 // Progetti example data
 const projects = [
@@ -104,6 +106,27 @@ export default function Progetti() {
     <div className="min-h-screen bg-gray-50 overflow-hidden">
       <Navbar />
       
+      {/* Banner superior per noleggio macchinari */}
+      <div className={`bg-primary relative overflow-hidden ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Truck className="w-5 h-5 text-white" />
+              <p className="text-white font-medium">
+                EdilP2 offre noleggio macchinari professionali con o senza conducente
+              </p>
+            </div>
+            <Link
+              to="/servizi"
+              className="px-4 py-2 bg-white text-primary rounded-full text-sm font-medium hover:bg-gray-100 transition-colors hover-lift flex items-center gap-2 whitespace-nowrap"
+            >
+              Esplora mezzi
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+      
       <main className="py-12">
         <div className="container mx-auto px-6">
           <div className={`text-center max-w-2xl mx-auto mb-12 ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
@@ -114,6 +137,41 @@ export default function Progetti() {
               Scopri come i nostri macchinari e materiali hanno contribuito a realizzare progetti 
               di ogni tipo, dalle piccole ristrutturazioni alle grandi opere infrastrutturali.
             </p>
+          </div>
+          
+          {/* Banner per materiali */}
+          <div className={`mb-8 bg-gray-100 rounded-2xl overflow-hidden ${isPageLoaded ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}>
+            <div className="flex flex-col md:flex-row items-center">
+              <div className="md:w-1/3 relative h-full">
+                <img 
+                  src="/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png" 
+                  alt="Materiali EdilP2" 
+                  className="w-full h-64 md:h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
+                  <Package className="w-10 h-10 mx-auto mb-2" />
+                  <h3 className="text-2xl font-bold">Materiali EdilP2</h3>
+                </div>
+              </div>
+              <div className="p-6 md:p-8 md:w-2/3">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  Materiali di prima qualità per il tuo progetto
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Tutti i materiali utilizzati nei nostri progetti sono disponibili nel nostro catalogo.
+                  Offriamo cementi, rasanti, mattoni, inerti e tutto il necessario per costruzioni di qualità,
+                  con consegna rapida direttamente in cantiere.
+                </p>
+                <Link
+                  to="/catalogo"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium hover-lift"
+                >
+                  Scopri i nostri materiali
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
           </div>
           
           {/* Filters */}
@@ -310,6 +368,16 @@ export default function Progetti() {
           </div>
         </div>
       </main>
+      
+      {/* Alternanza di CTA dedicate */}
+      <div className="py-12 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-8">
+            <NoleggioCtaSection />
+            <CatalogoCtaSection />
+          </div>
+        </div>
+      </div>
       
       <Footer />
     </div>
