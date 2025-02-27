@@ -12,7 +12,7 @@ const vehicles = [
     description: "Camion con sistema scarrabile per trasporto di container e materiali",
     price: "280€/giorno",
     withDriverPrice: "420€/giorno",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    image: "https://www.ricciato.com/resources/product/10242/gallery/01_Camion_allestito_gancio_scarrabile_Iveco_120E25K_angolare_destra.jpg",
     features: [
       "Portata: 12 tonnellate",
       "Sistema scarrabile idraulico",
@@ -30,7 +30,7 @@ const vehicles = [
     description: "Escavatore compatto con raggio di rotazione zero per spazi ristretti",
     price: "180€/giorno",
     withDriverPrice: "320€/giorno",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    image: "https://www.truck1-it.com/img/ful/1567/Yanmar-VIO-57-6B-Germania_1567_7447962400774.jpg",
     features: [
       "Peso: 5.7 tonnellate",
       "Profondità di scavo: 3.8m",
@@ -48,7 +48,7 @@ const vehicles = [
     description: "Mini pala caricatrice ideale per movimentazione materiali in spazi ristretti",
     price: "150€/giorno",
     withDriverPrice: "290€/giorno",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    image: "https://www.fagiolarisrl.it/public/Files/rif000005/103/pala_cingolata_cat_299c_q.li_60.jpg",
     features: [
       "Capacità operativa: 900kg",
       "Altezza di scarico: 2.3m",
@@ -66,7 +66,7 @@ const vehicles = [
     description: "Carrello elevatore per movimentazione pallet e materiali pesanti",
     price: "120€/giorno",
     withDriverPrice: "260€/giorno",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    image: "https://www.orzicarrellielevatori.com/wp-content/uploads/2024/07/IMG20240617095459.jpg",
     features: [
       "Portata: 2.5 tonnellate",
       "Altezza di sollevamento: 3.5m",
