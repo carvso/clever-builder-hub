@@ -97,7 +97,7 @@ export default function NoleggioCtaSection() {
             <div className={`flex items-center justify-center ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               <div className="relative">
                 <img 
-                  src="/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png" 
+                  src="https://www.ricciato.com/resources/product/10242/gallery/01_Camion_allestito_gancio_scarrabile_Iveco_120E25K_angolare_destra.jpg" 
                   alt="Escavatore EdilP2" 
                   className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
                 />
