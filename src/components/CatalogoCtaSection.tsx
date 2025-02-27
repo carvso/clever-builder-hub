@@ -37,7 +37,7 @@ export default function CatalogoCtaSection() {
             <div className={`relative ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
               <div className="relative">
                 <img 
-                  src="/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png" 
+                  src="https://www.tekneco.it/immagini/articoli/gasbeton.jpg" 
                   alt="Materiali EdilP2" 
                   className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
                 />
