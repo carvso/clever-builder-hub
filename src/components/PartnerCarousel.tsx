@@ -2,10 +2,10 @@
 const partners = [
   "https://www.friendlymaterials.com/media/brands/115/KeraKoll_logo_v1.png",
   "https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/eh40cbto1sq1yh0pvaet",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4palDARTuNvU0ZGue-Bem_nnWOfWFLks-dA&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTff6Nv94TNO9KAqwOzKo1VXuStUw7IPqZfGw&s",
   "https://yesilhaber.net/wp-content/uploads/2022/06/Ytong_Logo-e1655723255515-jpg.webp",
-  "https://www.vbedilizia.it/wp-content/uploads/2018/01/Knauf-Logo.jpg",
-  "https://www.edilportale.com/upload/aziende/produttori/logo/20230104031651682_logo-san-marco-group.jpg",
+  "",
+  "",
 ];
 
 
