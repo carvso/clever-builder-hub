@@ -4,8 +4,8 @@ const partners = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFX9w80l7xgFsvDkkdEW_TyNnAxg3sdAgmGw&s",
   "https://confepi.it/wp-content/uploads/2019/07/buffa-industria-per-l-edilizia.jpg",
   "https://yesilhaber.net/wp-content/uploads/2022/06/Ytong_Logo-e1655723255515-jpg.webp",
-  "Partner 5",
-  "Partner 6",
+  "https://www.vbedilizia.it/wp-content/uploads/2018/01/Knauf-Logo.jpg",
+  "https://www.edilportale.com/upload/aziende/produttori/logo/20230104031651682_logo-san-marco-group.jpg",
 ];
 
 export default function PartnerCarousel() {
@@ -21,9 +21,13 @@ export default function PartnerCarousel() {
               <div
                 key={index}
                 className="flex-shrink-0 w-48 h-24 bg-light rounded-lg flex items-center justify-center text-gray-500"
-              >
-                {partner}
-              </div>
+                style={{
+                  backgroundImage: `url(${partner})`,
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
             ))}
           </div>
         </div>
