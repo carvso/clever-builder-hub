@@ -8,6 +8,7 @@ const partners = [
   "https://www.edilportale.com/upload/aziende/produttori/logo/20230104031651682_logo-san-marco-group.jpg",
 ];
 
+
 export default function PartnerCarousel() {
   return (
     <div className="bg-white py-16 overflow-hidden">
