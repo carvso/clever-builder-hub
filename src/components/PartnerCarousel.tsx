@@ -1,9 +1,9 @@
 
 const partners = [
-  "Partner 1",
-  "Partner 2",
-  "Partner 3",
-  "Partner 4",
+  "https://www.friendlymaterials.com/media/brands/115/KeraKoll_logo_v1.png",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFX9w80l7xgFsvDkkdEW_TyNnAxg3sdAgmGw&s",
+  "https://confepi.it/wp-content/uploads/2019/07/buffa-industria-per-l-edilizia.jpg",
+  "https://yesilhaber.net/wp-content/uploads/2022/06/Ytong_Logo-e1655723255515-jpg.webp",
   "Partner 5",
   "Partner 6",
 ];
