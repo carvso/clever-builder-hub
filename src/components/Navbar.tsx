@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -23,12 +24,12 @@ const navigation = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems } = useCart();
-    const [isMounted, setIsMounted] = useState(false);
+  const { state } = useCart();
+  const [isMounted, setIsMounted] = useState(false);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -81,7 +82,7 @@ export default function Navbar() {
           <SheetTrigger className="flex items-center space-x-2 hover:text-primary transition-colors">
             <ShoppingCart className="h-5 w-5" />
             <span className="font-medium text-gray-700">
-              Carrello ({cartItems.length})
+              Carrello ({state.items.length})
             </span>
           </SheetTrigger>
           <SheetContent className="sm:max-w-lg">
