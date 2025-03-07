@@ -21,10 +21,9 @@ export default function PartnerCarousel() {
             {[...partners, ...partners].map((partner, index) => (
               <div
                 key={index}
-                bgimage= {}
                 className="flex-shrink-0 w-48 h-24 bg-light rounded-lg flex items-center justify-center text-gray-500"
                 style={{
-                  backgroundImage: `url(${partner})`,
+                  backgroundImage: partner ? `url(${partner})` : 'none',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat'
