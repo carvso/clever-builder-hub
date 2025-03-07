@@ -8,7 +8,6 @@ const partners = [
   "",
 ];
 
-
 export default function PartnerCarousel() {
   return (
     <div className="bg-white py-16 overflow-hidden">
