@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useReducer } from "react";
 import { toast } from "@/hooks/use-toast";
 import { NotificationService } from "@/services/NotificationService";
@@ -158,24 +159,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
       console.log("Prepared order data:", orderData);
 
-      // Send email notification using our service
-      console.log("Sending email notification...");
+      // Send notifications
       const emailSent = await NotificationService.sendEmailNotification(orderData);
       console.log("Email notification result:", emailSent);
       
-      // Send WhatsApp notification using our service
-      console.log("Sending WhatsApp notification...");
       const whatsappSent = await NotificationService.sendWhatsAppNotification(orderData);
       console.log("WhatsApp notification result:", whatsappSent);
 
-      // For demo purposes, we'll consider the order successful even if notifications fail
-      // In a real application, you would handle this differently based on requirements
+      // Improved notification result handling
+      // For development purposes, we always proceed with checkout
+      // In production, you might want to handle failures differently
+      if (emailSent && whatsappSent) {
+        console.log("Both notifications sent successfully");
+      } else {
+        console.log("At least one notification method failed");
+        // We continue anyway for demo purposes
+      }
       
       // Clear cart after successful order
       dispatch({ type: "CLEAR_CART" });
       toast({
         title: "Ordine confermato",
-        description: "Grazie per il tuo ordine! I dettagli sono stati registrati e sarai contattato presto.",
+        description: "Il tuo ordine è stato registrato. Ti contatteremo presto per confermare i dettagli.",
       });
       return true;
     } catch (error) {
