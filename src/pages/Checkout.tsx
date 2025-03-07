@@ -16,10 +16,11 @@ export default function Checkout() {
     email: "",
     phone: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const calculateTotal = () => {
     return state.items.reduce((total, item) => {
-      const price = parseFloat(item.price.replace("€/pz", ""));
+      const price = parseFloat(item.price.replace(/[^\d,.]/g, '').replace(',', '.'));
       return total + price * item.quantity;
     }, 0);
   };
@@ -45,14 +46,39 @@ export default function Checkout() {
       return;
     }
 
-    // Submit order
-    const success = await checkout(customerInfo);
-    
-    if (success) {
-      // Redirect to homepage after successful checkout
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+    try {
+      setIsSubmitting(true);
+      console.log("Submitting order with customer info:", customerInfo);
+      
+      // Submit order
+      const success = await checkout(customerInfo);
+      console.log("Order submission result:", success);
+      
+      if (success) {
+        // Redirect to homepage after successful checkout
+        toast({
+          title: "Successo",
+          description: "Il tuo ordine è stato inviato con successo!",
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      } else {
+        toast({
+          title: "Attenzione",
+          description: "L'ordine è stato ricevuto ma potrebbe esserci un problema con le notifiche. Ti contatteremo presto.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+      toast({
+        title: "Errore",
+        description: "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -132,63 +158,71 @@ export default function Checkout() {
                     Riepilogo Ordine
                   </h2>
                   <div className="space-y-4">
-                    {state.items.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
-                      >
-                        <div>
-                          <h3 className="font-medium">{item.name}</h3>
-                          <p className="text-sm text-gray-600">{item.price}</p>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2">
+                    {state.items.length === 0 ? (
+                      <div className="p-4 bg-yellow-50 rounded-xl">
+                        <p className="text-yellow-800">Il tuo carrello è vuoto</p>
+                      </div>
+                    ) : (
+                      state.items.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                        >
+                          <div>
+                            <h3 className="font-medium">{item.name}</h3>
+                            <p className="text-sm text-gray-600">{item.price}</p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                                className="px-2 py-1 bg-gray-200 rounded"
+                              >
+                                -
+                              </button>
+                              <span className="w-8 text-center">{item.quantity}</span>
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                className="px-2 py-1 bg-gray-200 rounded"
+                              >
+                                +
+                              </button>
+                            </div>
                             <button
                               type="button"
-                              onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                              className="px-2 py-1 bg-gray-200 rounded"
+                              onClick={() => removeItem(item.id)}
+                              className="text-red-500 hover:text-red-600"
                             >
-                              -
-                            </button>
-                            <span className="w-8 text-center">{item.quantity}</span>
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="px-2 py-1 bg-gray-200 rounded"
-                            >
-                              +
+                              <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => removeItem(item.id)}
-                            className="text-red-500 hover:text-red-600"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
 
-                  <div className="mt-6 bg-gray-50 rounded-xl p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">Prodotti</span>
-                        <span>{total.toFixed(2)}€</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">IVA (22%)</span>
-                        <span>{iva.toFixed(2)}€</span>
-                      </div>
-                      <div className="border-t border-gray-200 pt-4">
-                        <div className="flex items-center justify-between font-semibold">
-                          <span>Totale</span>
-                          <span>{totalWithIva.toFixed(2)}€</span>
+                  {state.items.length > 0 && (
+                    <div className="mt-6 bg-gray-50 rounded-xl p-6">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium">Prodotti</span>
+                          <span>{total.toFixed(2)}€</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium">IVA (22%)</span>
+                          <span>{iva.toFixed(2)}€</span>
+                        </div>
+                        <div className="border-t border-gray-200 pt-4">
+                          <div className="flex items-center justify-between font-semibold">
+                            <span>Totale</span>
+                            <span>{totalWithIva.toFixed(2)}€</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="mt-6 bg-yellow-50 rounded-xl p-4">
                     <p className="text-sm text-yellow-800">
@@ -199,9 +233,9 @@ export default function Checkout() {
                   <Button 
                     type="submit"
                     className="w-full mt-6 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium"
-                    disabled={state.items.length === 0 || state.isSubmitting}
+                    disabled={state.items.length === 0 || isSubmitting || state.isSubmitting}
                   >
-                    {state.isSubmitting ? (
+                    {isSubmitting || state.isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                         Invio in corso...

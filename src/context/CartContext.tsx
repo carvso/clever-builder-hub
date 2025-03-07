@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useReducer } from "react";
 import { toast } from "@/hooks/use-toast";
 import { NotificationService } from "@/services/NotificationService";
@@ -134,26 +135,39 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
     try {
       dispatch({ type: "SET_SUBMITTING", payload: true });
+      console.log("Starting checkout process with customer info:", customerInfo);
       
       // Calculate order total
       const orderTotal = state.items.reduce((total, item) => {
-        const price = parseFloat(item.price.replace("€/pz", ""));
+        const price = parseFloat(item.price.replace(/[^\d,.]/g, '').replace(',', '.'));
         return total + price * item.quantity;
       }, 0);
+
+      console.log("Calculated order total:", orderTotal);
 
       // Prepare order data
       const orderData = {
         customer: customerInfo,
-        items: state.items,
+        items: state.items.map(item => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price
+        })),
         total: orderTotal,
         orderDate: new Date().toISOString(),
       };
 
+      console.log("Prepared order data:", orderData);
+
       // Send email notification using our service
+      console.log("Sending email notification...");
       const emailSent = await NotificationService.sendEmailNotification(orderData);
+      console.log("Email notification result:", emailSent);
       
       // Send WhatsApp notification using our service
+      console.log("Sending WhatsApp notification...");
       const whatsappSent = await NotificationService.sendWhatsAppNotification(orderData);
+      console.log("WhatsApp notification result:", whatsappSent);
 
       if (emailSent || whatsappSent) {
         // Clear cart after successful order
@@ -170,7 +184,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Checkout error:", error);
       toast({
         title: "Errore",
-        description: "Si è verificato un errore durante l'invio dell'ordine",
+        description: "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
         variant: "destructive",
       });
       return false;
