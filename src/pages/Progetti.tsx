@@ -13,10 +13,10 @@ const projects = [
     id: 1,
     title: "Demolizione palazzo storico",
     description: "Demolizione controllata di una struttura storica con preservazione della facciata principale. Utilizzo di escavatori idraulici specializzati per minimizzare l'impatto sulle strutture adiacenti.",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    image: "/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png",
     category: "Demolizione",
     date: "Gennaio 2023",
-    client: "Comune di Milano",
+    client: "Comune di Siracusa",
     services: ["Escavatore idraulico", "Martello demolitore", "Autocarro con gru"],
     materials: ["Calcestruzzo riciclato", "Smaltimento controllato rifiuti"],
     featured: true
@@ -25,7 +25,7 @@ const projects = [
     id: 2,
     title: "Costruzione edificio residenziale",
     description: "Realizzazione di un complesso residenziale di 6 piani con tecniche di costruzione sostenibile. Utilizzo di gru a torre per il sollevamento dei materiali fino ai piani alti.",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
+    image: "/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png",
     category: "Costruzione",
     date: "Marzo 2023",
     client: "Immobiliare Verde Srl",
@@ -37,7 +37,7 @@ const projects = [
     id: 3,
     title: "Scavo e fondazioni centro commerciale",
     description: "Scavo e preparazione fondazioni per un nuovo centro commerciale. Movimentazione di oltre 5000m³ di terra e preparazione di fondazioni speciali resistenti al sisma.",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    image: "/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png",
     category: "Scavo",
     date: "Giugno 2023",
     client: "Retail Development SpA",
@@ -47,44 +47,56 @@ const projects = [
   },
   {
     id: 4,
-    title: "Ristrutturazione ponte storico",
-    description: "Intervento di consolidamento e restauro di un ponte storico con mantenimento delle caratteristiche architettoniche originali. Utilizzo di macchinari specializzati per l'accesso alle aree difficili.",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
-    category: "Restauro",
+    title: "Preparazione terreno agricolo",
+    description: "Intervento di bonifica e preparazione di un terreno agricolo per la piantagione di olivi. Rimozione di rocce e livellamento del suolo per la coltivazione.",
+    image: "/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png",
+    category: "Agricoltura",
     date: "Settembre 2023",
-    client: "Provincia di Torino",
-    services: ["Piattaforme elevabili", "Gru mobile", "Attrezzature speciali"],
-    materials: ["Mattoni recuperati", "Malta speciale", "Resine consolidanti"],
+    client: "Azienda Agricola Oliveto Srl",
+    services: ["Escavatore compatto", "Mini pala", "Frantumatore"],
+    materials: ["Terra vegetale", "Concime", "Ghiaia per drenaggio"],
     featured: false
   },
   {
     id: 5,
-    title: "Pavimentazione autostrada A14",
-    description: "Rifacimento del manto stradale di un tratto di 15km della autostrada A14. Lavoro eseguito in tempi record grazie all'utilizzo di macchinari specializzati per asfalto.",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
-    category: "Asfalto",
+    title: "Preparazione fondamenta villa",
+    description: "Scavo e preparazione delle fondamenta per una villa privata in zona collinare. Gestione del dislivello naturale e consolidamento del terreno.",
+    image: "/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png",
+    category: "Residenziale",
     date: "Ottobre 2023",
-    client: "Autostrade per l'Italia",
-    services: ["Fresa per asfalto", "Rullo compressore", "Finitrice stradale"],
-    materials: ["Asfalto drenante", "Stabilizzato"],
+    client: "Privato",
+    services: ["Mini escavatore", "Ruspa", "Betoniera"],
+    materials: ["Cemento armato", "Ghiaia", "Impermeabilizzante"],
     featured: false
   },
   {
     id: 6,
-    title: "Montaggio torre eolica",
-    description: "Installazione di una torre eolica di ultima generazione in un parco energetico. Utilizzo di gru speciali per il sollevamento dei componenti ad altezze elevate.",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
-    category: "Energia",
+    title: "Scavo per cantina vinicola",
+    description: "Realizzazione di uno scavo profondo per la costruzione di una cantina vinicola interrata. Particolare attenzione alla stabilità del terreno e al drenaggio.",
+    image: "/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png",
+    category: "Agricoltura",
     date: "Novembre 2023",
-    client: "Green Energy Srl",
-    services: ["Gru telescopica", "Mezzi trasporto eccezionale"],
-    materials: ["Componenti torre eolica", "Cemento speciale per fondazioni"],
+    client: "Vini Siciliani SpA",
+    services: ["Escavatore pesante", "Camion ribaltabile", "Pompa per acqua"],
+    materials: ["Cemento impermeabilizzante", "Ghiaia drenante", "Isolante termico"],
+    featured: false
+  },
+  {
+    id: 7,
+    title: "Escavazione per piscina resort",
+    description: "Escavazione e preparazione del terreno per una piscina di grandi dimensioni in un resort turistico. Creazione di sistema di drenaggio e scavi per impianti idraulici.",
+    image: "/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png",
+    category: "Turistico",
+    date: "Dicembre 2023",
+    client: "Mediterranean Resort",
+    services: ["Escavatore Doosan", "Mini pala", "Martello demolitore"],
+    materials: ["Sabbia speciale", "Cemento per piscine", "Isolante idraulico"],
     featured: false
   }
 ];
 
 // Project categories for filtering
-const categories = ["Tutti", "Demolizione", "Costruzione", "Scavo", "Restauro", "Asfalto", "Energia"];
+const categories = ["Tutti", "Demolizione", "Costruzione", "Scavo", "Residenziale", "Agricoltura", "Turistico"];
 
 export default function Progetti() {
   const [selectedCategory, setSelectedCategory] = useState("Tutti");
@@ -113,7 +125,7 @@ export default function Progetti() {
             <div className="flex items-center gap-3">
               <Truck className="w-5 h-5 text-white" />
               <p className="text-white font-medium">
-                EdilP2 offre noleggio macchinari professionali con o senza conducente
+                EdilP2 offre noleggio macchinari professionali con o senza conducente a Siracusa e provincia
               </p>
             </div>
             <Link
@@ -135,7 +147,7 @@ export default function Progetti() {
             </h1>
             <p className="text-lg text-gray-600">
               Scopri come i nostri macchinari e materiali hanno contribuito a realizzare progetti 
-              di ogni tipo, dalle piccole ristrutturazioni alle grandi opere infrastrutturali.
+              di ogni tipo a Siracusa, Solarino, Floridia e in tutta la provincia siciliana.
             </p>
           </div>
           
@@ -144,7 +156,7 @@ export default function Progetti() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 relative h-full">
                 <img 
-                  src="/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png" 
+                  src="/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png" 
                   alt="Materiali EdilP2" 
                   className="w-full h-64 md:h-full object-cover"
                 />

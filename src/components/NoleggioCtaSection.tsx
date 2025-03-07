@@ -52,7 +52,8 @@ export default function NoleggioCtaSection() {
               
               <p className="text-white/90 text-lg">
                 Scopri la nostra flotta di mezzi professionali disponibili per noleggio 
-                giornaliero, settimanale o mensile. Con o senza conducente, sempre con assistenza dedicata.
+                giornaliero, settimanale o mensile. Con o senza conducente, sempre con assistenza dedicata
+                a Siracusa, Solarino, Floridia e provincia.
               </p>
               
               <div className="flex flex-wrap gap-6 pt-4">
@@ -97,7 +98,7 @@ export default function NoleggioCtaSection() {
             <div className={`flex items-center justify-center ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               <div className="relative">
                 <img 
-                  src="https://www.ricciato.com/resources/product/10242/gallery/01_Camion_allestito_gancio_scarrabile_Iveco_120E25K_angolare_destra.jpg" 
+                  src="/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png" 
                   alt="Escavatore EdilP2" 
                   className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
                 />

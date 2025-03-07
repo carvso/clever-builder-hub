@@ -20,6 +20,15 @@ export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+
+  // Array of hero images
+  const heroImages = [
+    "/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png", // Yellow excavator
+    "/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png", // Orange excavator
+    "/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png", // Prepared ground
+    "/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png", // Construction with crane
+  ];
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -39,6 +48,13 @@ export default function HeroSection() {
   useEffect(() => {
     // Trigger animations after component mount
     setIsVisible(true);
+    
+    // Image slideshow
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -60,7 +76,7 @@ export default function HeroSection() {
               <p 
                 className={`text-lg text-gray-600 mb-8 ${isVisible ? 'animate-slide-in-left delay-200' : 'opacity-0'}`}
               >
-                Scopri i migliori materiali edili e macchinari per costruzioni sicure e di qualità. Consegna rapida direttamente in cantiere!
+                Scopri i migliori materiali edili e macchinari per costruzioni sicure e di qualità. Consegna rapida direttamente in cantiere a Siracusa, Solarino, Floridia e provincia!
               </p>
             </div>
             <div 
@@ -133,9 +149,9 @@ export default function HeroSection() {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-2xl"></div>
             <img
-              src="/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png"
-              alt="Materiali edili e macchinari"
-              className="rounded-2xl shadow-2xl w-full object-cover h-[600px] hover-lift"
+              src={heroImages[currentImage]}
+              alt="Mezzi e cantieri EdilP2"
+              className="rounded-2xl shadow-2xl w-full object-cover h-[600px] hover-lift transition-opacity duration-500"
             />
             <div 
               className={`absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl ${isVisible ? 'animate-slide-in-right delay-400' : 'opacity-0'}`}
@@ -143,10 +159,10 @@ export default function HeroSection() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-semibold text-dark mb-1">
-                    Consegna Rapida
+                    Cantieri in tutta la provincia
                   </p>
                   <p className="text-sm text-gray-600">
-                    Materiali disponibili in pronta consegna
+                    Siracusa, Solarino, Floridia e provincia
                   </p>
                 </div>
                 <button 

@@ -16,7 +16,8 @@ export default function DriverRentalSection() {
             </h2>
             <p className="text-lg text-gray-600 mb-8">
               Affidati ai nostri operatori esperti per gestire i mezzi più complessi. 
-              Risparmia tempo, incrementa la sicurezza e ottimizza l'efficienza del tuo cantiere.
+              Risparmia tempo, incrementa la sicurezza e ottimizza l'efficienza del tuo cantiere
+              a Siracusa, Solarino, Floridia e provincia.
             </p>
             
             <div className="grid sm:grid-cols-2 gap-6 mb-8">
@@ -57,7 +58,7 @@ export default function DriverRentalSection() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden">
               <img 
-                src="/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png" 
+                src="/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png" 
                 alt="Escavatore con conducente" 
                 className="w-full h-full object-cover"
               />
@@ -67,7 +68,7 @@ export default function DriverRentalSection() {
             <div className="absolute bottom-6 left-6 right-6 p-6 bg-white rounded-xl shadow-lg">
               <div className="flex items-start gap-4">
                 <img 
-                  src="/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png" 
+                  src="/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png" 
                   alt="Operatore" 
                   className="w-16 h-16 rounded-full object-cover border-2 border-white"
                 />
@@ -84,7 +85,7 @@ export default function DriverRentalSection() {
                     "Operatore preparato e professionale. Ha ottimizzato i tempi di scavo riducendo i costi del progetto."
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
-                    — Marco P., Impresa Edile
+                    — Marco P., Impresa Edile Siracusa
                   </p>
                 </div>
               </div>

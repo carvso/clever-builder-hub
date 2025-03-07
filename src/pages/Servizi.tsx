@@ -30,7 +30,7 @@ const vehicles = [
     description: "Escavatore compatto con raggio di rotazione zero per spazi ristretti",
     price: "180€/giorno",
     withDriverPrice: "320€/giorno",
-    image: "https://www.truck1-it.com/img/ful/1567/Yanmar-VIO-57-6B-Germania_1567_7447962400774.jpg",
+    image: "/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png",
     features: [
       "Peso: 5.7 tonnellate",
       "Profondità di scavo: 3.8m",
@@ -48,7 +48,7 @@ const vehicles = [
     description: "Mini pala caricatrice ideale per movimentazione materiali in spazi ristretti",
     price: "150€/giorno",
     withDriverPrice: "290€/giorno",
-    image: "https://www.fagiolarisrl.it/public/Files/rif000005/103/pala_cingolata_cat_299c_q.li_60.jpg",
+    image: "/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png",
     features: [
       "Capacità operativa: 900kg",
       "Altezza di scarico: 2.3m",
@@ -80,38 +80,74 @@ const vehicles = [
   },
   {
     id: 5,
-    name: "Gru a Torre",
-    description: "Gru altezza 30m con portata massima 2500kg",
-    price: "350€/giorno",
-    withDriverPrice: "550€/giorno",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    name: "Escavatore Doosan DX140",
+    description: "Escavatore cingolato potente per scavi di medie e grandi dimensioni",
+    price: "250€/giorno",
+    withDriverPrice: "450€/giorno",
+    image: "/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png",
     features: [
-      "Altezza: 30m",
-      "Portata max: 2500kg",
-      "Radiocomando incluso",
-      "Assistenza 24/7",
+      "Peso: 14 tonnellate",
+      "Profondità di scavo: 5.5m",
+      "Potenza: 115 CV",
+      "Benne varie dimensioni",
     ],
-    category: "Sollevamento",
+    category: "Movimento terra",
     rating: 4.8,
     reviews: 94,
     withDriver: true,
   },
   {
     id: 6,
-    name: "Rullo Compressore",
-    description: "Rullo compressore per compattazione terreno e asfalto",
+    name: "Escavatore Yanmar SV26",
+    description: "Escavatore cingolato compatto ideale per lavori in spazi ristretti",
     price: "180€/giorno",
     withDriverPrice: "320€/giorno",
-    image: "/lovable-uploads/8e9b834c-cad6-4dcd-9118-61a742d74b56.png",
+    image: "/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png",
     features: [
-      "Peso: 12t",
-      "Larghezza rullo: 2m",
-      "Vibrazione regolabile",
-      "Facile da manovrare",
+      "Peso: 2.6 tonnellate",
+      "Profondità scavo: 2.8m",
+      "Larghezza: 1.5m",
+      "Martello demolitore disponibile",
     ],
-    category: "Compattazione",
+    category: "Movimento terra",
     rating: 4.7,
     reviews: 92,
+    withDriver: true,
+  },
+  {
+    id: 7,
+    name: "Camion Gru",
+    description: "Camion con gru telescopica per sollevamento e trasporto materiali",
+    price: "300€/giorno",
+    withDriverPrice: "480€/giorno",
+    image: "/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png",
+    features: [
+      "Portata: 10 tonnellate",
+      "Sbraccio gru: fino a 20m",
+      "Pianale di carico ampio",
+      "Ideale per consegne in cantiere",
+    ],
+    category: "Sollevamento",
+    rating: 4.8,
+    reviews: 65,
+    withDriver: true,
+  },
+  {
+    id: 8,
+    name: "Miniescavatore Doosan",
+    description: "Mini escavatore con operatore per scavi di precisione",
+    price: "160€/giorno",
+    withDriverPrice: "290€/giorno",
+    image: "/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png",
+    features: [
+      "Peso: 1.8 tonnellate",
+      "Larghezza: 98cm",
+      "Accessori intercambiabili",
+      "Ideale per scavi in giardini",
+    ],
+    category: "Movimento terra",
+    rating: 4.9,
+    reviews: 87,
     withDriver: true,
   },
 ];
@@ -150,7 +186,8 @@ export default function Servizi() {
             </h1>
             <p className="text-lg text-gray-600">
               Scopri la nostra flotta di mezzi professionali per il tuo cantiere.
-              Noleggio con o senza conducente, giornaliero, settimanale o mensile con assistenza dedicata.
+              Noleggio con o senza conducente, giornaliero, settimanale o mensile con assistenza dedicata
+              a Siracusa, Solarino, Floridia e provincia.
             </p>
           </div>
 
