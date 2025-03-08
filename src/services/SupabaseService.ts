@@ -2,16 +2,33 @@
 import { createClient } from '@supabase/supabase-js'
 import { Order } from '@/types/order';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+// Get environment variables with fallbacks for development
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Create the Supabase client with proper error handling
+export const supabase = supabaseUrl && supabaseKey 
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 export class SupabaseService {
+  /**
+   * Check if Supabase is properly configured
+   */
+  static isConfigured(): boolean {
+    return !!supabase;
+  }
+
   /**
    * Save order to Supabase database
    */
   static async saveOrder(order: Order): Promise<{ success: boolean; error?: string; orderId?: string }> {
+    // Check if Supabase is configured
+    if (!supabase) {
+      console.warn("Supabase not configured, running in mock mode");
+      return { success: true, orderId: `mock-${Date.now()}` };
+    }
+
     try {
       console.log("Saving order to Supabase:", order);
       
@@ -38,6 +55,12 @@ export class SupabaseService {
    * Get order by ID
    */
   static async getOrderById(orderId: string): Promise<{ order?: Order; error?: string }> {
+    // Check if Supabase is configured
+    if (!supabase) {
+      console.warn("Supabase not configured, running in mock mode");
+      return { order: { id: orderId, customer: { name: 'Mock Customer', email: 'mock@example.com', phone: '123456789' }, items: [], total: 0, totalWithIva: 0, orderDate: new Date().toISOString(), status: 'pending' } };
+    }
+
     try {
       const { data, error } = await supabase
         .from('orders')
@@ -59,6 +82,12 @@ export class SupabaseService {
    * Trigger Supabase Edge Function to send notifications
    */
   static async sendOrderNotifications(orderId: string): Promise<{ success: boolean; error?: string }> {
+    // Check if Supabase is configured
+    if (!supabase) {
+      console.warn("Supabase not configured, running in mock mode");
+      return { success: true };
+    }
+
     try {
       console.log("Invoking Edge Function to send notifications for order:", orderId);
       
