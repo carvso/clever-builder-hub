@@ -3,11 +3,11 @@ import { Order } from "@/types/order";
 import { SupabaseService } from "./SupabaseService";
 
 /**
- * Service for sending notifications about orders
+ * Service for sending email notifications about orders
  */
 export class NotificationService {
   /**
-   * Process a new order - saves to Supabase and sends notifications
+   * Process a new order - saves to Supabase and sends email notifications
    */
   static async processNewOrder(orderData: Order): Promise<{ success: boolean; orderId?: string; error?: string }> {
     try {
@@ -20,16 +20,16 @@ export class NotificationService {
         return { success: false, error: `Errore nel salvataggio dell'ordine: ${saveResult.error}` };
       }
       
-      // Step 2: Trigger notifications via Supabase Edge Function
+      // Step 2: Trigger email notifications via Supabase Edge Function
       if (saveResult.orderId) {
         const notifyResult = await SupabaseService.sendOrderNotifications(saveResult.orderId);
         if (!notifyResult.success) {
-          console.warn("Order saved but notifications failed:", notifyResult.error);
+          console.warn("Order saved but email notifications failed:", notifyResult.error);
           // We continue even if notifications fail, since the order is saved
           return { 
             success: true, 
             orderId: saveResult.orderId, 
-            error: "Ordine salvato ma l'invio delle notifiche ha avuto problemi." 
+            error: "Ordine salvato ma l'invio delle email ha avuto problemi." 
           };
         }
         
@@ -44,7 +44,7 @@ export class NotificationService {
   }
 
   /**
-   * Format order data into a readable message (used by Edge Function)
+   * Format order data into a readable email message
    */
   static formatOrderMessage(orderData: Order): string {
     if (!orderData || !orderData.items || !Array.isArray(orderData.items)) {

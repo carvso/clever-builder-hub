@@ -1,7 +1,6 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { Twilio } from "https://deno.land/x/twilio@1.0.2/mod.ts";
 import sendgrid from "https://deno.land/x/sendgrid@0.0.3/mod.ts";
 
 interface Customer {
@@ -87,7 +86,6 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
       text: messageBody,
       html: messageBody.replace(/\n/g, "<br>"),
     };
-    console.log("Owner email payload:", ownerEmailPayload);
     
     const ownerEmailSent = await sendgrid.send(ownerEmailPayload);
     console.log("Email to owner response:", ownerEmailSent);
@@ -115,7 +113,6 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
         text: customerMessage,
         html: customerMessage.replace(/\n/g, "<br>"),
       };
-      console.log("Customer email payload:", customerEmailPayload);
       
       const customerEmailSent = await sendgrid.send(customerEmailPayload);
       console.log("Confirmation email to customer response:", customerEmailSent);
@@ -126,55 +123,6 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
     return true;
   } catch (error) {
     console.error("Error sending email notification:", error);
-    console.error("Error details:", JSON.stringify(error, null, 2));
-    return false;
-  }
-}
-
-// Function to send a WhatsApp notification
-async function sendWhatsAppNotification(order: Order): Promise<boolean> {
-  try {
-    console.log("Starting WhatsApp notification process for order:", order.id);
-    
-    const TWILIO_ACCOUNT_SID = Deno.env.get("TWILIO_ACCOUNT_SID");
-    const TWILIO_AUTH_TOKEN = Deno.env.get("TWILIO_AUTH_TOKEN");
-    const TWILIO_PHONE_NUMBER = Deno.env.get("TWILIO_PHONE_NUMBER");
-    const STORE_PHONE_NUMBER = Deno.env.get("STORE_PHONE_NUMBER") || "+393241527770";
-    
-    if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER) {
-      console.error("Twilio credentials not found in environment variables");
-      throw new Error("Twilio credentials not found in environment variables");
-    }
-    
-    console.log("Using Twilio credentials:", {
-      accountSid: TWILIO_ACCOUNT_SID.substring(0, 5) + "...[hidden]", 
-      authToken: "...[hidden]",
-      phoneNumber: TWILIO_PHONE_NUMBER,
-      storePhoneNumber: STORE_PHONE_NUMBER
-    });
-    
-    // Initialize Twilio client
-    const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-    
-    // Format the message
-    const messageBody = formatOrderMessage(order);
-    console.log("Formatted WhatsApp message:", messageBody);
-    
-    // Prepare message payload
-    const messagePayload = {
-      body: messageBody,
-      from: `whatsapp:${TWILIO_PHONE_NUMBER}`,
-      to: `whatsapp:${STORE_PHONE_NUMBER}`
-    };
-    console.log("WhatsApp message payload:", messagePayload);
-    
-    // Send WhatsApp message
-    const message = await client.messages.create(messagePayload);
-    
-    console.log("WhatsApp message sent, SID:", message.sid);
-    return true;
-  } catch (error) {
-    console.error("Error sending WhatsApp notification:", error);
     console.error("Error details:", JSON.stringify(error, null, 2));
     return false;
   }
@@ -229,17 +177,13 @@ serve(async (req) => {
     
     console.log("Order found:", order);
     
-    // Send notifications
+    // Send email notification
     console.log("Sending email notification...");
     const emailResult = await sendEmailNotification(order as Order);
     console.log("Email notification result:", emailResult);
     
-    console.log("Sending WhatsApp notification...");
-    const whatsappResult = await sendWhatsAppNotification(order as Order);
-    console.log("WhatsApp notification result:", whatsappResult);
-    
-    // Update order status if notifications were sent
-    if (emailResult || whatsappResult) {
+    // Update order status if email was sent
+    if (emailResult) {
       console.log("Updating order status to 'confirmed'");
       const { error: updateError } = await supabaseClient
         .from("orders")
@@ -257,7 +201,6 @@ serve(async (req) => {
       JSON.stringify({
         success: true,
         email: emailResult,
-        whatsapp: whatsappResult,
       }),
       { headers: { "Content-Type": "application/json" } }
     );

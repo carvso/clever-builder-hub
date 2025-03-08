@@ -88,7 +88,7 @@ export class SupabaseService {
   }
 
   /**
-   * Trigger Supabase Edge Function to send notifications
+   * Trigger Supabase Edge Function to send email notifications
    */
   static async sendOrderNotifications(orderId: string): Promise<{ success: boolean; error?: string }> {
     // Check if Supabase is configured
@@ -98,14 +98,14 @@ export class SupabaseService {
     }
 
     try {
-      console.log("Invoking Edge Function to send notifications for order:", orderId);
+      console.log("Invoking Edge Function to send email notifications for order:", orderId);
       
       // Validate the order ID
       if (!orderId) {
         throw new Error("Invalid order ID: cannot send notifications");
       }
       
-      const { data, error } = await supabase.functions.invoke('send-order-notifications', {
+      const { error } = await supabase.functions.invoke('send-order-notifications', {
         body: { orderId }
       });
       
@@ -115,8 +115,8 @@ export class SupabaseService {
         return { success: false, error: error.message };
       }
       
-      console.log("Notifications API response:", data);
-      return { success: true, data };
+      console.log("Email notification sent successfully");
+      return { success: true };
     } catch (error) {
       console.error("Exception invoking Edge Function:", error);
       console.error("Error details:", JSON.stringify(error, null, 2));
