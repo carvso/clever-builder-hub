@@ -58,65 +58,75 @@ function formatOrderMessage(order: Order): string {
 // Function to send an email notification
 async function sendEmailNotification(order: Order): Promise<boolean> {
   try {
-    console.log("Sending email notification for order:", order.id);
+    console.log("Starting email notification process for order:", order.id);
     
     const SENDGRID_API_KEY = Deno.env.get("SENDGRID_API_KEY");
     const STORE_EMAIL = Deno.env.get("STORE_EMAIL") || "vcarusobusiness@gmail.com";
     
     if (!SENDGRID_API_KEY) {
+      console.error("SendGrid API Key not found in environment variables");
       throw new Error("SendGrid API Key not found in environment variables");
     }
     
+    console.log("Using SendGrid API Key:", SENDGRID_API_KEY.substring(0, 5) + "...[hidden]");
+    console.log("Store email:", STORE_EMAIL);
+    
+    // Initialize SendGrid
     sendgrid.init(SENDGRID_API_KEY);
     
     // Format the message body
     const messageBody = formatOrderMessage(order);
+    console.log("Formatted email message:", messageBody);
     
     // Send email to store owner
-    const ownerEmailSent = await sendgrid.send({
+    console.log("Sending email to store owner:", STORE_EMAIL);
+    const ownerEmailPayload = {
       to: STORE_EMAIL,
       from: "noreply@edilp2.com",
       subject: `Nuovo Ordine #${order.id} - EdilP2`,
       text: messageBody,
       html: messageBody.replace(/\n/g, "<br>"),
-    });
+    };
+    console.log("Owner email payload:", ownerEmailPayload);
     
-    console.log("Email to owner sent:", ownerEmailSent);
+    const ownerEmailSent = await sendgrid.send(ownerEmailPayload);
+    console.log("Email to owner response:", ownerEmailSent);
     
     // Send confirmation email to customer
     if (order.customer.email) {
-      const customerEmailSent = await sendgrid.send({
+      console.log("Sending confirmation email to customer:", order.customer.email);
+      const customerMessage = `
+        Gentile ${order.customer.name},
+        
+        Grazie per il tuo ordine! Abbiamo ricevuto la tua richiesta e la stiamo elaborando.
+        
+        Dettagli Ordine:
+        ${messageBody}
+        
+        Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.
+        
+        Grazie per aver scelto EdilP2!
+      `;
+      
+      const customerEmailPayload = {
         to: order.customer.email,
         from: "noreply@edilp2.com",
         subject: "Conferma Ordine - EdilP2",
-        text: `
-          Gentile ${order.customer.name},
-          
-          Grazie per il tuo ordine! Abbiamo ricevuto la tua richiesta e la stiamo elaborando.
-          
-          Dettagli Ordine:
-          ${messageBody}
-          
-          Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.
-          
-          Grazie per aver scelto EdilP2!
-        `,
-        html: `
-          <h2>Gentile ${order.customer.name},</h2>
-          <p>Grazie per il tuo ordine! Abbiamo ricevuto la tua richiesta e la stiamo elaborando.</p>
-          <h3>Dettagli Ordine:</h3>
-          <p>${messageBody.replace(/\n/g, "<br>")}</p>
-          <p>Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.</p>
-          <p>Grazie per aver scelto EdilP2!</p>
-        `,
-      });
+        text: customerMessage,
+        html: customerMessage.replace(/\n/g, "<br>"),
+      };
+      console.log("Customer email payload:", customerEmailPayload);
       
-      console.log("Confirmation email to customer sent:", customerEmailSent);
+      const customerEmailSent = await sendgrid.send(customerEmailPayload);
+      console.log("Confirmation email to customer response:", customerEmailSent);
+    } else {
+      console.warn("No customer email provided, skipping customer notification");
     }
     
     return true;
   } catch (error) {
     console.error("Error sending email notification:", error);
+    console.error("Error details:", JSON.stringify(error, null, 2));
     return false;
   }
 }
@@ -124,7 +134,7 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
 // Function to send a WhatsApp notification
 async function sendWhatsAppNotification(order: Order): Promise<boolean> {
   try {
-    console.log("Sending WhatsApp notification for order:", order.id);
+    console.log("Starting WhatsApp notification process for order:", order.id);
     
     const TWILIO_ACCOUNT_SID = Deno.env.get("TWILIO_ACCOUNT_SID");
     const TWILIO_AUTH_TOKEN = Deno.env.get("TWILIO_AUTH_TOKEN");
@@ -132,47 +142,73 @@ async function sendWhatsAppNotification(order: Order): Promise<boolean> {
     const STORE_PHONE_NUMBER = Deno.env.get("STORE_PHONE_NUMBER") || "+393241527770";
     
     if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER) {
+      console.error("Twilio credentials not found in environment variables");
       throw new Error("Twilio credentials not found in environment variables");
     }
     
+    console.log("Using Twilio credentials:", {
+      accountSid: TWILIO_ACCOUNT_SID.substring(0, 5) + "...[hidden]", 
+      authToken: "...[hidden]",
+      phoneNumber: TWILIO_PHONE_NUMBER,
+      storePhoneNumber: STORE_PHONE_NUMBER
+    });
+    
+    // Initialize Twilio client
     const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
     
     // Format the message
     const messageBody = formatOrderMessage(order);
+    console.log("Formatted WhatsApp message:", messageBody);
     
-    // Send WhatsApp message
-    const message = await client.messages.create({
+    // Prepare message payload
+    const messagePayload = {
       body: messageBody,
       from: `whatsapp:${TWILIO_PHONE_NUMBER}`,
       to: `whatsapp:${STORE_PHONE_NUMBER}`
-    });
+    };
+    console.log("WhatsApp message payload:", messagePayload);
+    
+    // Send WhatsApp message
+    const message = await client.messages.create(messagePayload);
     
     console.log("WhatsApp message sent, SID:", message.sid);
     return true;
   } catch (error) {
     console.error("Error sending WhatsApp notification:", error);
+    console.error("Error details:", JSON.stringify(error, null, 2));
     return false;
   }
 }
 
 serve(async (req) => {
+  console.log("Edge function triggered with request:", req.url);
   try {
     // Create a Supabase client
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-    );
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error("Supabase credentials not found in environment variables");
+    }
+    
+    console.log("Creating Supabase client with URL:", supabaseUrl);
+    const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
     // Get the request body
-    const { orderId } = await req.json();
+    const body = await req.json();
+    console.log("Request body:", body);
+    
+    const { orderId } = body;
     
     if (!orderId) {
+      console.error("Missing orderId in request");
       return new Response(
         JSON.stringify({ success: false, error: "Order ID is required" }),
         { headers: { "Content-Type": "application/json" }, status: 400 }
       );
     }
     
+    console.log("Fetching order details for order ID:", orderId);
     // Get the order from the database
     const { data: order, error } = await supabaseClient
       .from("orders")
@@ -181,6 +217,7 @@ serve(async (req) => {
       .single();
     
     if (error || !order) {
+      console.error("Error fetching order:", error?.message || "Order not found");
       return new Response(
         JSON.stringify({ 
           success: false, 
@@ -190,12 +227,20 @@ serve(async (req) => {
       );
     }
     
+    console.log("Order found:", order);
+    
     // Send notifications
+    console.log("Sending email notification...");
     const emailResult = await sendEmailNotification(order as Order);
+    console.log("Email notification result:", emailResult);
+    
+    console.log("Sending WhatsApp notification...");
     const whatsappResult = await sendWhatsAppNotification(order as Order);
+    console.log("WhatsApp notification result:", whatsappResult);
     
     // Update order status if notifications were sent
     if (emailResult || whatsappResult) {
+      console.log("Updating order status to 'confirmed'");
       const { error: updateError } = await supabaseClient
         .from("orders")
         .update({ status: "confirmed" })
@@ -203,6 +248,8 @@ serve(async (req) => {
       
       if (updateError) {
         console.error("Error updating order status:", updateError);
+      } else {
+        console.log("Order status updated successfully");
       }
     }
     
@@ -216,11 +263,13 @@ serve(async (req) => {
     );
   } catch (error) {
     console.error("Error in Edge Function:", error);
+    console.error("Error details:", JSON.stringify(error, null, 2));
     
     return new Response(
       JSON.stringify({
         success: false,
         error: error.message,
+        stack: error.stack,
       }),
       { headers: { "Content-Type": "application/json" }, status: 500 }
     );

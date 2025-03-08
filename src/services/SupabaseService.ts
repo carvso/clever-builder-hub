@@ -32,6 +32,11 @@ export class SupabaseService {
     try {
       console.log("Saving order to Supabase:", order);
       
+      // Validate the order format
+      if (!order.customer || !order.items || !Array.isArray(order.items)) {
+        throw new Error("Invalid order format: missing customer or items data");
+      }
+      
       const { data, error } = await supabase
         .from('orders')
         .insert(order)
@@ -40,6 +45,7 @@ export class SupabaseService {
       
       if (error) {
         console.error("Error saving order to Supabase:", error);
+        console.error("Error details:", JSON.stringify(error, null, 2));
         return { success: false, error: error.message };
       }
       
@@ -47,6 +53,7 @@ export class SupabaseService {
       return { success: true, orderId: data.id };
     } catch (error) {
       console.error("Exception saving order:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
       return { success: false, error: (error as Error).message };
     }
   }
@@ -69,11 +76,13 @@ export class SupabaseService {
         .single();
       
       if (error) {
+        console.error("Error fetching order:", error);
         return { error: error.message };
       }
       
       return { order: data as Order };
     } catch (error) {
+      console.error("Exception fetching order:", error);
       return { error: (error as Error).message };
     }
   }
@@ -91,19 +100,26 @@ export class SupabaseService {
     try {
       console.log("Invoking Edge Function to send notifications for order:", orderId);
       
+      // Validate the order ID
+      if (!orderId) {
+        throw new Error("Invalid order ID: cannot send notifications");
+      }
+      
       const { data, error } = await supabase.functions.invoke('send-order-notifications', {
         body: { orderId }
       });
       
       if (error) {
         console.error("Error invoking Edge Function:", error);
+        console.error("Error details:", JSON.stringify(error, null, 2));
         return { success: false, error: error.message };
       }
       
-      console.log("Notifications sent successfully:", data);
-      return { success: true };
+      console.log("Notifications API response:", data);
+      return { success: true, data };
     } catch (error) {
       console.error("Exception invoking Edge Function:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
       return { success: false, error: (error as Error).message };
     }
   }
