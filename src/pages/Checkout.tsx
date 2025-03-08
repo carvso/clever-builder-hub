@@ -1,22 +1,24 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ArrowLeft, Trash2, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCart, CustomerInfo } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import { Customer } from "@/types/order";
 
 export default function Checkout() {
   const { state, removeItem, updateQuantity, checkout } = useCart();
   const navigate = useNavigate();
-  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
+  const [customerInfo, setCustomerInfo] = useState<Customer>({
     name: "",
     email: "",
     phone: "",
   });
+  const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderId, setOrderId] = useState<string | undefined>(undefined);
 
   const calculateTotal = () => {
     return state.items.reduce((total, item) => {
@@ -25,12 +27,16 @@ export default function Checkout() {
     }, 0);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setCustomerInfo((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === 'notes') {
+      setNotes(value);
+    } else {
+      setCustomerInfo((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,22 +57,25 @@ export default function Checkout() {
       console.log("Submitting order with customer info:", customerInfo);
       
       // Submit order
-      const success = await checkout(customerInfo);
-      console.log("Order submission result:", success);
+      const result = await checkout(customerInfo, notes);
+      console.log("Order submission result:", result);
       
-      if (success) {
+      if (result.success) {
+        setOrderId(result.orderId);
+        
         // Redirect to homepage after successful checkout
         toast({
           title: "Successo",
           description: "Il tuo ordine è stato inviato con successo!",
         });
+        
         setTimeout(() => {
           navigate("/");
         }, 2000);
       } else {
         toast({
-          title: "Attenzione",
-          description: "L'ordine è stato ricevuto ma potrebbe esserci un problema con le notifiche. Ti contatteremo presto.",
+          title: "Errore",
+          description: "Si è verificato un problema durante l'invio dell'ordine. Per favore, riprova più tardi.",
           variant: "destructive",
         });
       }
@@ -148,6 +157,19 @@ export default function Checkout() {
                         onChange={handleInputChange}
                         required
                         className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Note aggiuntive
+                      </label>
+                      <textarea
+                        name="notes"
+                        value={notes}
+                        onChange={handleInputChange}
+                        rows={3}
+                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        placeholder="Eventuali specifiche sull'ordine..."
                       />
                     </div>
                   </div>

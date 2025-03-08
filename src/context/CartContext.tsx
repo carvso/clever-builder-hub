@@ -1,7 +1,7 @@
-
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { NotificationService } from "@/services/NotificationService";
+import { Customer, Order } from "@/types/order";
 
 type Product = {
   id: number;
@@ -33,13 +33,7 @@ type CartContextType = {
   removeItem: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
-  checkout: (customerInfo: CustomerInfo) => Promise<boolean>;
-};
-
-export type CustomerInfo = {
-  name: string;
-  email: string;
-  phone: string;
+  checkout: (customerInfo: Customer, notes?: string) => Promise<{ success: boolean; orderId?: string }>;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -123,14 +117,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "CLEAR_CART" });
   };
 
-  const checkout = async (customerInfo: CustomerInfo): Promise<boolean> => {
+  const checkout = async (customerInfo: Customer, notes?: string): Promise<{ success: boolean; orderId?: string }> => {
     if (state.items.length === 0) {
       toast({
         title: "Errore",
         description: "Il carrello è vuoto",
         variant: "destructive",
       });
-      return false;
+      return { success: false };
     }
 
     try {
@@ -146,7 +140,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Calculated order total:", orderTotal);
 
       // Prepare order data
-      const orderData = {
+      const orderData: Order = {
         customer: customerInfo,
         items: state.items.map(item => ({
           name: item.name,
@@ -154,43 +148,50 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           price: item.price
         })),
         total: orderTotal,
+        totalWithIva: orderTotal * 1.22,
         orderDate: new Date().toISOString(),
+        status: 'pending',
+        notes: notes
       };
 
       console.log("Prepared order data:", orderData);
 
-      // Send notifications
-      const emailSent = await NotificationService.sendEmailNotification(orderData);
-      console.log("Email notification result:", emailSent);
+      // Process order through NotificationService
+      const result = await NotificationService.processNewOrder(orderData);
       
-      const whatsappSent = await NotificationService.sendWhatsAppNotification(orderData);
-      console.log("WhatsApp notification result:", whatsappSent);
-
-      // Improved notification result handling
-      // For development purposes, we always proceed with checkout
-      // In production, you might want to handle failures differently
-      if (emailSent && whatsappSent) {
-        console.log("Both notifications sent successfully");
+      if (result.success) {
+        console.log("Order processed successfully, ID:", result.orderId);
+        
+        // Clear cart after successful order
+        dispatch({ type: "CLEAR_CART" });
+        
+        toast({
+          title: "Ordine confermato",
+          description: "Il tuo ordine è stato registrato. Ti contatteremo presto per confermare i dettagli.",
+        });
+        
+        return { success: true, orderId: result.orderId };
       } else {
-        console.log("At least one notification method failed");
-        // We continue anyway for demo purposes
+        console.error("Order processing failed:", result.error);
+        
+        toast({
+          title: "Errore",
+          description: result.error || "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
+          variant: "destructive",
+        });
+        
+        return { success: false };
       }
-      
-      // Clear cart after successful order
-      dispatch({ type: "CLEAR_CART" });
-      toast({
-        title: "Ordine confermato",
-        description: "Il tuo ordine è stato registrato. Ti contatteremo presto per confermare i dettagli.",
-      });
-      return true;
     } catch (error) {
       console.error("Checkout error:", error);
+      
       toast({
         title: "Errore",
         description: "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
         variant: "destructive",
       });
-      return false;
+      
+      return { success: false };
     } finally {
       dispatch({ type: "SET_SUBMITTING", payload: false });
     }
