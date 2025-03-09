@@ -22,14 +22,14 @@ export class NotificationService {
       
       // Step 2: Trigger email notifications via Supabase Edge Function
       if (saveResult.orderId) {
-        const notifyResult = await SupabaseService.sendOrderNotifications(saveResult.orderId);
+        const notifyResult = await SupabaseService.sendOrderEmailNotification(saveResult.orderId);
         if (!notifyResult.success) {
           console.warn("Order saved but email notifications failed:", notifyResult.error);
           // We continue even if notifications fail, since the order is saved
           return { 
             success: true, 
             orderId: saveResult.orderId, 
-            error: "Ordine salvato ma l'invio delle email ha avuto problemi." 
+            error: "Ordine salvato ma l'invio dell'email ha avuto problemi." 
           };
         }
         

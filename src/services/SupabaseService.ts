@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 import { Order } from '@/types/order';
 
@@ -88,9 +87,9 @@ export class SupabaseService {
   }
 
   /**
-   * Trigger Supabase Edge Function to send email notifications
+   * Send email notification for an order via Brevo SMTP
    */
-  static async sendOrderNotifications(orderId: string): Promise<{ success: boolean; error?: string }> {
+  static async sendOrderEmailNotification(orderId: string): Promise<{ success: boolean; error?: string }> {
     // Check if Supabase is configured
     if (!supabase) {
       console.warn("Supabase not configured, running in mock mode");
@@ -98,14 +97,14 @@ export class SupabaseService {
     }
 
     try {
-      console.log("Invoking Edge Function to send email notifications for order:", orderId);
+      console.log("Invoking Edge Function to send email notification for order:", orderId);
       
       // Validate the order ID
       if (!orderId) {
         throw new Error("Invalid order ID: cannot send notifications");
       }
       
-      const { error } = await supabase.functions.invoke('send-order-notifications', {
+      const { data, error } = await supabase.functions.invoke('send-order-email', {
         body: { orderId }
       });
       
@@ -115,7 +114,7 @@ export class SupabaseService {
         return { success: false, error: error.message };
       }
       
-      console.log("Email notification sent successfully");
+      console.log("Email notification sent successfully:", data);
       return { success: true };
     } catch (error) {
       console.error("Exception invoking Edge Function:", error);
