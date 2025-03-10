@@ -184,7 +184,10 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
           
           <div style="margin: 20px 0; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
             <h3 style="margin-top: 0; color: #4a5568;">Riepilogo Ordine</h3>
-            ${htmlMessage}
+            <p><strong>Numero Ordine:</strong> #${order.id}</p>
+            <p><strong>Data:</strong> ${new Date(order.orderDate).toLocaleString('it-IT')}</p>
+            <p><strong>Totale:</strong> €${(order.total || 0).toFixed(2)}</p>
+            <p><strong>Totale con IVA (22%):</strong> €${(order.totalWithIva || 0).toFixed(2)}</p>
           </div>
           
           <p>Grazie per aver scelto EdilP2!</p>
@@ -201,7 +204,10 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
         Grazie per il tuo ordine! Abbiamo ricevuto la tua richiesta e la stiamo elaborando.
         
         Dettagli Ordine:
-        ${textMessage}
+        Numero Ordine: #${order.id}
+        Data: ${new Date(order.orderDate).toLocaleString('it-IT')}
+        Totale: €${(order.total || 0).toFixed(2)}
+        Totale con IVA (22%): €${(order.totalWithIva || 0).toFixed(2)}
         
         Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.
         
