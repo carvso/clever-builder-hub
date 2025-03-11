@@ -17,6 +17,21 @@ export class NotificationService {
       if (!SupabaseService.isConfigured()) {
         console.error("Supabase is not configured properly. Email notifications will not be sent.");
         console.error("Make sure you've set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.");
+        console.error("Current environment values:", {
+          SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL ? "Set" : "Not set",
+          SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY ? "Set" : "Not set"
+        });
+        
+        // Even if Supabase isn't configured, we'll continue in mock mode
+      }
+      
+      // Ensure orders table exists if Supabase is configured
+      if (SupabaseService.isConfigured()) {
+        const tableCheck = await SupabaseService.ensureOrdersTableExists();
+        if (!tableCheck.success) {
+          console.warn("Warning: Could not verify orders table exists:", tableCheck.error);
+          // We continue anyway, as the saveOrder method will attempt to handle this
+        }
       }
       
       // Step 1: Save the order to Supabase

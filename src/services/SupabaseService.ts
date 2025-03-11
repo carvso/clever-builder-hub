@@ -27,6 +27,50 @@ export class SupabaseService {
   }
 
   /**
+   * Ensure that the orders table exists in Supabase
+   */
+  static async ensureOrdersTableExists(): Promise<{ success: boolean; error?: string }> {
+    if (!supabase) {
+      console.warn("Supabase not configured, cannot create tables");
+      return { success: false, error: "Supabase not configured" };
+    }
+
+    try {
+      // Check if the orders table exists
+      const { data: tableExists, error: checkError } = await supabase
+        .from('orders')
+        .select('id')
+        .limit(1);
+      
+      if (checkError && checkError.code === '42P01') { // PostgreSQL error code for undefined_table
+        console.log("Orders table doesn't exist, attempting to create it");
+        
+        // Table doesn't exist, create it using PostgreSQL via RPC
+        // This requires appropriate permissions on the service role
+        const { error: createError } = await supabase.rpc('create_orders_table');
+        
+        if (createError) {
+          console.error("Failed to create orders table:", createError);
+          return { success: false, error: createError.message };
+        }
+        
+        console.log("Orders table created successfully");
+        return { success: true };
+      } else if (checkError) {
+        console.error("Error checking orders table:", checkError);
+        return { success: false, error: checkError.message };
+      }
+      
+      // Table exists
+      console.log("Orders table exists");
+      return { success: true };
+    } catch (error) {
+      console.error("Exception checking/creating orders table:", error);
+      return { success: false, error: (error as Error).message };
+    }
+  }
+
+  /**
    * Save order to Supabase database
    */
   static async saveOrder(order: Order): Promise<{ success: boolean; error?: string; orderId?: string }> {
@@ -43,16 +87,52 @@ export class SupabaseService {
       if (!order.customer || !order.items || !Array.isArray(order.items)) {
         throw new Error("Invalid order format: missing customer or items data");
       }
+
+      // Format the order object to match Supabase's expected format
+      const orderData = {
+        customer_info: order.customer,
+        items: order.items,
+        total: order.total,
+        total_with_iva: order.totalWithIva,
+        order_date: order.orderDate,
+        status: order.status,
+        notes: order.notes || null
+      };
+      
+      console.log("Formatted order data for Supabase:", orderData);
       
       const { data, error } = await supabase
         .from('orders')
-        .insert(order)
+        .insert(orderData)
         .select('id')
         .single();
       
       if (error) {
         console.error("Error saving order to Supabase:", error);
         console.error("Error details:", JSON.stringify(error, null, 2));
+        
+        // If the error is due to missing table, try to create it
+        if (error.code === '42P01') {
+          const tableCreation = await SupabaseService.ensureOrdersTableExists();
+          if (tableCreation.success) {
+            // Retry saving the order
+            console.log("Retrying order save after table creation");
+            const retryResult = await supabase
+              .from('orders')
+              .insert(orderData)
+              .select('id')
+              .single();
+              
+            if (retryResult.error) {
+              console.error("Error on retry:", retryResult.error);
+              return { success: false, error: retryResult.error.message };
+            }
+            
+            console.log("Order saved successfully on retry:", retryResult.data);
+            return { success: true, orderId: retryResult.data.id };
+          }
+        }
+        
         return { success: false, error: error.message };
       }
       
