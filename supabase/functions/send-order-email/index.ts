@@ -3,6 +3,16 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SMTPClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
+const allowedOrigins = ['https://clever-builder-hub.lovable.app', 'https://your-frontend-url.com'];
+
+return new Response('Email sent', {
+  headers: {
+    'Access-Control-Allow-Origin': allowedOrigins.join(', '),
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  },
+});
+
 interface Customer {
   name: string;
   email: string;
