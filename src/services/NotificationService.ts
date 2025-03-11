@@ -9,7 +9,7 @@ export class NotificationService {
   /**
    * Process a new order - saves to Supabase and sends email notifications
    */
-  static async processNewOrder(orderData: Order): Promise<{ success: boolean; orderId?: string; error?: string }> {
+  static async processNewOrder(orderData: Order): Promise<{ success: boolean; orderId?: string; error?: string; details?: any }> {
     try {
       console.log("Processing new order:", orderData);
       
@@ -22,18 +22,23 @@ export class NotificationService {
       
       // Step 2: Trigger email notifications via Supabase Edge Function
       if (saveResult.orderId) {
+        console.log(`Order saved with ID ${saveResult.orderId}, now sending email notification`);
         const notifyResult = await SupabaseService.sendOrderEmailNotification(saveResult.orderId);
+        
         if (!notifyResult.success) {
           console.warn("Order saved but email notifications failed:", notifyResult.error);
+          console.warn("Notification error details:", JSON.stringify(notifyResult.details, null, 2));
           // We continue even if notifications fail, since the order is saved
           return { 
             success: true, 
             orderId: saveResult.orderId, 
-            error: "Ordine salvato ma l'invio dell'email ha avuto problemi." 
+            error: "Ordine salvato ma l'invio dell'email ha avuto problemi.",
+            details: notifyResult.details
           };
         }
         
-        return { success: true, orderId: saveResult.orderId };
+        console.log("Order processed and notifications sent successfully");
+        return { success: true, orderId: saveResult.orderId, details: notifyResult.details };
       }
       
       return { success: true, orderId: saveResult.orderId };

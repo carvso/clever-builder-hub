@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js'
 import { Order } from '@/types/order';
 
@@ -89,7 +90,7 @@ export class SupabaseService {
   /**
    * Send email notification for an order via Brevo SMTP
    */
-  static async sendOrderEmailNotification(orderId: string): Promise<{ success: boolean; error?: string }> {
+  static async sendOrderEmailNotification(orderId: string): Promise<{ success: boolean; error?: string; details?: any }> {
     // Check if Supabase is configured
     if (!supabase) {
       console.warn("Supabase not configured, running in mock mode");
@@ -104,22 +105,33 @@ export class SupabaseService {
         throw new Error("Invalid order ID: cannot send notifications");
       }
       
-      const { data, error } = await supabase.functions.invoke('send-order-email', {
+      // Call the Edge Function with detailed logging
+      console.log(`About to invoke Edge Function 'send-order-email' with order ID: ${orderId}`);
+      const functionResponse = await supabase.functions.invoke('send-order-email', {
         body: { orderId }
       });
+      
+      const { data, error } = functionResponse;
       
       if (error) {
         console.error("Error invoking Edge Function:", error);
         console.error("Error details:", JSON.stringify(error, null, 2));
-        return { success: false, error: error.message };
+        return { success: false, error: error.message, details: error };
       }
       
-      console.log("Email notification sent successfully:", data);
-      return { success: true };
+      console.log("Edge Function response:", JSON.stringify(data, null, 2));
+      
+      if (data && data.success === false) {
+        console.error("Edge Function reported failure:", data.error);
+        return { success: false, error: data.error, details: data };
+      }
+      
+      console.log("Email notification request processed successfully with response:", data);
+      return { success: true, details: data };
     } catch (error) {
       console.error("Exception invoking Edge Function:", error);
       console.error("Error details:", JSON.stringify(error, null, 2));
-      return { success: false, error: (error as Error).message };
+      return { success: false, error: (error as Error).message, details: error };
     }
   }
 }
