@@ -11,6 +11,13 @@ export const supabase = supabaseUrl && supabaseKey
   ? createClient(supabaseUrl, supabaseKey)
   : null;
 
+// Log Supabase configuration status for debugging
+console.log("Supabase configuration status:", {
+  urlConfigured: !!supabaseUrl,
+  keyConfigured: !!supabaseKey,
+  clientCreated: !!supabase
+});
+
 export class SupabaseService {
   /**
    * Check if Supabase is properly configured
@@ -94,6 +101,8 @@ export class SupabaseService {
     // Check if Supabase is configured
     if (!supabase) {
       console.warn("Supabase not configured, running in mock mode");
+      console.error("IMPORTANT: Supabase URL and ANON KEY are missing from environment variables.");
+      console.error("Make sure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are properly set.");
       return { success: true };
     }
 

@@ -13,6 +13,12 @@ export class NotificationService {
     try {
       console.log("Processing new order:", orderData);
       
+      // Check if Supabase is configured
+      if (!SupabaseService.isConfigured()) {
+        console.error("Supabase is not configured properly. Email notifications will not be sent.");
+        console.error("Make sure you've set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.");
+      }
+      
       // Step 1: Save the order to Supabase
       const saveResult = await SupabaseService.saveOrder(orderData);
       if (!saveResult.success) {
