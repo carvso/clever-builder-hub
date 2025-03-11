@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 import { Order } from '@/types/order';
 
@@ -36,33 +35,15 @@ export class SupabaseService {
     }
 
     try {
-      // Check if the orders table exists
-      const { data: tableExists, error: checkError } = await supabase
-        .from('orders')
-        .select('id')
-        .limit(1);
+      // Call the RPC function to create the table and set up policies
+      const { data, error: rpcError } = await supabase.rpc('create_orders_table');
       
-      if (checkError && checkError.code === '42P01') { // PostgreSQL error code for undefined_table
-        console.log("Orders table doesn't exist, attempting to create it");
-        
-        // Table doesn't exist, create it using PostgreSQL via RPC
-        // This requires appropriate permissions on the service role
-        const { error: createError } = await supabase.rpc('create_orders_table');
-        
-        if (createError) {
-          console.error("Failed to create orders table:", createError);
-          return { success: false, error: createError.message };
-        }
-        
-        console.log("Orders table created successfully");
-        return { success: true };
-      } else if (checkError) {
-        console.error("Error checking orders table:", checkError);
-        return { success: false, error: checkError.message };
+      if (rpcError) {
+        console.error("Failed to create/update orders table:", rpcError);
+        return { success: false, error: rpcError.message };
       }
       
-      // Table exists
-      console.log("Orders table exists");
+      console.log("Orders table exists or was created with result:", data);
       return { success: true };
     } catch (error) {
       console.error("Exception checking/creating orders table:", error);

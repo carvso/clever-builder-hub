@@ -37,9 +37,25 @@ BEGIN
       WITH CHECK (true);
 
     RETURN true;
+  ELSE
+    -- Table exists, but let's check if the policies are set correctly
+    -- Drop existing policies to avoid conflicts
+    DROP POLICY IF EXISTS "Enable all operations for authenticated users" ON public.orders;
+    DROP POLICY IF EXISTS "Enable insert for anonymous users" ON public.orders;
+    
+    -- Recreate policies
+    CREATE POLICY "Enable all operations for authenticated users" ON public.orders
+      FOR ALL
+      TO authenticated
+      USING (true)
+      WITH CHECK (true);
+      
+    CREATE POLICY "Enable insert for anonymous users" ON public.orders
+      FOR INSERT
+      TO anon
+      WITH CHECK (true);
+      
+    RETURN true;
   END IF;
-  
-  RETURN false;
 END;
 $$;
-
