@@ -1,5 +1,5 @@
 
--- SQL query to redeploy the send-order-email edge function
+-- SQL query to create or redeploy the send-order-email edge function
 DO $$
 DECLARE
   function_name TEXT := 'send-order-email';
@@ -11,27 +11,31 @@ BEGIN
     WHERE name = 'functions/' || function_name || '/index.ts'
   ) INTO function_exists;
 
-  IF function_exists THEN
-    -- First, we'll delete the existing function deployment
-    PERFORM supabase_functions.delete_function(function_name);
-    
-    -- Then recreate the function from the existing code
-    -- This effectively redeploys the function with any changes made to the source file
-    PERFORM supabase_functions.create_function(
-      name := function_name,
-      verify_jwt := FALSE, -- Set this to TRUE if you need JWT verification
-      invoke_options := '{
-        "rate_limits": [{
-          "name": "service_role",
-          "calls": 1000,
-          "period": 60
-        }]
-      }'::jsonb
-    );
-    
-    RAISE NOTICE 'Edge function % has been redeployed successfully', function_name;
-  ELSE
-    RAISE EXCEPTION 'Edge function % does not exist', function_name;
-  END IF;
+  -- Try to delete the function if it exists (but continue if it fails)
+  BEGIN
+    IF function_exists THEN
+      PERFORM supabase_functions.delete_function(function_name);
+      RAISE NOTICE 'Existing function % deleted', function_name;
+    END IF;
+  EXCEPTION WHEN OTHERS THEN
+    RAISE NOTICE 'Failed to delete function %, but continuing: %', function_name, SQLERRM;
+  END;
+  
+  -- Create/recreate the function
+  PERFORM supabase_functions.create_function(
+    name := function_name,
+    verify_jwt := FALSE, -- Set this to TRUE if you need JWT verification
+    invoke_options := '{
+      "rate_limits": [{
+        "name": "service_role",
+        "calls": 1000,
+        "period": 60
+      }]
+    }'::jsonb
+  );
+  
+  RAISE NOTICE 'Edge function % has been created/redeployed successfully', function_name;
+EXCEPTION WHEN OTHERS THEN
+  RAISE EXCEPTION 'Failed to create/redeploy edge function %: %', function_name, SQLERRM;
 END
 $$;
