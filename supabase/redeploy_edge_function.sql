@@ -14,27 +14,30 @@ BEGIN
   -- Try to delete the function if it exists (but continue if it fails)
   BEGIN
     IF function_exists THEN
-      PERFORM supabase_functions.delete_function(function_name);
-      RAISE NOTICE 'Existing function % deleted', function_name;
+      PERFORM pg_notify('supabase_functions', json_build_object('action', 'delete', 'name', function_name)::text);
+      RAISE NOTICE 'Delete command sent for function %', function_name;
     END IF;
   EXCEPTION WHEN OTHERS THEN
     RAISE NOTICE 'Failed to delete function %, but continuing: %', function_name, SQLERRM;
   END;
   
-  -- Create/recreate the function
-  PERFORM supabase_functions.create_function(
-    name := function_name,
-    verify_jwt := FALSE, -- Set this to TRUE if you need JWT verification
-    invoke_options := '{
-      "rate_limits": [{
-        "name": "service_role",
-        "calls": 1000,
-        "period": 60
-      }]
-    }'::jsonb
-  );
+  -- Create/recreate the function using pg_notify
+  PERFORM pg_notify('supabase_functions', json_build_object(
+    'action', 'create',
+    'name', function_name,
+    'verify_jwt', FALSE,
+    'invoke_options', json_build_object(
+      'rate_limits', json_build_array(
+        json_build_object(
+          'name', 'service_role',
+          'calls', 1000,
+          'period', 60
+        )
+      )
+    )
+  )::text);
   
-  RAISE NOTICE 'Edge function % has been created/redeployed successfully', function_name;
+  RAISE NOTICE 'Create command sent for edge function %', function_name;
 EXCEPTION WHEN OTHERS THEN
   RAISE EXCEPTION 'Failed to create/redeploy edge function %: %', function_name, SQLERRM;
 END
