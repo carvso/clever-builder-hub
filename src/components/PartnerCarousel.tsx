@@ -1,10 +1,10 @@
 
 const partners = [
   "https://www.friendlymaterials.com/media/brands/115/KeraKoll_logo_v1.png",
-  "https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/eh40cbto1sq1yh0pvaet",
+  "https://aedhhl.infiniteuploads.cloud/2022/08/C-BuzziUnicem.max-500x500-1.png",
   "https://www.rasoxplus.it/wp-content/uploads/2021/06/cropped-logo.png",
   "https://www.friendlymaterials.com/media/brands/115/KeraKoll_logo_v1.png",
-  "https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/eh40cbto1sq1yh0pvaet",
+  "https://aedhhl.infiniteuploads.cloud/2022/08/C-BuzziUnicem.max-500x500-1.png",
   "https://www.rasoxplus.it/wp-content/uploads/2021/06/cropped-logo.png",
 ];
 
