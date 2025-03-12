@@ -3,15 +3,20 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SMTPClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
-const allowedOrigins = ['https://clever-builder-hub.lovable.app', 'https://your-frontend-url.com'];
+// Updated allowed origins to include all necessary domains
+const allowedOrigins = [
+  'https://clever-builder-hub.lovable.app',
+  'https://yiaaapzwjbolzhirpkml.supabase.co',
+  'https://your-frontend-url.com'
+];
 
-return new Response('Email sent', {
-  headers: {
-    'Access-Control-Allow-Origin': allowedOrigins.join(', '),
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  },
-});
+// CORS headers for all responses
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',  // Allow all origins temporarily for testing
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Max-Age': '86400',
+};
 
 interface Customer {
   name: string;
@@ -250,6 +255,16 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
 
 serve(async (req) => {
   console.log("Edge function triggered with request:", req.url);
+  
+  // Handle CORS preflight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    console.log("Handling OPTIONS preflight request");
+    return new Response(null, {
+      status: 204,
+      headers: corsHeaders,
+    });
+  }
+  
   try {
     // Create a Supabase client
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -272,7 +287,13 @@ serve(async (req) => {
       console.error("Missing orderId in request");
       return new Response(
         JSON.stringify({ success: false, error: "Order ID is required" }),
-        { headers: { "Content-Type": "application/json" }, status: 400 }
+        { 
+          headers: { 
+            "Content-Type": "application/json",
+            ...corsHeaders 
+          }, 
+          status: 400 
+        }
       );
     }
     
@@ -291,7 +312,13 @@ serve(async (req) => {
           success: false, 
           error: error?.message || "Order not found" 
         }),
-        { headers: { "Content-Type": "application/json" }, status: 404 }
+        { 
+          headers: { 
+            "Content-Type": "application/json",
+            ...corsHeaders 
+          }, 
+          status: 404 
+        }
       );
     }
     
@@ -322,7 +349,12 @@ serve(async (req) => {
         success: true,
         email: emailResult,
       }),
-      { headers: { "Content-Type": "application/json" } }
+      { 
+        headers: { 
+          "Content-Type": "application/json",
+          ...corsHeaders 
+        } 
+      }
     );
   } catch (error) {
     console.error("Error in Edge Function:", error);
@@ -334,7 +366,13 @@ serve(async (req) => {
         error: error.message,
         stack: error.stack,
       }),
-      { headers: { "Content-Type": "application/json" }, status: 500 }
+      { 
+        headers: { 
+          "Content-Type": "application/json",
+          ...corsHeaders 
+        }, 
+        status: 500 
+      }
     );
   }
 });
