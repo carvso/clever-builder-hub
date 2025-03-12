@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SMTPClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
@@ -7,14 +6,15 @@ import { SMTPClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 const allowedOrigins = [
   'https://clever-builder-hub.lovable.app',
   'https://yiaaapzwjbolzhirpkml.supabase.co',
-  'https://your-frontend-url.com'
+  'http://localhost:5173',
+  'http://localhost:3000'
 ];
 
 // CORS headers for all responses
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',  // Allow all origins temporarily for testing
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Headers': 'X-Client-Info, Content-Type, Authorization, X-Requested-With, apikey',
   'Access-Control-Max-Age': '86400',
 };
 
