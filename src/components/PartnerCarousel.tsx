@@ -2,10 +2,10 @@
 const partners = [
   "https://www.friendlymaterials.com/media/brands/115/KeraKoll_logo_v1.png",
   "https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/eh40cbto1sq1yh0pvaet",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzSaoUH-itWVSYySBCcTulIl0_tfCNnSZKjA&s",
+  "https://www.rasoxplus.it/wp-content/uploads/2021/06/cropped-logo.png",
   "https://www.friendlymaterials.com/media/brands/115/KeraKoll_logo_v1.png",
   "https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/eh40cbto1sq1yh0pvaet",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzSaoUH-itWVSYySBCcTulIl0_tfCNnSZKjA&s",
+  "https://www.rasoxplus.it/wp-content/uploads/2021/06/cropped-logo.png",
 ];
 
 export default function PartnerCarousel() {
