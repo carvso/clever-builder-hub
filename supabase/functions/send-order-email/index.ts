@@ -10,13 +10,23 @@ const allowedOrigins = [
   'http://localhost:3000'
 ];
 
-// CORS headers for all responses
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',  // Allow all origins temporarily for testing
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'X-Client-Info, Content-Type, Authorization, X-Requested-With, apikey',
-  'Access-Control-Max-Age': '86400',
-};
+// Function to get CORS headers based on request origin
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('origin') || '';
+  
+  // Allow the specific origin or use * for development
+  const allowOrigin = allowedOrigins.includes(origin) 
+    ? origin 
+    : allowedOrigins[0]; // Default to first allowed origin
+    
+  return {
+    'Access-Control-Allow-Origin': allowOrigin,
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, apikey, X-Requested-With',
+    'Access-Control-Max-Age': '86400',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 interface Customer {
   name: string;
@@ -255,6 +265,7 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
 
 serve(async (req) => {
   console.log("Edge function triggered with request:", req.url);
+  const corsHeaders = getCorsHeaders(req);
   
   // Handle CORS preflight OPTIONS request
   if (req.method === 'OPTIONS') {
