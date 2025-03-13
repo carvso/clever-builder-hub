@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -135,7 +134,9 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
     
     // Get Resend API key from environment variables
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    const STORE_EMAIL = Deno.env.get("STORE_EMAIL") || "vcarusobusiness@gmail.com";
+    
+    // Use fixed test email address
+    const STORE_EMAIL = "vcarusobusiness@gmail.com";
     
     if (!RESEND_API_KEY) {
       console.error("Resend API Key not found in environment variables");
@@ -149,7 +150,7 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
     const orderHtml = formatOrderHtml(order);
     console.log("Formatted email HTML message");
     
-    // Send email to store owner
+    // Send email to store owner (fixed test email)
     console.log("Sending email to store owner:", STORE_EMAIL);
     const ownerEmailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -173,35 +174,9 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
     const ownerEmailResult = await ownerEmailResponse.json();
     console.log("Email to owner sent successfully:", ownerEmailResult);
     
-    // Send confirmation email to customer
-    if (order.customer.email) {
-      console.log("Sending confirmation email to customer:", order.customer.email);
-      const customerHtml = formatCustomerConfirmationHtml(order);
-      
-      const customerEmailResponse = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
-        },
-        body: JSON.stringify({
-          from: 'ordini@edilp2.com', // Make sure this is a verified domain in Resend
-          to: order.customer.email,
-          subject: "Conferma Ordine - EdilP2",
-          html: customerHtml,
-        }),
-      });
-      
-      if (!customerEmailResponse.ok) {
-        console.error("Failed to send customer email:", await customerEmailResponse.text());
-        console.warn("Continuing despite customer email failure");
-      } else {
-        const customerEmailResult = await customerEmailResponse.json();
-        console.log("Confirmation email to customer sent successfully:", customerEmailResult);
-      }
-    } else {
-      console.warn("No customer email provided, skipping customer notification");
-    }
+    // In test mode, we don't send customer emails, but log that we would send
+    console.log("TEST MODE: Would normally send email to customer:", order.customer.email);
+    console.log("In test mode, all emails are sent only to:", STORE_EMAIL);
     
     return true;
   } catch (error) {

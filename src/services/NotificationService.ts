@@ -44,6 +44,7 @@ export class NotificationService {
       // Step 2: Trigger email notifications via Supabase Edge Function
       if (saveResult.orderId) {
         console.log(`Order saved with ID ${saveResult.orderId}, now sending email notification`);
+        console.log("TEST MODE: All emails will be sent to vcarusobusiness@gmail.com only");
         const notifyResult = await SupabaseService.sendOrderEmailNotification(saveResult.orderId);
         
         if (!notifyResult.success) {
