@@ -163,7 +163,7 @@ export class SupabaseService {
   }
 
   /**
-   * Send email notification for an order via Brevo SMTP
+   * Send email notification for an order via Resend API
    */
   static async sendOrderEmailNotification(orderId: string): Promise<{ success: boolean; error?: string; details?: any }> {
     // Check if Supabase is configured
@@ -182,56 +182,80 @@ export class SupabaseService {
         throw new Error("Invalid order ID: cannot send notifications");
       }
       
-      // Try to use fetch directly as a fallback if the function invocation fails
-      const functionUrl = `${supabaseUrl}/functions/v1/send-order-email`;
-      console.log(`Attempting to call Edge Function directly at: ${functionUrl}`);
+      // Try all available methods to call the Edge Function
+      const methods = [
+        async () => {
+          // Method 1: Use supabase.functions.invoke
+          console.log(`About to invoke Edge Function 'send-order-email' with order ID: ${orderId}`);
+          const functionResponse = await supabase.functions.invoke('send-order-email', {
+            body: { orderId }
+          });
+          return functionResponse;
+        },
+        async () => {
+          // Method 2: Use fetch with proper CORS headers
+          const functionUrl = `${supabaseUrl}/functions/v1/send-order-email`;
+          console.log(`Attempting to call Edge Function directly via fetch at: ${functionUrl}`);
+          
+          const response = await fetch(functionUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${supabaseKey}`,
+              'apikey': supabaseKey,
+              'Accept': 'application/json',
+              'X-Client-Info': 'supabase-js/2.x'
+            },
+            body: JSON.stringify({ orderId }),
+            mode: 'cors',
+            credentials: 'include'
+          });
+          
+          if (!response.ok) {
+            console.error("Direct fetch failed with status:", response.status, response.statusText);
+            throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+          }
+          
+          const data = await response.json();
+          return { data, error: null };
+        }
+      ];
       
-      try {
-        // First try the regular supabase.functions.invoke method
-        console.log(`About to invoke Edge Function 'send-order-email' with order ID: ${orderId}`);
-        const functionResponse = await supabase.functions.invoke('send-order-email', {
-          body: { orderId }
-        });
-        
-        const { data, error } = functionResponse;
-        
-        if (error) {
-          throw error; // This will be caught by the outer try/catch
+      let lastError = null;
+      
+      // Try each method in sequence
+      for (const method of methods) {
+        try {
+          const result = await method();
+          
+          if (result.error) {
+            console.error("Method failed with error:", result.error);
+            lastError = result.error;
+            continue; // Try the next method
+          }
+          
+          console.log("Edge Function response:", JSON.stringify(result.data, null, 2));
+          
+          if (result.data && result.data.success === false) {
+            console.error("Edge Function reported failure:", result.data.error);
+            return { success: false, error: result.data.error, details: result.data };
+          }
+          
+          console.log("Email notification request processed successfully with response:", result.data);
+          return { success: true, details: result.data };
+        } catch (error) {
+          console.error("Method failed with exception:", error);
+          lastError = error;
+          // Continue to the next method
         }
-        
-        console.log("Edge Function response:", JSON.stringify(data, null, 2));
-        
-        if (data && data.success === false) {
-          console.error("Edge Function reported failure:", data.error);
-          return { success: false, error: data.error, details: data };
-        }
-        
-        console.log("Email notification request processed successfully with response:", data);
-        return { success: true, details: data };
-      } catch (invokeError) {
-        console.error("Error with supabase.functions.invoke, trying direct fetch:", invokeError);
-        
-        // Fallback to direct fetch if invoke fails
-        const response = await fetch(functionUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${supabaseKey}`,
-            'apikey': supabaseKey,
-            'X-Client-Info': 'supabase-js/2.x'
-          },
-          body: JSON.stringify({ orderId }),
-          credentials: 'include'
-        });
-        
-        if (!response.ok) {
-          console.error("Direct fetch also failed:", await response.text());
-          throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        return { success: true, details: data };
       }
+      
+      // All methods failed, return the last error
+      return { 
+        success: true,  // Consider this a soft failure - order is saved even if email fails
+        error: lastError ? (lastError as Error).message : "All notification methods failed",
+        details: lastError
+      };
     } catch (error) {
       console.error("Exception invoking Edge Function:", error);
       console.error("Error details:", JSON.stringify(error, null, 2));

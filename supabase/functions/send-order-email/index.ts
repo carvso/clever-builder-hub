@@ -1,29 +1,15 @@
+
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { SMTPClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
 // Update allowed origins to be more permissive
-const allowedOrigins = [
-  'https://clever-builder-hub.lovable.app',
-  'https://yiaaapzwjbolzhirpkml.supabase.co',
-  'http://localhost:5173',
-  'http://localhost:3000',
-  '*' // Allow all origins during development/testing
-];
-
-// Function to get CORS headers based on request origin
-function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('origin') || '';
-  
-  // Allow any origin during development/testing
-  return {
-    'Access-Control-Allow-Origin': '*', // Allow any origin for now
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': '*', // Allow all headers
-    'Access-Control-Max-Age': '86400',
-    'Access-Control-Allow-Credentials': 'true',
-  };
-}
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Max-Age': '86400',
+  'Access-Control-Allow-Credentials': 'true',
+};
 
 interface Customer {
   name: string;
@@ -115,142 +101,107 @@ function formatOrderHtml(order: Order): string {
   }
 }
 
-// Function to format the plain text version of the email
-function formatOrderText(order: Order): string {
-  try {
-    const itemsList = order.items.map((item) => 
-      `- ${item.name || 'Prodotto'} (${item.quantity || 0}x) - ${item.price || '0.00'}`
-    ).join('\n');
-    
-    return `
-      Nuovo ordine da EdilP2!
+// Function to format customer confirmation email in HTML
+function formatCustomerConfirmationHtml(order: Order): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
+      <h2 style="color: #4a5568; text-align: center;">Grazie per il tuo ordine!</h2>
       
-      Cliente: ${order.customer?.name || 'N/A'}
-      Email: ${order.customer?.email || 'N/A'}
-      Telefono: ${order.customer?.phone || 'N/A'}
-      Data: ${new Date(order.orderDate).toLocaleString('it-IT')}
+      <p>Gentile ${order.customer.name},</p>
       
-      ARTICOLI:
-      ${itemsList}
+      <p>Abbiamo ricevuto la tua richiesta e la stiamo elaborando. Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.</p>
       
-      Totale: €${(order.total || 0).toFixed(2)}
-      Totale con IVA (22%): €${(order.totalWithIva || 0).toFixed(2)}
-      ${order.notes ? `\nNote: ${order.notes}` : ''}
-    `;
-  } catch (error) {
-    console.error("Error formatting order text message:", error);
-    return "Nuovo ordine ricevuto (errore nel formato)";
-  }
+      <div style="margin: 20px 0; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
+        <h3 style="margin-top: 0; color: #4a5568;">Riepilogo Ordine</h3>
+        <p><strong>Numero Ordine:</strong> #${order.id}</p>
+        <p><strong>Data:</strong> ${new Date(order.orderDate).toLocaleString('it-IT')}</p>
+        <p><strong>Totale:</strong> €${(order.total || 0).toFixed(2)}</p>
+        <p><strong>Totale con IVA (22%):</strong> €${(order.totalWithIva || 0).toFixed(2)}</p>
+      </div>
+      
+      <p>Grazie per aver scelto EdilP2!</p>
+      
+      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #718096; font-size: 14px;">
+        <p>Questo è un messaggio automatico. Non rispondere a questa email.</p>
+      </div>
+    </div>
+  `;
 }
 
-// Function to send an email notification using Brevo SMTP
+// Function to send an email notification using Resend API
 async function sendEmailNotification(order: Order): Promise<boolean> {
   try {
     console.log("Starting email notification process for order:", order.id);
     
-    // Get Brevo SMTP credentials from environment variables
-    const BREVO_SMTP_HOST = Deno.env.get("BREVO_SMTP_HOST") || "smtp-relay.brevo.com";
-    const BREVO_SMTP_PORT = Number(Deno.env.get("BREVO_SMTP_PORT") || "587");
-    const BREVO_EMAIL = Deno.env.get("BREVO_EMAIL");
-    const BREVO_API_KEY = Deno.env.get("BREVO_API_KEY");
+    // Get Resend API key from environment variables
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     const STORE_EMAIL = Deno.env.get("STORE_EMAIL") || "vcarusobusiness@gmail.com";
     
-    if (!BREVO_EMAIL || !BREVO_API_KEY) {
-      console.error("Brevo SMTP credentials not found in environment variables");
-      throw new Error("Brevo SMTP credentials not found in environment variables");
+    if (!RESEND_API_KEY) {
+      console.error("Resend API Key not found in environment variables");
+      throw new Error("Resend API Key not found in environment variables");
     }
     
-    console.log("Using Brevo credentials and sending to store email:", STORE_EMAIL);
-    
-    // Create an SMTP client
-    const client = new SMTPClient({
-      connection: {
-        hostname: BREVO_SMTP_HOST,
-        port: BREVO_SMTP_PORT,
-        tls: true,
-        auth: {
-          username: BREVO_EMAIL,
-          password: BREVO_API_KEY,
-        },
-      },
-    });
+    console.log("Using Resend API Key (first few chars):", RESEND_API_KEY.substring(0, 5) + "...[hidden]");
+    console.log("Store email:", STORE_EMAIL);
     
     // Format the message body
-    const htmlMessage = formatOrderHtml(order);
-    const textMessage = formatOrderText(order);
-    console.log("Formatted email message");
+    const orderHtml = formatOrderHtml(order);
+    console.log("Formatted email HTML message");
     
     // Send email to store owner
     console.log("Sending email to store owner:", STORE_EMAIL);
-    await client.send({
-      from: `EdilP2 <${BREVO_EMAIL}>`,
-      to: STORE_EMAIL,
-      subject: `Nuovo Ordine #${order.id} - EdilP2`,
-      content: textMessage,
-      html: htmlMessage,
+    const ownerEmailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: 'ordini@edilp2.com', // Make sure this is a verified domain in Resend
+        to: STORE_EMAIL,
+        subject: `Nuovo Ordine #${order.id} - EdilP2`,
+        html: orderHtml,
+      }),
     });
     
-    console.log("Email to owner sent successfully");
+    if (!ownerEmailResponse.ok) {
+      console.error("Failed to send owner email:", await ownerEmailResponse.text());
+      throw new Error(`Failed to send owner email: ${ownerEmailResponse.statusText}`);
+    }
     
-    // Send confirmation email to customer if email is provided
+    const ownerEmailResult = await ownerEmailResponse.json();
+    console.log("Email to owner sent successfully:", ownerEmailResult);
+    
+    // Send confirmation email to customer
     if (order.customer.email) {
       console.log("Sending confirmation email to customer:", order.customer.email);
+      const customerHtml = formatCustomerConfirmationHtml(order);
       
-      const customerHtmlMessage = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
-          <h2 style="color: #4a5568; text-align: center;">Grazie per il tuo ordine!</h2>
-          
-          <p>Gentile ${order.customer.name},</p>
-          
-          <p>Abbiamo ricevuto la tua richiesta e la stiamo elaborando. Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.</p>
-          
-          <div style="margin: 20px 0; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
-            <h3 style="margin-top: 0; color: #4a5568;">Riepilogo Ordine</h3>
-            <p><strong>Numero Ordine:</strong> #${order.id}</p>
-            <p><strong>Data:</strong> ${new Date(order.orderDate).toLocaleString('it-IT')}</p>
-            <p><strong>Totale:</strong> €${(order.total || 0).toFixed(2)}</p>
-            <p><strong>Totale con IVA (22%):</strong> €${(order.totalWithIva || 0).toFixed(2)}</p>
-          </div>
-          
-          <p>Grazie per aver scelto EdilP2!</p>
-          
-          <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #718096; font-size: 14px;">
-            <p>Questo è un messaggio automatico. Non rispondere a questa email.</p>
-          </div>
-        </div>
-      `;
-      
-      const customerTextMessage = `
-        Gentile ${order.customer.name},
-        
-        Grazie per il tuo ordine! Abbiamo ricevuto la tua richiesta e la stiamo elaborando.
-        
-        Dettagli Ordine:
-        Numero Ordine: #${order.id}
-        Data: ${new Date(order.orderDate).toLocaleString('it-IT')}
-        Totale: €${(order.total || 0).toFixed(2)}
-        Totale con IVA (22%): €${(order.totalWithIva || 0).toFixed(2)}
-        
-        Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.
-        
-        Grazie per aver scelto EdilP2!
-      `;
-      
-      await client.send({
-        from: `EdilP2 <${BREVO_EMAIL}>`,
-        to: order.customer.email,
-        subject: "Conferma Ordine - EdilP2",
-        content: customerTextMessage,
-        html: customerHtmlMessage,
+      const customerEmailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: 'ordini@edilp2.com', // Make sure this is a verified domain in Resend
+          to: order.customer.email,
+          subject: "Conferma Ordine - EdilP2",
+          html: customerHtml,
+        }),
       });
       
-      console.log("Confirmation email to customer sent successfully");
+      if (!customerEmailResponse.ok) {
+        console.error("Failed to send customer email:", await customerEmailResponse.text());
+        console.warn("Continuing despite customer email failure");
+      } else {
+        const customerEmailResult = await customerEmailResponse.json();
+        console.log("Confirmation email to customer sent successfully:", customerEmailResult);
+      }
     } else {
       console.warn("No customer email provided, skipping customer notification");
     }
-    
-    // Close the SMTP connection
-    await client.close();
     
     return true;
   } catch (error) {
@@ -262,7 +213,6 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
 
 serve(async (req) => {
   console.log("Edge function triggered with request:", req.url);
-  const corsHeaders = getCorsHeaders(req);
   
   // Handle CORS preflight OPTIONS request
   if (req.method === 'OPTIONS') {
@@ -332,8 +282,8 @@ serve(async (req) => {
     
     console.log("Order found:", order);
     
-    // Send email notification
-    console.log("Sending email notification...");
+    // Send email notification using Resend
+    console.log("Sending email notification via Resend...");
     const emailResult = await sendEmailNotification(order as Order);
     console.log("Email notification result:", emailResult);
     
@@ -355,7 +305,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        email: true, // Simplified for now
+        email: emailResult,
       }),
       { 
         headers: { 
