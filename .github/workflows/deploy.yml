@@ -39,4 +39,5 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
-          clean: true 
+          clean: true
+          token: ${{ secrets.DEPLOY_TOKEN || github.token }} 
