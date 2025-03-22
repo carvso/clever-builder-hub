@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -59,6 +58,36 @@ export default function Navbar() {
           ))}
         </nav>
 
+        {/* Cart - Moved above mobile menu button */}
+        <div className="relative z-50 flex items-center">
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="flex items-center justify-center hover:text-primary transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100 relative">
+                <div className="relative">
+                  <ShoppingCart className="h-6 w-6" />
+                  {state.items.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {state.items.length}
+                    </span>
+                  )}
+                </div>
+                <span className="font-medium text-gray-700 hidden sm:inline ml-2">
+                  Carrello
+                </span>
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="sm:max-w-lg">
+              <SheetHeader>
+                <SheetTitle>Carrello</SheetTitle>
+                <SheetDescription>
+                  Articoli nel tuo carrello.
+                </SheetDescription>
+              </SheetHeader>
+              {isMounted ? <Cart /> : null}
+            </SheetContent>
+          </Sheet>
+        </div>
+
         {/* Mobile Menu Button */}
         <button
           onClick={toggleMenu}
@@ -79,25 +108,6 @@ export default function Navbar() {
             ></path>
           </svg>
         </button>
-
-        {/* Cart */}
-        <Sheet>
-          <SheetTrigger className="flex items-center space-x-2 hover:text-primary transition-colors">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="font-medium text-gray-700">
-              Carrello ({state.items.length})
-            </span>
-          </SheetTrigger>
-          <SheetContent className="sm:max-w-lg">
-            <SheetHeader>
-              <SheetTitle>Carrello</SheetTitle>
-              <SheetDescription>
-                Articoli nel tuo carrello.
-              </SheetDescription>
-            </SheetHeader>
-            {isMounted ? <Cart /> : null}
-          </SheetContent>
-        </Sheet>
       </div>
 
       {/* Mobile Menu */}

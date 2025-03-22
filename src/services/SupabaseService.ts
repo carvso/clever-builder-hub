@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 import { Order } from '@/types/order';
 
@@ -35,101 +34,88 @@ export class SupabaseService {
   /**
    * Ensure that the orders table exists in Supabase
    */
-  static async ensureOrdersTableExists(): Promise<{ success: boolean; error?: string }> {
+  static async ensureOrdersTableExists(): Promise<boolean> {
     if (!supabase) {
       console.warn("Supabase not configured, cannot create tables");
-      return { success: false, error: "Supabase not configured" };
+      return false;
     }
 
     try {
-      // Call the RPC function to create the table and set up policies
-      const { data, error: rpcError } = await supabase.rpc('create_orders_table');
+      // Verifica che la tabella orders esista
+      const { data, error } = await supabase
+        .from('orders')
+        .select('id')
+        .limit(1);
       
-      if (rpcError) {
-        console.error("Failed to create/update orders table:", rpcError);
-        return { success: false, error: rpcError.message };
+      if (error) {
+        console.error("Error checking orders table:", error);
+        return false;
       }
       
       console.log("Orders table exists or was created with result:", data);
-      return { success: true };
+      return true;
     } catch (error) {
       console.error("Exception checking/creating orders table:", error);
-      return { success: false, error: (error as Error).message };
+      return false;
     }
   }
 
   /**
    * Save order to Supabase database
    */
-  static async saveOrder(order: Order): Promise<{ success: boolean; error?: string; orderId?: string }> {
-    // Check if Supabase is configured
-    if (!supabase) {
-      console.warn("Supabase not configured, running in mock mode");
-      return { success: true, orderId: `mock-${Date.now()}` };
-    }
-
+  static async saveOrder(orderData: Order): Promise<Order | null> {
     try {
-      console.log("Saving order to Supabase:", order);
+      console.log("Starting saveOrder with data:", JSON.stringify(orderData, null, 2));
       
-      // Validate the order format
-      if (!order.customer || !order.items || !Array.isArray(order.items)) {
-        throw new Error("Invalid order format: missing customer or items data");
+      // Ensure orders table exists
+      const tableExists = await this.ensureOrdersTableExists();
+      console.log("Orders table exists:", tableExists);
+      
+      if (!tableExists) {
+        throw new Error("Orders table does not exist");
       }
-
-      // Format the order object to match Supabase's expected format
-      const orderData = {
-        customer_info: order.customer,
-        items: order.items,
-        total: order.total,
-        total_with_iva: order.totalWithIva,
-        order_date: order.orderDate,
-        status: order.status,
-        notes: order.notes || null
+      
+      // Generate a unique ID if not provided
+      const orderId = orderData.id || crypto.randomUUID();
+      
+      // Format order data for Supabase
+      const formattedOrderData = {
+        id: orderId,
+        customer_info: {
+          name: orderData.customer.name,
+          email: orderData.customer.email,
+          phone: orderData.customer.phone
+        },
+        total: orderData.total,
+        total_with_iva: orderData.totalWithIva,
+        order_date: orderData.orderDate,
+        status: orderData.status,
+        notes: orderData.notes || null,
+        items: orderData.items
       };
       
-      console.log("Formatted order data for Supabase:", orderData);
+      console.log("Formatted order data for Supabase:", JSON.stringify(formattedOrderData, null, 2));
       
+      // Save order to Supabase
       const { data, error } = await supabase
-        .from('orders')
-        .insert(orderData)
-        .select('id')
+        .from("orders")
+        .insert([formattedOrderData])
+        .select()
         .single();
       
       if (error) {
-        console.error("Error saving order to Supabase:", error);
+        console.error("Error saving order:", error);
         console.error("Error details:", JSON.stringify(error, null, 2));
-        
-        // If the error is due to missing table, try to create it
-        if (error.code === '42P01') {
-          const tableCreation = await SupabaseService.ensureOrdersTableExists();
-          if (tableCreation.success) {
-            // Retry saving the order
-            console.log("Retrying order save after table creation");
-            const retryResult = await supabase
-              .from('orders')
-              .insert(orderData)
-              .select('id')
-              .single();
-              
-            if (retryResult.error) {
-              console.error("Error on retry:", retryResult.error);
-              return { success: false, error: retryResult.error.message };
-            }
-            
-            console.log("Order saved successfully on retry:", retryResult.data);
-            return { success: true, orderId: retryResult.data.id };
-          }
-        }
-        
-        return { success: false, error: error.message };
+        throw error;
       }
       
-      console.log("Order saved successfully:", data);
-      return { success: true, orderId: data.id };
+      console.log("Order saved successfully:", JSON.stringify(data, null, 2));
+      
+      return data;
     } catch (error) {
-      console.error("Exception saving order:", error);
+      console.error("Error in saveOrder:", error);
       console.error("Error details:", JSON.stringify(error, null, 2));
-      return { success: false, error: (error as Error).message };
+      throw error;
     }
   }
 
@@ -182,82 +168,44 @@ export class SupabaseService {
         throw new Error("Invalid order ID: cannot send notifications");
       }
       
-      // Try all available methods to call the Edge Function
-      const methods = [
-        async () => {
-          // Method 1: Use supabase.functions.invoke
-          console.log(`About to invoke Edge Function 'send-order-email' with order ID: ${orderId}`);
-          const functionResponse = await supabase.functions.invoke('send-order-email', {
-            body: { orderId }
-          });
-          return functionResponse;
-        },
-        async () => {
-          // Method 2: Use fetch with proper CORS headers
-          const functionUrl = `${supabaseUrl}/functions/v1/send-order-email`;
-          console.log(`Attempting to call Edge Function directly via fetch at: ${functionUrl}`);
-          
-          const response = await fetch(functionUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${supabaseKey}`,
-              'apikey': supabaseKey,
-              'Accept': 'application/json',
-              'X-Client-Info': 'supabase-js/2.x'
-            },
-            body: JSON.stringify({ orderId }),
-            mode: 'cors',
-            credentials: 'include'
-          });
-          
-          if (!response.ok) {
-            console.error("Direct fetch failed with status:", response.status, response.statusText);
-            throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
-          }
-          
-          const data = await response.json();
-          return { data, error: null };
+      // Use direct fetch instead of supabase.functions.invoke
+      const response = await fetch(
+        `${supabaseUrl}/functions/v1/send-order-email`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
+            'apikey': import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
+            'X-Client-Info': 'supabase-js/2.x'
+          },
+          body: JSON.stringify({ orderId })
         }
-      ];
+      );
       
-      let lastError = null;
-      
-      // Try each method in sequence
-      for (const method of methods) {
-        try {
-          const result = await method();
-          
-          if (result.error) {
-            console.error("Method failed with error:", result.error);
-            lastError = result.error;
-            continue; // Try the next method
-          }
-          
-          console.log("Edge Function response:", JSON.stringify(result.data, null, 2));
-          
-          if (result.data && result.data.success === false) {
-            console.error("Edge Function reported failure:", result.data.error);
-            return { success: false, error: result.data.error, details: result.data };
-          }
-          
-          console.log("Email notification request processed successfully with response:", result.data);
-          return { success: true, details: result.data };
-        } catch (error) {
-          console.error("Method failed with exception:", error);
-          lastError = error;
-          // Continue to the next method
-        }
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Edge Function invocation failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText
+        });
+        throw new Error(`Edge Function returned ${response.status}: ${errorText}`);
       }
       
-      // All methods failed, return the last error
-      return { 
-        success: true,  // Consider this a soft failure - order is saved even if email fails
-        error: lastError ? (lastError as Error).message : "All notification methods failed",
-        details: lastError
-      };
+      const data = await response.json();
+      console.log("Edge Function response:", JSON.stringify(data, null, 2));
+      
+      if (data && data.success === false) {
+        console.error("Edge Function reported failure:", data.error);
+        return { success: false, error: data.error, details: data };
+      }
+      
+      console.log("Email notification request processed successfully with response:", data);
+      return { success: true, details: data };
+      
     } catch (error) {
-      console.error("Exception invoking Edge Function:", error);
+      console.error("Exception in sendOrderEmailNotification:", error);
       console.error("Error details:", JSON.stringify(error, null, 2));
       
       // For this specific use case, we'll consider the order process successful 

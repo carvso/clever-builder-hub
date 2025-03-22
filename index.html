@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
   <head>
@@ -16,6 +15,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      // Gestione reindirizzamento dalla pagina 404.html
+      (function() {
+        var redirect = sessionStorage.getItem('redirect');
+        if (redirect && redirect !== window.location.pathname) {
+          sessionStorage.removeItem('redirect');
+          var baseUrl = window.location.pathname.replace(/\/$/, '');
+          var newPath = baseUrl + redirect;
+          history.replaceState(null, null, newPath);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

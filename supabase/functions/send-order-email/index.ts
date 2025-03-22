@@ -1,14 +1,9 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+import { corsHeaders } from '../_shared/cors.ts';
+import { Resend } from 'https://esm.sh/resend@2.0.0';
 
-// Update allowed origins to be more permissive
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': '*',
-  'Access-Control-Max-Age': '86400',
-  'Access-Control-Allow-Credentials': 'true',
-};
+const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
 
 interface Customer {
   name: string;
@@ -23,208 +18,205 @@ interface OrderItem {
 }
 
 interface Order {
-  id?: string;
-  customer: Customer;
-  items: OrderItem[];
+  id: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
   total: number;
-  totalWithIva: number;
-  orderDate: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  total_with_iva: number;
+  order_date: string;
+  status: string;
   notes?: string;
+  items: OrderItem[];
 }
 
 // Function to format the order into a readable HTML message
 function formatOrderHtml(order: Order): string {
-  try {
-    const itemsList = order.items.map((item) => 
-      `<tr>
-        <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.name || 'Prodotto'}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity || 0}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${item.price || '0.00'}</td>
-      </tr>`
-    ).join('');
-    
-    return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
-        <h2 style="color: #4a5568; text-align: center;">Nuovo ordine da EdilP2!</h2>
-        
-        <div style="margin-bottom: 20px; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
-          <h3 style="margin-top: 0; color: #4a5568;">Informazioni Cliente</h3>
-          <p><strong>Nome:</strong> ${order.customer?.name || 'N/A'}</p>
-          <p><strong>Email:</strong> ${order.customer?.email || 'N/A'}</p>
-          <p><strong>Telefono:</strong> ${order.customer?.phone || 'N/A'}</p>
-          <p><strong>Data:</strong> ${new Date(order.orderDate).toLocaleString('it-IT')}</p>
-        </div>
-        
-        <div style="margin-bottom: 20px;">
-          <h3 style="color: #4a5568;">Dettaglio Ordine</h3>
-          <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-              <tr style="background-color: #f1f5f9;">
-                <th style="padding: 10px; text-align: left;">Prodotto</th>
-                <th style="padding: 10px; text-align: center;">Quantità</th>
-                <th style="padding: 10px; text-align: right;">Prezzo</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemsList}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="2" style="padding: 10px; text-align: right; font-weight: bold;">Totale:</td>
-                <td style="padding: 10px; text-align: right; font-weight: bold;">€${(order.total || 0).toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding: 10px; text-align: right; font-weight: bold;">Totale con IVA (22%):</td>
-                <td style="padding: 10px; text-align: right; font-weight: bold;">€${(order.totalWithIva || 0).toFixed(2)}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        
-        ${order.notes ? `
-        <div style="margin-bottom: 20px; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
-          <h3 style="margin-top: 0; color: #4a5568;">Note</h3>
-          <p>${order.notes}</p>
-        </div>
-        ` : ''}
-        
-        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #718096; font-size: 14px;">
-          <p>Questo è un messaggio automatico. Non rispondere a questa email.</p>
-        </div>
-      </div>
+  let productsHtml = '';
+  
+  if (order.items && order.items.length > 0) {
+    productsHtml = `
+      <h3>Prodotti ordinati</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+          <tr style="background-color: #f3f4f6;">
+            <th style="padding: 8px; text-align: left; border: 1px solid #e5e7eb;">Prodotto</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #e5e7eb;">Quantità</th>
+            <th style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">Prezzo</th>
+            <th style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">Totale</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${order.items.map(item => `
+            <tr>
+              <td style="padding: 8px; border: 1px solid #e5e7eb;">${item.name}</td>
+              <td style="padding: 8px; text-align: center; border: 1px solid #e5e7eb;">${item.quantity}</td>
+              <td style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">${item.price}</td>
+              <td style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">${calculateItemTotal(item)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
     `;
-  } catch (error) {
-    console.error("Error formatting order HTML message:", error);
-    return "<p>Nuovo ordine ricevuto (errore nel formato)</p>";
   }
-}
 
-// Function to format customer confirmation email in HTML
-function formatCustomerConfirmationHtml(order: Order): string {
   return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
-      <h2 style="color: #4a5568; text-align: center;">Grazie per il tuo ordine!</h2>
-      
-      <p>Gentile ${order.customer.name},</p>
-      
-      <p>Abbiamo ricevuto la tua richiesta e la stiamo elaborando. Ti contatteremo presto per confermare i dettagli e organizzare il ritiro.</p>
-      
-      <div style="margin: 20px 0; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
-        <h3 style="margin-top: 0; color: #4a5568;">Riepilogo Ordine</h3>
-        <p><strong>Numero Ordine:</strong> #${order.id}</p>
-        <p><strong>Data:</strong> ${new Date(order.orderDate).toLocaleString('it-IT')}</p>
-        <p><strong>Totale:</strong> €${(order.total || 0).toFixed(2)}</p>
-        <p><strong>Totale con IVA (22%):</strong> €${(order.totalWithIva || 0).toFixed(2)}</p>
-      </div>
-      
-      <p>Grazie per aver scelto EdilP2!</p>
-      
-      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #718096; font-size: 14px;">
-        <p>Questo è un messaggio automatico. Non rispondere a questa email.</p>
-      </div>
-    </div>
+    <h2>Nuovo ordine ricevuto</h2>
+    <p><strong>ID Ordine:</strong> ${order.id}</p>
+    <p><strong>Data:</strong> ${new Date(order.order_date).toLocaleString('it-IT')}</p>
+    <p><strong>Stato:</strong> ${order.status}</p>
+    <p><strong>Note:</strong> ${order.notes || 'Nessuna nota'}</p>
+    <p><strong>Totale:</strong> €${order.total.toFixed(2)}</p>
+    <p><strong>Totale con IVA:</strong> €${order.total_with_iva.toFixed(2)}</p>
+    <h3>Informazioni Cliente</h3>
+    <p><strong>Nome:</strong> ${order.customer_name}</p>
+    <p><strong>Email:</strong> ${order.customer_email}</p>
+    <p><strong>Telefono:</strong> ${order.customer_phone}</p>
+    ${productsHtml}
   `;
 }
 
+// Function to format customer confirmation email in HTML
+function formatCustomerHtml(order: Order): string {
+  let productsHtml = '';
+  
+  if (order.items && order.items.length > 0) {
+    productsHtml = `
+      <h3>Dettaglio prodotti</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+          <tr style="background-color: #f3f4f6;">
+            <th style="padding: 8px; text-align: left; border: 1px solid #e5e7eb;">Prodotto</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #e5e7eb;">Quantità</th>
+            <th style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">Prezzo</th>
+            <th style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">Totale</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${order.items.map(item => `
+            <tr>
+              <td style="padding: 8px; border: 1px solid #e5e7eb;">${item.name}</td>
+              <td style="padding: 8px; text-align: center; border: 1px solid #e5e7eb;">${item.quantity}</td>
+              <td style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">${item.price}</td>
+              <td style="padding: 8px; text-align: right; border: 1px solid #e5e7eb;">${calculateItemTotal(item)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  return `
+    <h2>Grazie per il tuo ordine!</h2>
+    <p>Caro/a ${order.customer_name},</p>
+    <p>Abbiamo ricevuto il tuo ordine e lo stiamo elaborando.</p>
+    <p><strong>ID Ordine:</strong> ${order.id}</p>
+    <p><strong>Data:</strong> ${new Date(order.order_date).toLocaleString('it-IT')}</p>
+    <p><strong>Totale:</strong> €${order.total.toFixed(2)}</p>
+    <p><strong>Totale con IVA:</strong> €${order.total_with_iva.toFixed(2)}</p>
+    ${productsHtml}
+    <p>Ti contatteremo presto per confermare l'elaborazione del tuo ordine.</p>
+    <p>Cordiali saluti,<br>Il team di EdilP2</p>
+  `;
+}
+
+// Helper function to calculate item total
+function calculateItemTotal(item: OrderItem): string {
+  const price = parseFloat(item.price.replace('€/pz', '').replace('€', ''));
+  return `€${(price * item.quantity).toFixed(2)}`;
+}
+
 // Function to send an email notification using Resend API
-async function sendEmailNotification(order: Order): Promise<boolean> {
+async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
   try {
-    console.log("Starting email notification process for order:", order.id);
-    
-    // Get Resend API key from environment variables
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    
-    // Use fixed test email address
-    const STORE_EMAIL = "vcarusobusiness@gmail.com";
-    
-    if (!RESEND_API_KEY) {
-      console.error("Resend API Key not found in environment variables");
-      throw new Error("Resend API Key not found in environment variables");
-    }
-    
-    console.log("Using Resend API Key (first few chars):", RESEND_API_KEY.substring(0, 5) + "...[hidden]");
-    console.log("Store email:", STORE_EMAIL);
-    
-    // Format the message body
-    const orderHtml = formatOrderHtml(order);
-    console.log("Formatted email HTML message");
-    
-    // Send email to store owner (fixed test email)
-    console.log("Sending email to store owner:", STORE_EMAIL);
-    const ownerEmailResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: 'ordini@edilp2.com', // Make sure this is a verified domain in Resend
-        to: STORE_EMAIL,
-        subject: `Nuovo Ordine #${order.id} - EdilP2`,
-        html: orderHtml,
-      }),
+    const data = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: ['vcarusobusiness@gmail.com'],
+      subject,
+      html
     });
-    
-    if (!ownerEmailResponse.ok) {
-      console.error("Failed to send owner email:", await ownerEmailResponse.text());
-      throw new Error(`Failed to send owner email: ${ownerEmailResponse.statusText}`);
-    }
-    
-    const ownerEmailResult = await ownerEmailResponse.json();
-    console.log("Email to owner sent successfully:", ownerEmailResult);
-    
-    // In test mode, we don't send customer emails, but log that we would send
-    console.log("TEST MODE: Would normally send email to customer:", order.customer.email);
-    console.log("In test mode, all emails are sent only to:", STORE_EMAIL);
-    
-    return true;
+    return { success: true, data };
   } catch (error) {
-    console.error("Error sending email notification:", error);
-    console.error("Error details:", JSON.stringify(error, null, 2));
-    return false;
+    console.error('Error sending email:', error);
+    return { success: false, error: error.message };
   }
 }
 
 serve(async (req) => {
-  console.log("Edge function triggered with request:", req.url);
+  console.log('=== Edge Function Started ===');
+  console.log('Request URL:', req.url);
+  console.log('Request method:', req.method);
+  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
   
   // Handle CORS preflight OPTIONS request
   if (req.method === 'OPTIONS') {
-    console.log("Handling OPTIONS preflight request");
-    return new Response(null, {
-      status: 204,
-      headers: corsHeaders,
-    });
+    console.log("Handling OPTIONS request");
+    return new Response('ok', { headers: corsHeaders });
   }
-  
+
   try {
+    // Log environment variables (without sensitive values)
+    console.log('Environment variables status:', {
+      hasResendKey: !!Deno.env.get('RESEND_API_KEY'),
+      hasServiceRoleKey: !!Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
+      hasSupabaseUrl: !!Deno.env.get('SUPABASE_URL'),
+      hasSupabaseAnonKey: !!Deno.env.get('SUPABASE_ANON_KEY')
+    });
+
     // Create a Supabase client
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
+    console.log("Environment variables:", {
+      SUPABASE_URL: supabaseUrl ? "Set" : "Not set",
+      SUPABASE_SERVICE_ROLE_KEY: supabaseKey ? "Set" : "Not set",
+      RESEND_API_KEY: Deno.env.get("RESEND_API_KEY") ? "Set" : "Not set"
+    });
+    
     if (!supabaseUrl || !supabaseKey) {
       throw new Error("Supabase credentials not found in environment variables");
     }
-    
+
+    // Create a Supabase client
     console.log("Creating Supabase client with URL:", supabaseUrl);
     const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
     // Get the request body
-    const body = await req.json();
-    console.log("Request body:", body);
+    console.log("Attempting to parse request body...");
+    let body;
+    try {
+      const bodyText = await req.text();
+      console.log("Raw request body:", bodyText);
+      body = JSON.parse(bodyText);
+    } catch (parseError) {
+      console.error("Error parsing request body:", parseError);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Invalid JSON in request body",
+          details: parseError.message 
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
+    }
+    
+    console.log("Parsed request body:", body);
     
     const { orderId } = body;
     
     if (!orderId) {
-      console.error("Missing orderId in request");
+      console.error("Missing orderId in request body:", body);
       return new Response(
-        JSON.stringify({ success: false, error: "Order ID is required" }),
+        JSON.stringify({ 
+          success: false, 
+          error: "Order ID is required",
+          receivedBody: body 
+        }),
         { 
-          headers: { 
-            "Content-Type": "application/json",
-            ...corsHeaders 
-          }, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 400 
         }
       );
@@ -238,59 +230,130 @@ serve(async (req) => {
       .eq("id", orderId)
       .single();
     
-    if (error || !order) {
-      console.error("Error fetching order:", error?.message || "Order not found");
+    if (error) {
+      console.error("Error fetching order:", error);
+      throw error;
+    }
+    
+    if (!order) {
+      console.error("Order not found:", orderId);
       return new Response(
         JSON.stringify({ 
           success: false, 
-          error: error?.message || "Order not found" 
+          error: "Order not found" 
         }),
         { 
-          headers: { 
-            "Content-Type": "application/json",
-            ...corsHeaders 
-          }, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 404 
         }
       );
     }
     
-    console.log("Order found:", order);
+    console.log("Raw order data:", JSON.stringify(order, null, 2));
     
-    // Send email notification using Resend
-    console.log("Sending email notification via Resend...");
-    const emailResult = await sendEmailNotification(order as Order);
-    console.log("Email notification result:", emailResult);
-    
-    // Update order status if email was sent
-    if (emailResult) {
-      console.log("Updating order status to 'confirmed'");
-      const { error: updateError } = await supabaseClient
-        .from("orders")
-        .update({ status: "confirmed" })
-        .eq("id", orderId);
-      
-      if (updateError) {
-        console.error("Error updating order status:", updateError);
-      } else {
-        console.log("Order status updated successfully");
+    // Format the order data
+    const formattedOrder: Order = {
+      id: order.id,
+      customer_name: order.customer_info?.name || order.customer_name || 'N/A',
+      customer_email: order.customer_info?.email || order.customer_email || 'N/A',
+      customer_phone: order.customer_info?.phone || order.customer_phone || 'N/A',
+      total: order.total || 0,
+      total_with_iva: order.total_with_iva || 0,
+      order_date: order.order_date || new Date().toISOString(),
+      status: order.status || 'pending',
+      notes: order.notes,
+      items: [] // Per ora lasciamo l'array vuoto dato che non abbiamo accesso agli items
+    };
+
+    console.log("Raw order data for items check:", JSON.stringify(order, null, 2));
+
+    // Controlliamo se c'è il campo items diretto nell'ordine
+    if (order.items) {
+      console.log("Found direct items field:", JSON.stringify(order.items, null, 2));
+      try {
+        // Se è una stringa JSON, proviamo a fare il parse
+        if (typeof order.items === 'string') {
+          formattedOrder.items = JSON.parse(order.items);
+        } else {
+          // Altrimenti assumiamo che sia già un array
+          formattedOrder.items = Array.isArray(order.items) ? order.items : [];
+        }
+      } catch (e) {
+        console.error("Error parsing items from order.items:", e);
+      }
+    } 
+    // Se l'ordine ha un campo items_data, prova a usarlo
+    else if (order.items_data) {
+      try {
+        formattedOrder.items = Array.isArray(order.items_data) ? order.items_data : JSON.parse(order.items_data);
+      } catch (e) {
+        console.error("Error parsing items_data:", e);
+      }
+    } 
+    // In alternativa prova a recuperare gli items separatamente
+    else {
+      try {
+        const { data: items } = await supabaseClient
+          .from("order_items")
+          .select("*")
+          .eq("order_id", orderId);
+        
+        if (items && items.length > 0) {
+          formattedOrder.items = items;
+          console.log("Items fetched separately:", JSON.stringify(items, null, 2));
+        }
+      } catch (e) {
+        console.error("Error fetching order items separately:", e);
       }
     }
+
+    console.log("Final formatted order with items:", JSON.stringify(formattedOrder, null, 2));
     
-    return new Response(
-      JSON.stringify({
-        success: true,
-        email: emailResult,
-      }),
-      { 
-        headers: { 
-          "Content-Type": "application/json",
-          ...corsHeaders 
-        } 
-      }
-    );
+    // Validate order data before sending email
+    if (!formattedOrder.customer_name || !formattedOrder.customer_email || !formattedOrder.customer_phone) {
+      console.error("Invalid order data:", formattedOrder);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Invalid order data",
+          details: "Missing required customer information"
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
+    }
+    
+    // Format order details for email
+    const orderHtml = formatOrderHtml(formattedOrder);
+    const customerHtml = formatCustomerHtml(formattedOrder);
+
+    // Send email to customer
+    const customerEmailResult = await sendEmail({
+      to: formattedOrder.customer_email,
+      subject: 'Conferma del tuo ordine - EdilP2',
+      html: customerHtml
+    });
+
+    // Send email to admin
+    const adminEmailResult = await sendEmail({
+      to: 'ordini@edilp2.com',
+      subject: `Nuovo ordine #${formattedOrder.id}`,
+      html: orderHtml
+    });
+
+    return new Response(JSON.stringify({
+      success: true,
+      customer: customerEmailResult,
+      admin: adminEmailResult
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+
   } catch (error) {
     console.error("Error in Edge Function:", error);
+    console.error("Error stack:", error.stack);
     
     return new Response(
       JSON.stringify({
@@ -299,10 +362,7 @@ serve(async (req) => {
         stack: error.stack,
       }),
       { 
-        headers: { 
-          "Content-Type": "application/json",
-          ...corsHeaders 
-        }, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500 
       }
     );

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +12,9 @@ import Servizi from "./pages/Servizi";
 import Progetti from "./pages/Progetti";
 import Blog from "./pages/Blog";
 
+// Ottieni il basename dal vite.config (in produzione sarà /${repoName}/)
+const basename = import.meta.env.BASE_URL;
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -21,7 +23,7 @@ const App = () => (
       <CartProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/catalogo" element={<Catalogo />} />

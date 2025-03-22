@@ -1,8 +1,7 @@
-
 import React from "react";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
-import { Trash2 } from "lucide-react";
+import { Trash2, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Cart() {
@@ -17,7 +16,20 @@ export default function Cart() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-auto py-4">
+      {state.items.length > 0 && (
+        <div className="sticky top-0 bg-white z-10 pb-4 pt-2 mb-4 border-b">
+          <div className="flex justify-between items-center mb-2">
+            <span className="font-medium">Totale: <span className="font-bold text-lg">{calculateTotal().toFixed(2)}€</span></span>
+          </div>
+          <Link to="/checkout" className="block">
+            <Button className="w-full py-6 text-base">
+              <ShoppingBag className="mr-2 h-5 w-5" /> Procedi all'ordine
+            </Button>
+          </Link>
+        </div>
+      )}
+      
+      <div className="flex-1 overflow-auto py-2">
         {state.items.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500 mb-4">Il tuo carrello è vuoto</p>
@@ -72,18 +84,6 @@ export default function Cart() {
           </div>
         )}
       </div>
-
-      {state.items.length > 0 && (
-        <div className="border-t mt-auto pt-4">
-          <div className="flex justify-between items-center mb-4">
-            <span className="font-medium">Totale</span>
-            <span className="font-bold text-lg">{calculateTotal().toFixed(2)}€</span>
-          </div>
-          <Link to="/checkout" className="block">
-            <Button className="w-full">Procedi all'ordine</Button>
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
