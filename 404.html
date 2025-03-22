@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EdilP2 - Reindirizzamento</title>
-  <script>
-    // GitHub Pages 404 redirect hack per SPA come React Router
-    (function() {
-      // Reindirizza tutte le richieste alla pagina principale
-      var repo = "clever-builder-hub";
-      var path = window.location.pathname;
-      
-      if (path.indexOf('/' + repo + '/') === 0) {
-        path = path.replace('/' + repo + '/', '/');
-      }
-      
-      sessionStorage.setItem('redirect', path);
-      
-      window.location.replace(
-        window.location.origin + 
-        (window.location.hostname === 'localhost' ? '' : '/' + repo) + 
-        '/'
-      );
-    })();
-  </script>
-</head>
-<body>
-  <p>Reindirizzamento in corso...</p>
-</body>
-</html> 
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EdilP2 - Materiali Edili e Noleggio Mezzi con Conducente | Siracusa, Solarino, Floridia</title>
+    <meta name="description" content="Fornitore di materiali edili di qualità e noleggio mezzi pesanti con conducente a Siracusa, Solarino, Floridia e provincia. Consegna in cantiere, consulenza tecnica e prezzi competitivi." />
+    <meta name="keywords" content="materiali edili siracusa, noleggio mezzi pesanti con conducente siracusa, materiali edili solarino, noleggio mezzi pesanti floridia, edilizia siracusa provincia, mezzi con conducente siracusa" />
+    <meta name="author" content="EdilP2" />
+    <meta property="og:title" content="EdilP2 - Materiali Edili e Noleggio Mezzi | Siracusa, Solarino, Floridia" />
+    <meta property="og:description" content="Materiali edili di qualità e noleggio mezzi pesanti con conducente a Siracusa, Solarino, Floridia e provincia." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://edilp2.it" />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      // Gestione reindirizzamento dalla pagina 404.html
+      (function() {
+        var redirect = sessionStorage.getItem('redirect');
+        if (redirect && redirect !== window.location.pathname) {
+          sessionStorage.removeItem('redirect');
+          var baseUrl = window.location.pathname.replace(/\/$/, '');
+          var newPath = baseUrl + redirect;
+          history.replaceState(null, null, newPath);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/clever-builder-hub/assets/index-BP7jbIwB.js"></script>
+    <link rel="modulepreload" crossorigin href="/clever-builder-hub/assets/vendor-DGPb5Ovp.js">
+    <link rel="stylesheet" crossorigin href="/clever-builder-hub/assets/index-CRxlo258.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  </body>
+</html>
