@@ -1,4 +1,3 @@
-
 import { ArrowRight, Shield, Star, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -58,7 +57,7 @@ export default function DriverRentalSection() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden">
               <img 
-                src="/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png" 
+                src={`${window.BASE_IMAGE_PATH || ''}/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png`}
                 alt="Escavatore con conducente" 
                 className="w-full h-full object-cover"
               />
@@ -68,7 +67,7 @@ export default function DriverRentalSection() {
             <div className="absolute bottom-6 left-6 right-6 p-6 bg-white rounded-xl shadow-lg">
               <div className="flex items-start gap-4">
                 <img 
-                  src="/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png" 
+                  src={`${window.BASE_IMAGE_PATH || ''}/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png`}
                   alt="Operatore" 
                   className="w-16 h-16 rounded-full object-cover border-2 border-white"
                 />

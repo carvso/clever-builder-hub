@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -156,9 +155,9 @@ export default function Progetti() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 relative h-full">
                 <img 
-                  src="/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png" 
-                  alt="Materiali EdilP2" 
-                  className="w-full h-64 md:h-full object-cover"
+                  src={`${window.BASE_IMAGE_PATH || ''}/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png`} 
+                  alt="Progetti completati EdilP2" 
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
