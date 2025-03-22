@@ -162,6 +162,7 @@ export class SupabaseService {
 
     try {
       console.log("Invoking Edge Function to send email notification for order:", orderId);
+      console.log("Supabase URL:", supabaseUrl);
       
       // Validate the order ID
       if (!orderId) {
@@ -169,16 +170,23 @@ export class SupabaseService {
       }
       
       // Use direct fetch instead of supabase.functions.invoke
+      const functionUrl = `${supabaseUrl}/functions/v1/send-order-email`;
+      console.log("Function URL:", functionUrl);
+
+      const requestHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
+        'apikey': import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
+        'X-Client-Info': 'supabase-js/2.x',
+        'Origin': window.location.origin
+      };
+      console.log("Request headers:", JSON.stringify(requestHeaders, null, 2));
+      
       const response = await fetch(
-        `${supabaseUrl}/functions/v1/send-order-email`,
+        functionUrl,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
-            'apikey': import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-            'X-Client-Info': 'supabase-js/2.x'
-          },
+          headers: requestHeaders,
           body: JSON.stringify({ orderId })
         }
       );
