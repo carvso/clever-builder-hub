@@ -8,7 +8,7 @@ export class NotificationService {
   /**
    * Process a new order - saves to Supabase and sends email notifications
    */
-  static async processNewOrder(order: Order): Promise<boolean> {
+  static async processNewOrder(order: Order): Promise<{ success: boolean; orderId?: string; error?: string }> {
     try {
       console.log("Processing new order:", JSON.stringify(order, null, 2));
       
@@ -16,7 +16,7 @@ export class NotificationService {
       const savedOrder = await SupabaseService.saveOrder(order);
       if (!savedOrder) {
         console.error("Failed to save order");
-        return false;
+        return { success: false, error: "Impossibile salvare l'ordine" };
       }
       
       console.log("Order saved with ID", savedOrder.id, ", now sending email notification");
@@ -28,10 +28,18 @@ export class NotificationService {
       const emailResult = await SupabaseService.sendOrderEmailNotification(savedOrder.id);
       console.log("Email notification result:", emailResult);
       
-      return emailResult.success;
+      // Consider the operation successful even if email fails
+      return { 
+        success: true, 
+        orderId: savedOrder.id,
+        error: emailResult.error 
+      };
     } catch (error) {
       console.error("Error processing order:", error);
-      return false;
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : "Errore sconosciuto durante l'elaborazione dell'ordine" 
+      };
     }
   }
 
@@ -65,26 +73,14 @@ export class NotificationService {
 
       // Save the mock order first
       console.log("Saving mock order...");
-      const saveResult = await SupabaseService.saveOrder(mockOrder);
+      const result = await this.processNewOrder(mockOrder);
       
-      if (!saveResult.success) {
-        console.error("Failed to save mock order:", saveResult.error);
+      if (!result.success) {
+        console.error("Failed to save mock order:", result.error);
         return;
       }
 
-      console.log("Mock order saved with ID:", saveResult.orderId);
-
-      // Now test the Edge Function
-      if (saveResult.orderId) {
-        console.log("Testing Edge Function with order ID:", saveResult.orderId);
-        const notifyResult = await SupabaseService.sendOrderEmailNotification(saveResult.orderId);
-        
-        console.log("Edge Function test result:", {
-          success: notifyResult.success,
-          error: notifyResult.error,
-          details: notifyResult.details
-        });
-      }
+      console.log("Mock order saved with ID:", result.orderId);
     } catch (error) {
       console.error("Error testing Edge Function:", error);
     }

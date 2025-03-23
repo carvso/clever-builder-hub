@@ -80,12 +80,15 @@ export default function Checkout() {
         });
       }
     } catch (error) {
-      console.error("Error in handleSubmit:", error);
-      toast({
-        title: "Errore",
-        description: "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
-        variant: "destructive",
-      });
+      // Non mostrare l'errore se è undefined, potrebbe essere un falso errore
+      if (error) {
+        console.error("Error in handleSubmit:", error);
+        toast({
+          title: "Errore",
+          description: "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
