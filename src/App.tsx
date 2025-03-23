@@ -11,6 +11,7 @@ import Checkout from "./pages/Checkout";
 import Servizi from "./pages/Servizi";
 import Progetti from "./pages/Progetti";
 import Blog from "./pages/Blog";
+import ServiziProdotti from "./pages/ServiziProdotti";
 
 // Ottieni il basename dal vite.config (in produzione sarà /${repoName}/)
 const basename = import.meta.env.BASE_URL;
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/servizi" element={<Servizi />} />
             <Route path="/progetti" element={<Progetti />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/servizi-prodotti" element={<ServiziProdotti />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
