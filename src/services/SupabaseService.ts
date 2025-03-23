@@ -1,9 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 import { Order } from '@/types/order';
+import { config } from '@/config';
 
-// Get environment variables with fallbacks for development
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Get configuration from config file
+const supabaseUrl = config.supabase.url;
+const supabaseKey = config.supabase.anonKey;
+const supabaseServiceRoleKey = config.supabase.serviceRoleKey;
 
 // Create the Supabase client with proper error handling
 export const supabase = supabaseUrl && supabaseKey 
@@ -186,7 +188,7 @@ export class SupabaseService {
       console.warn("Valori disponibili:", { 
         url: supabaseUrl ? "Impostato" : "NON impostato", 
         anonKey: supabaseKey ? "Impostato" : "NON impostato",
-        serviceRoleKey: import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY ? "Impostato" : "NON impostato"
+        serviceRoleKey: supabaseServiceRoleKey ? "Impostato" : "NON impostato"
       });
       
       return { 
@@ -213,8 +215,8 @@ export class SupabaseService {
 
       const requestHeaders = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
-        'apikey': import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${supabaseServiceRoleKey}`,
+        'apikey': supabaseServiceRoleKey,
         'X-Client-Info': 'supabase-js/2.x',
         'Origin': window.location.origin
       };
