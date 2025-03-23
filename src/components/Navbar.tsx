@@ -17,7 +17,7 @@ const navigation = [
   { name: "Home", href: "/" },
   { name: "Catalogo", href: "/catalogo" },
   { name: "Servizi", href: "/servizi" },
-  { name: "Servizi & Prodotti", href: "/servizi-prodotti" },
+  { name: "Materiali", href: "/materiali" },
   { name: "Progetti", href: "/progetti" },
   { name: "Blog", href: "/blog" },
 ];
