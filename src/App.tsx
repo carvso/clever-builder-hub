@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Index from "@/pages/Index";
@@ -23,27 +24,29 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Router basename={basename}>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/catalogo" element={<Catalogo />} />
-              <Route path="/noleggio" element={<Noleggio />} />
-              <Route path="/progetti" element={<Progetti />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/servizi" element={<Servizi />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/materiali" element={<Materiali />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-          <Toaster />
-          <Sonner />
-        </div>
-      </Router>
+      <CartProvider>
+        <Router basename={basename}>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/catalogo" element={<Catalogo />} />
+                <Route path="/noleggio" element={<Noleggio />} />
+                <Route path="/progetti" element={<Progetti />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/servizi" element={<Servizi />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/materiali" element={<Materiali />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+            <Toaster />
+            <Sonner />
+          </div>
+        </Router>
+      </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
