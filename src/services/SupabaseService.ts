@@ -1,22 +1,19 @@
 import { createClient } from '@supabase/supabase-js'
 import { Order } from '@/types/order';
-import { config } from '@/config';
 
-// Get configuration from config file
-const supabaseUrl = config.supabase.url;
-const supabaseKey = config.supabase.anonKey;
-const supabaseServiceRoleKey = config.supabase.serviceRoleKey;
+// Credenziali Supabase hardcodate (approccio temporaneo)
+const supabaseUrl = "https://yiaaapzwjbolzhirpkml.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpYWFhcHp3amJvbHpoaXJwa21sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0NTYxNTgsImV4cCI6MjA1NzAzMjE1OH0.vZ-U-9ehBGzLigIeMVShGSs59-k2SkJg7cpolHOA1I8";
+const supabaseServiceRoleKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpYWFhcHp3amJvbHpoaXJwa21sIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MTQ1NjE1OCwiZXhwIjoyMDU3MDMyMTU4fQ.71INo9_uHYHa2AY86Tqoht3MfMzvauZ5quGqMKHr03Y";
 
 // Create the Supabase client with proper error handling
-export const supabase = supabaseUrl && supabaseKey 
-  ? createClient(supabaseUrl, supabaseKey, {
-      global: {
-        headers: {
-          'X-Client-Info': 'supabase-js/2.x',
-        },
-      },
-    })
-  : null;
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  global: {
+    headers: {
+      'X-Client-Info': 'supabase-js/2.x',
+    },
+  },
+});
 
 // Log Supabase configuration status for debugging
 console.log("Supabase configuration status:", {
@@ -37,11 +34,6 @@ export class SupabaseService {
    * Ensure that the orders table exists in Supabase
    */
   static async ensureOrdersTableExists(): Promise<boolean> {
-    if (!supabase) {
-      console.warn("Supabase not configured, cannot create tables");
-      return false;
-    }
-
     try {
       // Verifica che la tabella orders esista
       const { data, error } = await supabase
@@ -68,30 +60,6 @@ export class SupabaseService {
   static async saveOrder(orderData: Order): Promise<Order | null> {
     try {
       console.log("Starting saveOrder with data:", JSON.stringify(orderData, null, 2));
-      console.log("Supabase environment variables status:", {
-        url: !!supabaseUrl,
-        anonKey: !!supabaseKey, 
-        clientInitialized: !!supabase
-      });
-      
-      // If Supabase is not configured, return a mock response for testing
-      if (!supabase) {
-        console.warn("⚠️ IMPORTANTE: Supabase non è configurato! L'ordine non verrà salvato nel database.");
-        console.warn("Verifica che le variabili d'ambiente siano impostate correttamente:");
-        console.warn("- VITE_SUPABASE_URL");
-        console.warn("- VITE_SUPABASE_ANON_KEY");
-        console.warn("Valori disponibili:", { 
-          url: supabaseUrl ? "Impostato" : "NON impostato", 
-          key: supabaseKey ? "Impostato" : "NON impostato"
-        });
-        
-        // In development/test, return mock data
-        const mockOrderId = orderData.id || crypto.randomUUID();
-        return {
-          ...orderData,
-          id: mockOrderId
-        } as any;
-      }
       
       // Ensure orders table exists
       const tableExists = await this.ensureOrdersTableExists();
@@ -149,12 +117,6 @@ export class SupabaseService {
    * Get order by ID
    */
   static async getOrderById(orderId: string): Promise<{ order?: Order; error?: string }> {
-    // Check if Supabase is configured
-    if (!supabase) {
-      console.warn("Supabase not configured, running in mock mode");
-      return { order: { id: orderId, customer: { name: 'Mock Customer', email: 'mock@example.com', phone: '123456789' }, items: [], total: 0, totalWithIva: 0, orderDate: new Date().toISOString(), status: 'pending' } };
-    }
-
     try {
       const { data, error } = await supabase
         .from('orders')
@@ -178,28 +140,6 @@ export class SupabaseService {
    * Send email notification for an order via Resend API
    */
   static async sendOrderEmailNotification(orderId: string): Promise<{ success: boolean; error?: string; details?: any }> {
-    // Check if Supabase is configured
-    if (!supabase) {
-      console.warn("⚠️ IMPORTANTE: Supabase non è configurato! Non è possibile inviare email di notifica.");
-      console.warn("Verifica che le variabili d'ambiente siano impostate correttamente:");
-      console.warn("- VITE_SUPABASE_URL");
-      console.warn("- VITE_SUPABASE_ANON_KEY");
-      console.warn("- VITE_SUPABASE_SERVICE_ROLE_KEY (necessaria per le Edge Functions)");
-      console.warn("Valori disponibili:", { 
-        url: supabaseUrl ? "Impostato" : "NON impostato", 
-        anonKey: supabaseKey ? "Impostato" : "NON impostato",
-        serviceRoleKey: supabaseServiceRoleKey ? "Impostato" : "NON impostato"
-      });
-      
-      return { 
-        success: true, 
-        details: { 
-          mockResponse: true, 
-          message: "Modalità di sviluppo: l'email non è stata inviata perché Supabase non è configurato" 
-        } 
-      };
-    }
-
     try {
       console.log("Invoking Edge Function to send email notification for order:", orderId);
       console.log("Supabase URL:", supabaseUrl);
