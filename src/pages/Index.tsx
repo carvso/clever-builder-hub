@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import PartnerCarousel from "@/components/PartnerCarousel";
 import Showcase from "@/components/Showcase";
@@ -6,6 +7,7 @@ import ProductCategories from "@/components/ProductCategories";
 import MaterialsCTASection from "@/components/MaterialsCTASection";
 import DriverRentalSection from "@/components/DriverRentalSection";
 import LocationSection from "@/components/LocationSection";
+import Footer from "@/components/Footer";
 import NoleggioCtaSection from "@/components/NoleggioCtaSection";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
 
@@ -24,6 +26,7 @@ const Index = () => {
 
   return (
     <main className="min-h-screen overflow-hidden">
+      <Navbar />
       <HeroSection />
       <ProductCategories />
       <MaterialsCTASection />
@@ -40,6 +43,7 @@ const Index = () => {
       </div>
       <DriverRentalSection />
       <LocationSection />
+      <Footer />
     </main>
   );
 };
