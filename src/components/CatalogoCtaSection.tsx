@@ -4,13 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 export default function CatalogoCtaSection() {
   const [isVisible, setIsVisible] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-
-  const images = [
-    "https://www.infobuild.it/wp-content/uploads/conformita-materiali-edilizia.png",
-    "https://www.spazzinimaterialiedili.it/wp-content/uploads/2022/10/spazzini_06.jpeg"
-  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -34,14 +28,6 @@ export default function CatalogoCtaSection() {
     };
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Cambia immagine ogni 5 secondi
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section ref={sectionRef} className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-6">
@@ -50,9 +36,9 @@ export default function CatalogoCtaSection() {
             <div className={`relative ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
               <div className="relative">
                 <img 
-                  src={images[currentImageIndex]}
+                  src="/lovable-uploads/63a8ccf3-3f6d-466e-9f78-8be3e5c27eb7.jpg" 
                   alt="Materiali EdilP2" 
-                  className="rounded-xl shadow-xl max-h-80 object-cover hover-lift transition-opacity duration-500"
+                  className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
                 />
                 <div className="absolute top-6 left-0 -translate-x-1/4 bg-primary py-3 px-5 rounded-xl shadow-lg text-white">
                   <div className="text-center">

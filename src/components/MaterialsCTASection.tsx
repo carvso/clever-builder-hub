@@ -1,23 +1,8 @@
+
 import { ArrowRight, Package, Box, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 export default function MaterialsCTASection() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  
-  const images = [
-    "https://www.infobuild.it/wp-content/uploads/conformita-materiali-edilizia.png",
-    "https://www.spazzinimaterialiedili.it/wp-content/uploads/2022/10/spazzini_06.jpeg"
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Cambia immagine ogni 5 secondi
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-6">
@@ -25,9 +10,9 @@ export default function MaterialsCTASection() {
           <div className="order-2 lg:order-1 relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden">
               <img 
-                src={images[currentImageIndex]}
+                src="/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png" 
                 alt="Materiali edili di qualità" 
-                className="w-full h-full object-cover transition-opacity duration-500"
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             </div>

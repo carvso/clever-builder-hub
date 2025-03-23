@@ -1,3 +1,4 @@
+
 import { useReducer } from "react";
 import { toast } from "@/hooks/use-toast";
 import { cartReducer } from "./cartReducer";
@@ -97,21 +98,6 @@ export const useCartOperations = () => {
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      
-      // Se l'errore è undefined, potrebbe essere un falso positivo
-      if (!error) {
-        console.log("Ignoring undefined error, treating as success");
-        
-        // Clear cart comunque
-        dispatch({ type: "CLEAR_CART" });
-        
-        toast({
-          title: "Ordine confermato",
-          description: "Il tuo ordine è stato registrato. Ti contatteremo presto per confermare i dettagli.",
-        });
-        
-        return { success: true };
-      }
       
       toast({
         title: "Errore",

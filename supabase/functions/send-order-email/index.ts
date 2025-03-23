@@ -147,20 +147,11 @@ serve(async (req) => {
   console.log('Request URL:', req.url);
   console.log('Request method:', req.method);
   console.log('Request headers:', Object.fromEntries(req.headers.entries()));
-  console.log('Origin:', req.headers.get('origin'));
   
   // Handle CORS preflight OPTIONS request
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS request");
-    
-    // Aggiorna i corsHeaders dinamicamente in base all'origine
-    const origin = req.headers.get('origin');
-    const dynamicCorsHeaders = {
-      ...corsHeaders,
-      'Access-Control-Allow-Origin': origin || '*'
-    };
-    
-    return new Response('ok', { headers: dynamicCorsHeaders });
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
@@ -352,22 +343,13 @@ serve(async (req) => {
       html: orderHtml
     });
 
-    // Aggiorna i corsHeaders dinamicamente per la risposta
-    const origin = req.headers.get('origin');
-    const dynamicCorsHeaders = {
-      ...corsHeaders,
-      'Access-Control-Allow-Origin': origin || '*'
-    };
-
-    // At the end, send the response with the dynamic CORS headers
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: "Email notification sent successfully",
-        details: { adminEmail: adminEmailResult, customerEmail: customerEmailResult }
-      }),
-      { headers: dynamicCorsHeaders }
-    );
+    return new Response(JSON.stringify({
+      success: true,
+      customer: customerEmailResult,
+      admin: adminEmailResult
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
 
   } catch (error) {
     console.error("Error in Edge Function:", error);

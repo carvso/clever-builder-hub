@@ -17,7 +17,6 @@ const navigation = [
   { name: "Home", href: "/" },
   { name: "Catalogo", href: "/catalogo" },
   { name: "Servizi", href: "/servizi" },
-  { name: "Materiali", href: "/materiali" },
   { name: "Progetti", href: "/progetti" },
   { name: "Blog", href: "/blog" },
 ];
@@ -109,24 +108,6 @@ export default function Navbar() {
             ></path>
           </svg>
         </button>
-
-        <div className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-gray-600 hover:text-primary transition-colors">
-            Home
-          </Link>
-          <Link to="/noleggio" className="text-gray-600 hover:text-primary transition-colors">
-            Noleggio Mezzi
-          </Link>
-          <Link to="/catalogo" className="text-gray-600 hover:text-primary transition-colors">
-            Materiali
-          </Link>
-          <Link to="/progetti" className="text-gray-600 hover:text-primary transition-colors">
-            Progetti
-          </Link>
-          <Link to="/blog" className="text-gray-600 hover:text-primary transition-colors">
-            Blog
-          </Link>
-        </div>
       </div>
 
       {/* Mobile Menu */}
