@@ -1,4 +1,3 @@
-
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +20,7 @@ export default function HeroSection() {
   const [isSearching, setIsSearching] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   // Array of hero images
   const heroImages = [
@@ -52,10 +52,15 @@ export default function HeroSection() {
     // Image slideshow
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
+      setIsImageLoaded(false);
     }, 5000);
     
     return () => clearInterval(interval);
   }, []);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   return (
     <section className="relative min-h-[80vh] flex items-center bg-light">
@@ -148,11 +153,19 @@ export default function HeroSection() {
             className={`hidden lg:block relative ${isVisible ? 'animate-slide-in-right delay-200' : 'opacity-0'}`}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-2xl"></div>
-            <img
-              src={heroImages[currentImage]}
-              alt="Mezzi e cantieri EdilP2"
-              className="rounded-2xl shadow-2xl w-full object-cover h-[600px] hover-lift transition-opacity duration-500"
-            />
+            <div className="relative h-[600px] rounded-2xl overflow-hidden">
+              {heroImages.map((image, index) => (
+                <img
+                  key={image}
+                  src={image}
+                  alt={`Slide ${index + 1}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                    index === currentImage ? 'opacity-100' : 'opacity-0'
+                  } ${isImageLoaded ? 'animate-fade-in' : ''}`}
+                  onLoad={handleImageLoad}
+                />
+              ))}
+            </div>
             <div 
               className={`absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl ${isVisible ? 'animate-slide-in-right delay-400' : 'opacity-0'}`}
             >
