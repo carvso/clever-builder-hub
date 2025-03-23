@@ -36,7 +36,7 @@ export default function CatalogoCtaSection() {
             <div className={`relative ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
               <div className="relative">
                 <img 
-                  src="/lovable-uploads/materiale-edilizia.jpg" 
+                  src={`${window.BASE_IMAGE_PATH || ''}/lovable-uploads/materiale-edilizia.jpg`} 
                   alt="Materiali EdilP2" 
                   className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
                 />
