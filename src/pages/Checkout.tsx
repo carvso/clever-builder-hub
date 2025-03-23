@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { ArrowLeft, Trash2, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -97,7 +95,6 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen bg-light">
-      <Navbar />
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">
           <Link
@@ -272,7 +269,6 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

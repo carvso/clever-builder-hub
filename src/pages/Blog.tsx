@@ -1,8 +1,5 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import BlogHeader from "@/components/BlogHeader";
 import BlogPostCard from "@/components/BlogPostCard";
 import BlogSidebar from "@/components/BlogSidebar";
@@ -24,8 +21,6 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
       <BlogHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -79,8 +74,6 @@ export default function Blog() {
           />
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 }

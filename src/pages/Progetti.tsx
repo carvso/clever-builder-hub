@@ -1,7 +1,4 @@
-
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { ArrowRight, Building, Calendar, Construction, User, Truck, Package } from "lucide-react";
 import { Link } from "react-router-dom";
 import NoleggioCtaSection from "@/components/NoleggioCtaSection";
@@ -116,8 +113,6 @@ export default function Progetti() {
   
   return (
     <div className="min-h-screen bg-gray-50 overflow-hidden">
-      <Navbar />
-      
       {/* Banner superior per noleggio macchinari */}
       <div className={`bg-primary relative overflow-hidden ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
         <div className="container mx-auto px-6 py-4">
@@ -390,8 +385,6 @@ export default function Progetti() {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 }

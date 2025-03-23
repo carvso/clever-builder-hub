@@ -1,6 +1,3 @@
-
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Check, Star, User, Filter } from "lucide-react";
 import { useState, useEffect } from "react";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
@@ -176,8 +173,6 @@ export default function Servizi() {
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-hidden">
-      <Navbar />
-      
       <main className="py-12">
         <div className="container mx-auto px-6">
           <div className={`text-center max-w-2xl mx-auto mb-12 ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
@@ -301,8 +296,6 @@ export default function Servizi() {
 
       {/* CTA Section per Catalogo */}
       <CatalogoCtaSection />
-
-      <Footer />
     </div>
   );
 }
