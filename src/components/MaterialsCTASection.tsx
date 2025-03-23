@@ -9,7 +9,7 @@ export default function MaterialsCTASection() {
           <div className="order-2 lg:order-1 relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden">
               <img 
-                src="/lovable-uploads/63a8ccf3-3f6d-466e-9f78-8be3e5c27eb7.jpg"
+                src="/lovable-uploads/materiale-edilizia.jpg"
                 alt="Materiali edili di qualità" 
                 className="w-full h-full object-cover"
               />
