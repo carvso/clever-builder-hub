@@ -1,6 +1,7 @@
 import { ArrowRight, Package, ShieldCheck, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { getImagePath } from "@/utils/imageUtils";
 
 export default function CatalogoCtaSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,7 +37,7 @@ export default function CatalogoCtaSection() {
             <div className={`relative ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
               <div className="relative">
                 <img 
-                  src="/lovable-uploads/63a8ccf3-3f6d-466e-9f78-8be3e5c27eb7.jpg" 
+                  src={getImagePath("/lovable-uploads/63a8ccf3-3f6d-466e-9f78-8be3e5c27eb7.jpg")} 
                   alt="Materiali EdilP2" 
                   className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
                 />

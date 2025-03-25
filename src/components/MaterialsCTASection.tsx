@@ -1,6 +1,6 @@
-
 import { ArrowRight, Package, Box, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getImagePath } from "@/utils/imageUtils";
 
 export default function MaterialsCTASection() {
   return (
@@ -10,7 +10,7 @@ export default function MaterialsCTASection() {
           <div className="order-2 lg:order-1 relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden">
               <img 
-                src="/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png" 
+                src={getImagePath("/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png")} 
                 alt="Materiali edili di qualità" 
                 className="w-full h-full object-cover"
               />

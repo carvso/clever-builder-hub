@@ -1,6 +1,7 @@
 import { Check, Star, User, Filter } from "lucide-react";
 import { useState, useEffect } from "react";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
+import { getImagePath } from "@/utils/imageUtils";
 
 const vehicles = [
   {
@@ -27,7 +28,7 @@ const vehicles = [
     description: "Escavatore compatto con raggio di rotazione zero per spazi ristretti",
     price: "180€/giorno",
     withDriverPrice: "320€/giorno",
-    image: "/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png",
+    image: getImagePath("/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png"),
     features: [
       "Peso: 5.7 tonnellate",
       "Profondità di scavo: 3.8m",
@@ -45,7 +46,7 @@ const vehicles = [
     description: "Mini pala caricatrice ideale per movimentazione materiali in spazi ristretti",
     price: "150€/giorno",
     withDriverPrice: "290€/giorno",
-    image: "/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png",
+    image: getImagePath("/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png"),
     features: [
       "Capacità operativa: 900kg",
       "Altezza di scarico: 2.3m",
@@ -81,7 +82,7 @@ const vehicles = [
     description: "Escavatore cingolato potente per scavi di medie e grandi dimensioni",
     price: "250€/giorno",
     withDriverPrice: "450€/giorno",
-    image: "/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png",
+    image: getImagePath("/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png"),
     features: [
       "Peso: 14 tonnellate",
       "Profondità di scavo: 5.5m",
@@ -99,7 +100,7 @@ const vehicles = [
     description: "Escavatore cingolato compatto ideale per lavori in spazi ristretti",
     price: "180€/giorno",
     withDriverPrice: "320€/giorno",
-    image: "/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png",
+    image: getImagePath("/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png"),
     features: [
       "Peso: 2.6 tonnellate",
       "Profondità scavo: 2.8m",
@@ -117,7 +118,7 @@ const vehicles = [
     description: "Camion con gru telescopica per sollevamento e trasporto materiali",
     price: "300€/giorno",
     withDriverPrice: "480€/giorno",
-    image: "/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png",
+    image: getImagePath("/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png"),
     features: [
       "Portata: 10 tonnellate",
       "Sbraccio gru: fino a 20m",
@@ -135,7 +136,7 @@ const vehicles = [
     description: "Mini escavatore con operatore per scavi di precisione",
     price: "160€/giorno",
     withDriverPrice: "290€/giorno",
-    image: "/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png",
+    image: getImagePath("/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png"),
     features: [
       "Peso: 1.8 tonnellate",
       "Larghezza: 98cm",

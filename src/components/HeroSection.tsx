@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getImagePath } from "@/utils/imageUtils";
 
 const products = [
   {
@@ -9,7 +10,7 @@ const products = [
     description: "Mattoni in argilla di alta qualità per murature portanti",
     price: "0.80€/pz",
     category: "Mattoni",
-    image: "/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png",
+    image: getImagePath("/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png"),
   },
   // ... keep existing code (products array)
 ];
@@ -24,10 +25,10 @@ export default function HeroSection() {
 
   // Array of hero images
   const heroImages = [
-    "/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png", // Yellow excavator
-    "/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png", // Orange excavator
-    "/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png", // Prepared ground
-    "/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png", // Construction with crane
+    getImagePath("/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png"), // Yellow excavator
+    getImagePath("/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png"), // Orange excavator
+    getImagePath("/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png"), // Prepared ground
+    getImagePath("/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png"), // Construction with crane
   ];
 
   const filteredProducts = products.filter((product) =>

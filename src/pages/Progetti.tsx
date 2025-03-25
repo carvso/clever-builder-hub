@@ -3,6 +3,7 @@ import { ArrowRight, Building, Calendar, Construction, User, Truck, Package } fr
 import { Link } from "react-router-dom";
 import NoleggioCtaSection from "@/components/NoleggioCtaSection";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
+import { getImagePath } from "@/utils/imageUtils";
 
 // Progetti example data
 const projects = [
@@ -10,7 +11,7 @@ const projects = [
     id: 1,
     title: "Demolizione palazzo storico",
     description: "Demolizione controllata di una struttura storica con preservazione della facciata principale. Utilizzo di escavatori idraulici specializzati per minimizzare l'impatto sulle strutture adiacenti.",
-    image: "/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png",
+    image: getImagePath("/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png"),
     category: "Demolizione",
     date: "Gennaio 2023",
     client: "Comune di Siracusa",
@@ -22,7 +23,7 @@ const projects = [
     id: 2,
     title: "Costruzione edificio residenziale",
     description: "Realizzazione di un complesso residenziale di 6 piani con tecniche di costruzione sostenibile. Utilizzo di gru a torre per il sollevamento dei materiali fino ai piani alti.",
-    image: "/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png",
+    image: getImagePath("/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png"),
     category: "Costruzione",
     date: "Marzo 2023",
     client: "Immobiliare Verde Srl",
@@ -34,7 +35,7 @@ const projects = [
     id: 3,
     title: "Scavo e fondazioni centro commerciale",
     description: "Scavo e preparazione fondazioni per un nuovo centro commerciale. Movimentazione di oltre 5000m³ di terra e preparazione di fondazioni speciali resistenti al sisma.",
-    image: "/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png",
+    image: getImagePath("/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png"),
     category: "Scavo",
     date: "Giugno 2023",
     client: "Retail Development SpA",
@@ -46,7 +47,7 @@ const projects = [
     id: 4,
     title: "Preparazione terreno agricolo",
     description: "Intervento di bonifica e preparazione di un terreno agricolo per la piantagione di olivi. Rimozione di rocce e livellamento del suolo per la coltivazione.",
-    image: "/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png",
+    image: getImagePath("/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png"),
     category: "Agricoltura",
     date: "Settembre 2023",
     client: "Azienda Agricola Oliveto Srl",
@@ -58,7 +59,7 @@ const projects = [
     id: 5,
     title: "Preparazione fondamenta villa",
     description: "Scavo e preparazione delle fondamenta per una villa privata in zona collinare. Gestione del dislivello naturale e consolidamento del terreno.",
-    image: "/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png",
+    image: getImagePath("/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png"),
     category: "Residenziale",
     date: "Ottobre 2023",
     client: "Privato",
@@ -70,7 +71,7 @@ const projects = [
     id: 6,
     title: "Scavo per cantina vinicola",
     description: "Realizzazione di uno scavo profondo per la costruzione di una cantina vinicola interrata. Particolare attenzione alla stabilità del terreno e al drenaggio.",
-    image: "/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png",
+    image: getImagePath("/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png"),
     category: "Agricoltura",
     date: "Novembre 2023",
     client: "Vini Siciliani SpA",
@@ -82,7 +83,7 @@ const projects = [
     id: 7,
     title: "Escavazione per piscina resort",
     description: "Escavazione e preparazione del terreno per una piscina di grandi dimensioni in un resort turistico. Creazione di sistema di drenaggio e scavi per impianti idraulici.",
-    image: "/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png",
+    image: getImagePath("/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png"),
     category: "Turistico",
     date: "Dicembre 2023",
     client: "Mediterranean Resort",
@@ -151,7 +152,7 @@ export default function Progetti() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 relative h-full">
                 <img 
-                  src="/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png" 
+                  src={getImagePath("/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png")} 
                   alt="Materiali EdilP2" 
                   className="w-full h-64 md:h-full object-cover"
                 />

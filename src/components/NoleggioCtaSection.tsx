@@ -1,7 +1,7 @@
-
 import { ArrowRight, Truck, Construction, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { getImagePath } from "@/utils/imageUtils";
 
 export default function NoleggioCtaSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -98,7 +98,7 @@ export default function NoleggioCtaSection() {
             <div className={`flex items-center justify-center ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               <div className="relative">
                 <img 
-                  src="/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png" 
+                  src={getImagePath("/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png")} 
                   alt="Escavatore EdilP2" 
                   className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
                 />
