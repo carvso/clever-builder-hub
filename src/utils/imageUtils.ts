@@ -1,5 +1,4 @@
 export const getImagePath = (imagePath: string) => {
-  // In produzione (GitHub Pages), il percorso base include il nome del repository
-  const basePath = import.meta.env.PROD ? '/clever-builder-hub' : '';
-  return `${basePath}${imagePath}`;
+  // Rimuoviamo lo slash iniziale per usare un percorso relativo
+  return imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
 }; 

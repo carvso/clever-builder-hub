@@ -152,7 +152,7 @@ export default function Progetti() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 relative h-full">
                 <img 
-                  src={getImagePath("/lovable-uploads/materiale-edilizia.png")} 
+                  src={getImagePath("/lovable-uploads/cc6bc2ca-b3c6-4c73-8739-8cf975d14658.png")} 
                   alt="Materiali EdilP2" 
                   className="w-full h-64 md:h-full object-cover"
                 />
