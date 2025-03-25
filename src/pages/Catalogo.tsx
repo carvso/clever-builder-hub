@@ -1,70 +1,67 @@
 import CatalogoContent from "@/components/CatalogoContent";
-import { Package, ShieldCheck, Truck } from "lucide-react";
-import { getImagePath } from "@/utils/imageUtils";
+import { Package, ShieldCheck, Truck, Check } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function Catalogo() {
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setIsPageLoaded(true);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-light">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-white overflow-hidden">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
+      <main className="py-12">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
-                <Package className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Materiali Edili</span>
+          <div className={`text-center max-w-2xl mx-auto mb-12 ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Materiali Edili di Qualità
+            </h1>
+            <p className="text-lg text-gray-600">
+              Scopri la nostra selezione di materiali edili di prima qualità. 
+              Da mattoni e cemento a materiali per l'isolamento, tutto ciò che serve 
+              per completare il tuo progetto di costruzione a Siracusa, Solarino, Floridia e provincia.
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className={`grid md:grid-cols-3 gap-8 mb-12 ${isPageLoaded ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}>
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
+                <ShieldCheck className="w-6 h-6 text-primary" />
               </div>
-              
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Materiali Edili di Qualità per il Tuo Progetto
-              </h1>
-              
-              <p className="text-gray-600 text-lg mb-8">
-                Scopri la nostra selezione di materiali edili di prima qualità. 
-                Da mattoni e cemento a materiali per l'isolamento, tutto ciò che serve 
-                per completare il tuo progetto di costruzione.
+              <h3 className="font-semibold text-gray-900 mb-2">Qualità Certificata</h3>
+              <p className="text-gray-600 text-sm">
+                Materiali testati e conformi alle normative vigenti
               </p>
-              
-              <div className="flex flex-wrap gap-6">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-full bg-primary/10">
-                    <ShieldCheck className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Qualità Certificata</h3>
-                    <p className="text-gray-600 text-sm">
-                      Materiali testati e conformi alle normative
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-full bg-primary/10">
-                    <Truck className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Consegna in Cantiere</h3>
-                    <p className="text-gray-600 text-sm">
-                      Trasporto e scarico direttamente in loco
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
-            
-            <div className="relative">
-              <img 
-                src={getImagePath("/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png")}
-                alt="Materiali Edili di Qualità"
-                className="rounded-2xl shadow-xl w-full object-cover"
-              />
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
+                <Truck className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Consegna in Cantiere</h3>
+              <p className="text-gray-600 text-sm">
+                Trasporto e scarico direttamente nel tuo cantiere
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
+                <Package className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Ampia Selezione</h3>
+              <p className="text-gray-600 text-sm">
+                Tutti i materiali necessari per il tuo progetto
+              </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Contenuto principale */}
-      <CatalogoContent />
+          {/* Contenuto principale */}
+          <CatalogoContent />
+        </div>
+      </main>
     </div>
   );
 }
