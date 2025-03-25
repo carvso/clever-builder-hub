@@ -1,5 +1,4 @@
 import CatalogoContent from "@/components/CatalogoContent";
-import { Package, ShieldCheck, Truck, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function Catalogo() {
@@ -23,39 +22,6 @@ export default function Catalogo() {
               Da mattoni e cemento a materiali per l'isolamento, tutto ciò che serve 
               per completare il tuo progetto di costruzione a Siracusa, Solarino, Floridia e provincia.
             </p>
-          </div>
-
-          {/* Features Grid */}
-          <div className={`grid md:grid-cols-3 gap-8 mb-12 ${isPageLoaded ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}>
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
-                <ShieldCheck className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Qualità Certificata</h3>
-              <p className="text-gray-600 text-sm">
-                Materiali testati e conformi alle normative vigenti
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
-                <Truck className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Consegna in Cantiere</h3>
-              <p className="text-gray-600 text-sm">
-                Trasporto e scarico direttamente nel tuo cantiere
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
-                <Package className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Ampia Selezione</h3>
-              <p className="text-gray-600 text-sm">
-                Tutti i materiali necessari per il tuo progetto
-              </p>
-            </div>
           </div>
 
           {/* Contenuto principale */}
