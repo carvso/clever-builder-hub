@@ -1,4 +1,3 @@
-
 import { Filter, Search, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -164,100 +163,102 @@ export default function CatalogoContent() {
   };
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      {/* Header */}
-      <div className="mb-8 animate-fade-in">
-        <h1 className="text-3xl font-bold text-dark mb-4">Catalogo Materiali</h1>
-        <p className="text-gray-600">
-          Scopri la nostra selezione di materiali edili di alta qualità
-        </p>
-      </div>
-
-      {/* Filters and Search */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8 animate-slide-in-left">
-        <div className="flex-1">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Cerca materiali..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 pl-12 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
-            />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          </div>
+    <div className="py-16 bg-light">
+      <div className="container mx-auto px-6">
+        {/* Header */}
+        <div className="mb-8 animate-fade-in">
+          <h1 className="text-3xl font-bold text-dark mb-4">Catalogo Materiali</h1>
+          <p className="text-gray-600">
+            Scopri la nostra selezione di materiali edili di alta qualità
+          </p>
         </div>
-        <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full border ${
-                selectedCategory === category
-                  ? "border-primary bg-primary/5 text-primary"
-                  : "border-gray-200 hover:border-primary hover:bg-primary/5"
-              } text-sm font-medium whitespace-nowrap transition-colors hover-lift`}
-            >
-              {category}
-            </button>
-          ))}
-          <button 
-            onClick={() => navigate("/checkout")}
-            className="px-4 py-2 rounded-full border border-gray-200 hover:border-primary hover:bg-primary/5 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-2 hover-lift"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            Carrello
-          </button>
-        </div>
-      </div>
 
-      {/* Products Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredProducts.map((product, index) => (
-          <div
-            key={product.id}
-            className={`bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 animate-fade-in hover-lift`}
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
-            <div className="aspect-video relative overflow-hidden">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
+        {/* Filters and Search */}
+        <div className="flex flex-col md:flex-row gap-4 mb-8 animate-slide-in-left">
+          <div className="flex-1">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Cerca materiali..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-3 pl-12 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </div>
-            <div className="p-6">
-              <div className="mb-4">
-                <p className="text-xs text-primary font-medium mb-2">
-                  {product.category}
-                </p>
-                <h3 className="text-lg font-semibold text-dark mb-2">
-                  {product.name}
-                </h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  {product.description}
-                </p>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-semibold text-dark">
-                  {product.price}
-                </span>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="inline-flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  Aggiungi
-                </button>
-              </div>
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             </div>
           </div>
-        ))}
-      </div>
+          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full border ${
+                  selectedCategory === category
+                    ? "border-primary bg-primary/5 text-primary"
+                    : "border-gray-200 hover:border-primary hover:bg-primary/5"
+                } text-sm font-medium whitespace-nowrap transition-colors hover-lift`}
+              >
+                {category}
+              </button>
+            ))}
+            <button 
+              onClick={() => navigate("/checkout")}
+              className="px-4 py-2 rounded-full border border-gray-200 hover:border-primary hover:bg-primary/5 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-2 hover-lift"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              Carrello
+            </button>
+          </div>
+        </div>
 
-      {/* Noleggio CTA */}
-      <NoleggioCtaSection />
+        {/* Products Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredProducts.map((product, index) => (
+            <div
+              key={product.id}
+              className={`bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 animate-fade-in hover-lift`}
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              </div>
+              <div className="p-6">
+                <div className="mb-4">
+                  <p className="text-xs text-primary font-medium mb-2">
+                    {product.category}
+                  </p>
+                  <h3 className="text-lg font-semibold text-dark mb-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {product.description}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-semibold text-dark">
+                    {product.price}
+                  </span>
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                    Aggiungi
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Noleggio CTA */}
+        <NoleggioCtaSection />
+      </div>
     </div>
   );
 }

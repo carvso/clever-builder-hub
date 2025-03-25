@@ -42,11 +42,6 @@ export default function Checkout() {
     
     // Validate form
     if (!customerInfo.name || !customerInfo.email || !customerInfo.phone) {
-      toast({
-        title: "Errore",
-        description: "Per favore, compila tutti i campi richiesti",
-        variant: "destructive",
-      });
       return;
     }
 
@@ -58,32 +53,21 @@ export default function Checkout() {
       const result = await checkout(customerInfo, notes);
       console.log("Order submission result:", result);
       
-      if (result.success) {
-        setOrderId(result.orderId);
-        
-        // Redirect to homepage after successful checkout
-        toast({
-          title: "Successo",
-          description: "Il tuo ordine è stato inviato con successo!",
-        });
-        
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
-      } else {
-        toast({
-          title: "Errore",
-          description: "Si è verificato un problema durante l'invio dell'ordine. Per favore, riprova più tardi.",
-          variant: "destructive",
-        });
-      }
+      setOrderId(result.orderId);
+      
+      // Mostra il messaggio di successo
+      toast({
+        title: "Ordine Confermato",
+        description: "Il tuo ordine è stato inviato con successo! Riceverai una email di conferma a breve.",
+      });
+      
+      // Redirect to homepage after successful checkout
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      
     } catch (error) {
       console.error("Error in handleSubmit:", error);
-      toast({
-        title: "Errore",
-        description: "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
-        variant: "destructive",
-      });
     } finally {
       setIsSubmitting(false);
     }

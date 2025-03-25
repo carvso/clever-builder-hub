@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -36,7 +36,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-6 py-3 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg">
@@ -58,8 +58,9 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Cart - Moved above mobile menu button */}
-        <div className="relative z-50 flex items-center">
+        {/* Cart and Mobile Menu */}
+        <div className="flex items-center gap-4">
+          {/* Cart */}
           <Sheet>
             <SheetTrigger asChild>
               <button className="flex items-center justify-center hover:text-primary transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100 relative">
@@ -76,52 +77,44 @@ export default function Navbar() {
                 </span>
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="sm:max-w-lg">
-              <SheetHeader>
-                <SheetTitle>Carrello</SheetTitle>
-                <SheetDescription>
-                  Articoli nel tuo carrello.
-                </SheetDescription>
-              </SheetHeader>
-              {isMounted ? <Cart /> : null}
+            <SheetContent side="right" className="w-full sm:max-w-lg p-0">
+              <div className="h-full flex flex-col">
+                <SheetHeader className="p-6 border-b">
+                  <SheetTitle>Carrello</SheetTitle>
+                  <SheetDescription>
+                    Articoli nel tuo carrello.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="flex-1 overflow-y-auto">
+                  {isMounted ? <Cart /> : null}
+                </div>
+              </div>
             </SheetContent>
           </Sheet>
-        </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={toggleMenu}
-          className="md:hidden text-gray-500 hover:text-primary focus:outline-none focus:text-primary transition-colors"
-        >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+          {/* Mobile Menu Button */}
+          <button
+            onClick={toggleMenu}
+            className="md:hidden text-gray-500 hover:text-primary focus:outline-none focus:text-primary transition-colors p-2 rounded-lg hover:bg-gray-100"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
-        </button>
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <div
         className={`md:hidden ${
           isMenuOpen ? "block" : "hidden"
-        } bg-gray-50 py-4`}
+        } bg-white border-t`}
       >
-        <nav className="flex flex-col items-center space-y-3">
+        <nav className="container mx-auto px-4 py-3 flex flex-col space-y-2">
           {navigation.map((item) => (
             <Link
               key={item.name}
               to={item.href}
-              className="font-medium text-gray-700 hover:text-primary transition-colors block py-2"
+              className="font-medium text-gray-700 hover:text-primary transition-colors block py-2 px-4 rounded-lg hover:bg-gray-50"
+              onClick={() => setIsMenuOpen(false)}
             >
               {item.name}
             </Link>

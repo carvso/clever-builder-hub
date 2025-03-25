@@ -3,17 +3,13 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// Ottieni il nome del repository da package.json per configurare la base URL su GitHub Pages
-const repoName = "clever-builder-hub";
-
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
   },
-  // Base URL per GitHub Pages
-  base: mode === 'production' ? `/${repoName}/` : '/',
+  base: '/',
   plugins: [
     react(),
     mode === 'development' &&

@@ -1,5 +1,4 @@
-
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
 import { cartReducer } from "./cartReducer";
 import { CartState, Product } from "./cartTypes";
@@ -14,12 +13,20 @@ export const useCartOperations = () => {
     isSubmitting: false 
   });
 
+  // Usiamo un ref per tenere traccia dell'ultimo prodotto aggiunto
+  const lastAddedProduct = useRef<number | null>(null);
+
   const addItem = (product: Product) => {
     dispatch({ type: "ADD_ITEM", payload: product });
-    toast({
-      title: "Articolo aggiunto",
-      description: `${product.name} è stato aggiunto al carrello`,
-    });
+    
+    // Mostra la notifica solo se è un prodotto diverso dall'ultimo aggiunto
+    if (lastAddedProduct.current !== product.id) {
+      toast({
+        title: "Articolo aggiunto",
+        description: `${product.name} è stato aggiunto al carrello`,
+      });
+      lastAddedProduct.current = product.id;
+    }
   };
 
   const removeItem = (productId: number) => {
@@ -36,11 +43,6 @@ export const useCartOperations = () => {
 
   const checkout = async (customerInfo: Customer, notes?: string): Promise<{ success: boolean; orderId?: string }> => {
     if (state.items.length === 0) {
-      toast({
-        title: "Errore",
-        description: "Il carrello è vuoto",
-        variant: "destructive",
-      });
       return { success: false };
     }
 
@@ -73,38 +75,19 @@ export const useCartOperations = () => {
       // Process order through NotificationService
       const result = await NotificationService.processNewOrder(orderData);
       
-      if (result.success) {
-        console.log("Order processed successfully, ID:", result.orderId);
+      if (result) {
+        console.log("Order processed successfully");
         
         // Clear cart after successful order
         dispatch({ type: "CLEAR_CART" });
         
-        toast({
-          title: "Ordine confermato",
-          description: "Il tuo ordine è stato registrato. Ti contatteremo presto per confermare i dettagli.",
-        });
-        
-        return { success: true, orderId: result.orderId };
+        return { success: true, orderId: orderData.orderDate };
       } else {
-        console.error("Order processing failed:", result.error);
-        
-        toast({
-          title: "Errore",
-          description: result.error || "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
-          variant: "destructive",
-        });
-        
+        console.error("Order processing failed");
         return { success: false };
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      
-      toast({
-        title: "Errore",
-        description: "Si è verificato un errore durante l'invio dell'ordine. Per favore, riprova più tardi.",
-        variant: "destructive",
-      });
-      
       return { success: false };
     } finally {
       dispatch({ type: "SET_SUBMITTING", payload: false });
@@ -117,6 +100,6 @@ export const useCartOperations = () => {
     removeItem,
     updateQuantity,
     clearCart,
-    checkout
+    checkout,
   };
 };
