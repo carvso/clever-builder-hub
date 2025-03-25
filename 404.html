@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EdilP2 - Reindirizzamento</title>
-  <script>
-    // GitHub Pages 404 redirect hack per SPA come React Router
-    (function() {
-      // Reindirizza tutte le richieste alla pagina principale
-      var repo = "clever-builder-hub";
-      var path = window.location.pathname;
-      
-      if (path.indexOf('/' + repo + '/') === 0) {
-        path = path.replace('/' + repo + '/', '/');
-      }
-      
-      sessionStorage.setItem('redirect', path);
-      
-      window.location.replace(
-        window.location.origin + 
-        (window.location.hostname === 'localhost' ? '' : '/' + repo) + 
-        '/'
-      );
-    })();
-  </script>
-</head>
-<body>
-  <p>Reindirizzamento in corso...</p>
-</body>
-</html> 
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/e2.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="EdilP2 - Materiali Edili e Noleggio Macchinari a Siracusa. Fornitura di materiali edili di qualità, consegna in cantiere e servizio di noleggio macchinari per cantieri. Disponibili a Siracusa, Solarino e Floridia." />
+    <meta property="og:title" content="EdilP2 - Materiali Edili e Noleggio Macchinari | Siracusa" />
+    <meta property="og:description" content="Fornitura di materiali edili di qualità, consegna in cantiere e noleggio macchinari per cantieri a Siracusa, Solarino e Floridia. Servizio professionale e prezzi competitivi." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://www.edilp2.it" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="EdilP2" />
+    <meta property="og:locale" content="it_IT" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EdilP2 - Materiali Edili e Noleggio Macchinari | Siracusa" />
+    <meta name="twitter:description" content="Fornitura di materiali edili di qualità, consegna in cantiere e noleggio macchinari per cantieri a Siracusa, Solarino e Floridia." />
+    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:site" content="@edilp2" />
+    <title>EdilP2 - Materiali Edili e Noleggio Macchinari | Siracusa, Solarino, Floridia</title>
+    <meta name="author" content="EdilP2" />
+    <meta name="keywords" content="materiali edili siracusa, noleggio mezzi pesanti con conducente siracusa, materiali edili solarino, noleggio mezzi pesanti floridia, edilizia siracusa provincia, mezzi con conducente siracusa, consegna materiali edili, noleggio macchinari edili, materiali edili prezzi, forniture edili" />
+    <meta name="robots" content="index, follow" />
+    <meta name="geo.region" content="IT-SR" />
+    <meta name="geo.placename" content="Siracusa" />
+    <meta name="geo.position" content="37.0841;15.2733" />
+    <link rel="canonical" href="https://www.edilp2.it" />
+    <script type="module" crossorigin src="/assets/index-Bawtunza.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-B4gp4h6V.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BfHv8IIr.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
