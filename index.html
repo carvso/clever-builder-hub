@@ -15,24 +15,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      // Gestione reindirizzamento dalla pagina 404.html
-      (function() {
-        var redirect = sessionStorage.getItem('redirect');
-        if (redirect && redirect !== window.location.pathname) {
-          sessionStorage.removeItem('redirect');
-          var baseUrl = window.location.pathname.replace(/\/$/, '');
-          var newPath = baseUrl + redirect;
-          history.replaceState(null, null, newPath);
-        }
-      })();
-    </script>
-    <script type="module" crossorigin src="/clever-builder-hub/assets/index-COZ3x3e-.js"></script>
-    <link rel="modulepreload" crossorigin href="/clever-builder-hub/assets/vendor-B4gp4h6V.js">
-    <link rel="stylesheet" crossorigin href="/clever-builder-hub/assets/index-BfHv8IIr.css">
+    <script type="module" crossorigin src="/assets/index-DQXE8qEu.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-B4gp4h6V.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BfHv8IIr.css">
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   </body>
 </html>
