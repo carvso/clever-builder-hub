@@ -10,7 +10,7 @@ const products = [
     description: "Mattoni in argilla di alta qualità per murature portanti",
     price: "0.80€/pz",
     category: "Mattoni",
-    image: getImagePath("/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png"),
+    image: getImagePath("/lovable-uploads/materiale-edilizia.png"),
   },
   // ... keep existing code (products array)
 ];
