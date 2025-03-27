@@ -4,7 +4,7 @@ import { getImagePath } from "@/utils/imageUtils";
 
 export default function MaterialsCTASection() {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-secondary">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1 relative">
@@ -14,7 +14,7 @@ export default function MaterialsCTASection() {
                 alt="Materiali edili di qualità" 
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             </div>
             
             <div className="absolute bottom-6 left-6 right-6 p-6 bg-white rounded-xl shadow-lg">
@@ -46,51 +46,74 @@ export default function MaterialsCTASection() {
             </div>
           </div>
           
-          <div className="order-1 lg:order-2">
-            <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
-              Da EdilP2, qualità garantita
-            </span>
-            <h2 className="text-3xl font-bold text-dark mb-6 leading-tight">
-              Materiali edili certificati per ogni tipo di progetto
-            </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Da oltre 25 anni, EdilP2 seleziona i migliori materiali da costruzione per garantire 
-              durabilità, sicurezza e sostenibilità nei tuoi progetti.
-            </p>
-            
-            <div className="grid sm:grid-cols-2 gap-6 mb-8">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-primary/10 rounded-xl">
-                  <Package className="w-6 h-6 text-primary" />
+          <div className="order-1 lg:order-2 space-y-8">
+            <div>
+              <span className="inline-block px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-medium mb-6">
+                Materiali di qualità
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                Soluzioni complete per ogni fase del tuo progetto
+              </h2>
+              <p className="text-lg text-gray-300 mb-8">
+                Da mattoni e cemento a materiali per l'isolamento, offriamo tutto ciò che serve 
+                per completare il tuo progetto di costruzione con la massima qualità.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-full bg-primary/20">
+                  <Package className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-dark mb-2">Consegna rapida</h3>
-                  <p className="text-gray-600 text-sm">
-                    Materiali disponibili in magazzino con consegna in 24/48 ore
+                  <h3 className="font-semibold text-white mb-1">Materiali Certificati</h3>
+                  <p className="text-sm text-gray-400">
+                    Prodotti testati e conformi alle normative
                   </p>
                 </div>
               </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-primary/10 rounded-xl">
-                  <ShieldCheck className="w-6 h-6 text-primary" />
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-full bg-primary/20">
+                  <Box className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-dark mb-2">Materiali certificati</h3>
-                  <p className="text-gray-600 text-sm">
-                    Tutti i prodotti rispettano le normative europee di sicurezza
+                  <h3 className="font-semibold text-white mb-1">Ampia Selezione</h3>
+                  <p className="text-sm text-gray-400">
+                    Tutto ciò che serve per il tuo cantiere
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-full bg-primary/20">
+                  <ShieldCheck className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-1">Qualità Garantita</h3>
+                  <p className="text-sm text-gray-400">
+                    Materiali di prima scelta
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-full bg-primary/20">
+                  <ArrowRight className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-1">Consegna Rapida</h3>
+                  <p className="text-sm text-gray-400">
+                    Direttamente in cantiere
                   </p>
                 </div>
               </div>
             </div>
-            
-            <Link 
-              to="/catalogo" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium"
-            >
-              Esplora il nostro catalogo
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div>
+              <Link 
+                to="/catalogo" 
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium hover-lift"
+              >
+                Esplora il catalogo
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

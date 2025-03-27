@@ -64,23 +64,23 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-[80vh] flex items-center bg-light">
+    <section className="relative min-h-[80vh] flex items-center bg-dark">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <div>
               <span 
-                className={`inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6 ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}
+                className={`inline-block px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-medium mb-6 ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}
               >
                 Leader nel settore edile dal 1998
               </span>
               <h1 
-                className={`text-4xl md:text-5xl font-bold text-dark mb-6 leading-tight ${isVisible ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}
+                className={`text-4xl md:text-5xl font-bold text-white mb-6 leading-tight ${isVisible ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}
               >
                 Materiali e macchinari professionali per il tuo cantiere
               </h1>
               <p 
-                className={`text-lg text-gray-600 mb-8 ${isVisible ? 'animate-slide-in-left delay-200' : 'opacity-0'}`}
+                className={`text-lg text-gray-300 mb-8 ${isVisible ? 'animate-slide-in-left delay-200' : 'opacity-0'}`}
               >
                 Scopri i migliori materiali edili e macchinari per costruzioni sicure e di qualità. Consegna rapida direttamente in cantiere a Siracusa, Solarino, Floridia e provincia!
               </p>
@@ -93,7 +93,7 @@ export default function HeroSection() {
                 placeholder="Cerca materiali o macchinari..."
                 value={searchQuery}
                 onChange={handleSearch}
-                className="w-full px-6 py-4 pr-16 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-dark hover-glow"
+                className="w-full px-6 py-4 pr-16 rounded-2xl bg-secondary border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 text-white hover-glow"
               />
               <button 
                 onClick={() => navigate("/catalogo")}
@@ -103,13 +103,13 @@ export default function HeroSection() {
               </button>
 
               {isSearching && filteredProducts.length > 0 && (
-                <div className="absolute z-50 left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-scale-in">
+                <div className="absolute z-50 left-0 right-0 mt-2 bg-secondary rounded-xl shadow-lg border border-gray-700 overflow-hidden animate-scale-in">
                   <div className="max-h-[300px] overflow-y-auto">
                     {filteredProducts.map((product) => (
                       <button
                         key={product.id}
                         onClick={() => handleProductClick(product.id)}
-                        className="w-full p-4 text-left hover:bg-gray-50 flex items-center gap-4 border-b border-gray-100 last:border-0 transition-colors"
+                        className="w-full p-4 text-left hover:bg-dark/50 flex items-center gap-4 border-b border-gray-700 last:border-0 transition-colors"
                       >
                         <img
                           src={product.image}
@@ -117,8 +117,8 @@ export default function HeroSection() {
                           className="w-12 h-12 object-cover rounded-lg"
                         />
                         <div>
-                          <h3 className="font-medium text-dark">{product.name}</h3>
-                          <p className="text-sm text-gray-600">{product.category}</p>
+                          <h3 className="font-medium text-white">{product.name}</h3>
+                          <p className="text-sm text-gray-400">{product.category}</p>
                         </div>
                         <span className="ml-auto font-medium text-primary">
                           {product.price}
@@ -141,7 +141,7 @@ export default function HeroSection() {
               </button>
               <button 
                 onClick={() => navigate("/servizi")}
-                className="px-6 py-3 bg-white border border-primary text-primary rounded-xl hover:bg-primary/5 transition-colors font-medium hover-lift flex items-center gap-2"
+                className="px-6 py-3 bg-secondary border border-primary text-primary rounded-xl hover:bg-primary/10 transition-colors font-medium hover-lift flex items-center gap-2"
               >
                 Noleggia macchinari
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,14 +168,14 @@ export default function HeroSection() {
               ))}
             </div>
             <div 
-              className={`absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl ${isVisible ? 'animate-slide-in-right delay-400' : 'opacity-0'}`}
+              className={`absolute bottom-6 left-6 right-6 bg-secondary/90 backdrop-blur-sm p-6 rounded-xl ${isVisible ? 'animate-slide-in-right delay-400' : 'opacity-0'}`}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-dark mb-1">
+                  <p className="font-semibold text-white mb-1">
                     Cantieri in tutta la provincia
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-400">
                     Siracusa, Solarino, Floridia e provincia
                   </p>
                 </div>

@@ -49,7 +49,7 @@ export default function Showcase() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-light">
+    <section ref={sectionRef} className="py-24 bg-secondary">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
@@ -58,7 +58,7 @@ export default function Showcase() {
               className={`p-8 rounded-2xl transition-all duration-300 hover-lift hover-glow flex flex-col items-center text-center ${
                 feature.variant === "primary"
                   ? "bg-primary text-white"
-                  : "bg-white text-dark"
+                  : "bg-dark text-white"
               } ${isVisible ? `animate-fade-in delay-${index * 200}` : 'opacity-0'}`}
             >
               <div className="flex justify-center">
@@ -71,7 +71,7 @@ export default function Showcase() {
                 />
               </div>
               <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-              <p className={`${feature.variant === "primary" ? "text-white/90" : "text-gray-600"} max-w-xs mx-auto`}>
+              <p className={`${feature.variant === "primary" ? "text-white/90" : "text-gray-400"} max-w-xs mx-auto`}>
                 {feature.description}
               </p>
             </div>
