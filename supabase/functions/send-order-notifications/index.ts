@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import sendgrid from "https://deno.land/x/sendgrid@0.0.3/mod.ts";
@@ -60,7 +59,7 @@ async function sendEmailNotification(order: Order): Promise<boolean> {
     console.log("Starting email notification process for order:", order.id);
     
     const SENDGRID_API_KEY = Deno.env.get("SENDGRID_API_KEY");
-    const STORE_EMAIL = Deno.env.get("STORE_EMAIL") || "vcarusobusiness@gmail.com";
+    const STORE_EMAIL = Deno.env.get("STORE_EMAIL") || "paolomangiafico29@gmail.com";
     
     if (!SENDGRID_API_KEY) {
       console.error("SendGrid API Key not found in environment variables");

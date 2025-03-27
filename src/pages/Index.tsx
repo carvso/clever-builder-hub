@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import PartnerCarousel from "@/components/PartnerCarousel";
 import Showcase from "@/components/Showcase";
-import ProductCategories from "@/components/ProductCategories";
 import MaterialsCTASection from "@/components/MaterialsCTASection";
 import DriverRentalSection from "@/components/DriverRentalSection";
-import LocationSection from "@/components/LocationSection";
 import NoleggioCtaSection from "@/components/NoleggioCtaSection";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
+import LocationSection from "@/components/LocationSection";
 
 const Index = () => {
   // Aggiungi animazione al caricamento della pagina
@@ -25,11 +24,9 @@ const Index = () => {
   return (
     <main className="min-h-screen overflow-hidden">
       <HeroSection />
-      <ProductCategories />
       <MaterialsCTASection />
       <PartnerCarousel />
-      <Showcase />
-      <div className="py-12 bg-gray-50">
+      <div className="py-12 bg-muted">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">I nostri servizi</h2>
           <div className="grid md:grid-cols-2 gap-8">
@@ -38,6 +35,7 @@ const Index = () => {
           </div>
         </div>
       </div>
+      <Showcase />
       <DriverRentalSection />
       <LocationSection />
     </main>

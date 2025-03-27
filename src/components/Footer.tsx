@@ -1,10 +1,9 @@
-
 import { Facebook, Instagram, Mail, MapPin, Phone, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-dark text-white pt-16 pb-8">
+    <footer className="bg-secondary text-white pt-16 pb-8">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-8">
           <div className="col-span-2">
@@ -20,13 +19,13 @@ export default function Footer() {
               soluzioni innovative.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full bg-dark flex items-center justify-center hover:bg-primary transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full bg-dark flex items-center justify-center hover:bg-primary transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full bg-dark flex items-center justify-center hover:bg-primary transition-colors">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
@@ -117,11 +116,11 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-          <p>© {new Date().getFullYear()} EdilP2 S.r.l. - P.IVA 01234567890 | Tutti i diritti riservati</p>
+          <p>© {new Date().getFullYear()} EdilP2 S.r.l. - P.IVA 02134040894 | Tutti i diritti riservati</p>
           <div className="flex justify-center gap-4 mt-2">
-            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition-colors">Termini e Condizioni</a>
-            <a href="#" className="hover:text-primary transition-colors">Cookie Policy</a>
+            <a href="#" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>
+            <a href="#" className="text-gray-400 hover:text-primary transition-colors">Termini e Condizioni</a>
+            <a href="#" className="text-gray-400 hover:text-primary transition-colors">Cookie Policy</a>
           </div>
         </div>
       </div>

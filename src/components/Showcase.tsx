@@ -1,4 +1,3 @@
-
 import { Shield, Truck, HeadphonesIcon } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
@@ -56,21 +55,23 @@ export default function Showcase() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className={`p-8 rounded-2xl transition-all duration-300 hover-lift hover-glow ${
+              className={`p-8 rounded-2xl transition-all duration-300 hover-lift hover-glow flex flex-col items-center text-center ${
                 feature.variant === "primary"
                   ? "bg-primary text-white"
                   : "bg-white text-dark"
               } ${isVisible ? `animate-fade-in delay-${index * 200}` : 'opacity-0'}`}
             >
-              <feature.icon
-                className={`w-12 h-12 mb-6 ${
-                  feature.variant === "primary"
-                    ? "text-white"
-                    : "text-primary"
-                } ${isVisible ? 'animate-scale-in' : ''}`}
-              />
+              <div className="flex justify-center">
+                <feature.icon
+                  className={`w-12 h-12 mb-6 ${
+                    feature.variant === "primary"
+                      ? "text-white"
+                      : "text-primary"
+                  } ${isVisible ? 'animate-scale-in' : ''}`}
+                />
+              </div>
               <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-              <p className={feature.variant === "primary" ? "text-white/90" : "text-gray-600"}>
+              <p className={`${feature.variant === "primary" ? "text-white/90" : "text-gray-600"} max-w-xs mx-auto`}>
                 {feature.description}
               </p>
             </div>

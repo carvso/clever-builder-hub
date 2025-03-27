@@ -68,6 +68,7 @@ function formatOrderHtml(order: Order): string {
     <p><strong>Note:</strong> ${order.notes || 'Nessuna nota'}</p>
     <p><strong>Totale:</strong> €${order.total.toFixed(2)}</p>
     <p><strong>Totale con IVA:</strong> €${order.total_with_iva.toFixed(2)}</p>
+    <p><strong>P.IVA:</strong> 02134040894</p>
     <h3>Informazioni Cliente</h3>
     <p><strong>Nome:</strong> ${order.customer_name}</p>
     <p><strong>Email:</strong> ${order.customer_email}</p>
@@ -114,6 +115,7 @@ function formatCustomerHtml(order: Order): string {
     <p><strong>Data:</strong> ${new Date(order.order_date).toLocaleString('it-IT')}</p>
     <p><strong>Totale:</strong> €${order.total.toFixed(2)}</p>
     <p><strong>Totale con IVA:</strong> €${order.total_with_iva.toFixed(2)}</p>
+    <p><strong>P.IVA:</strong> 02134040894</p>
     ${productsHtml}
     <p>Ti contatteremo presto per confermare l'elaborazione del tuo ordine.</p>
     <p>Cordiali saluti,<br>Il team di EdilP2</p>
@@ -131,7 +133,7 @@ async function sendEmail({ to, subject, html }: { to: string; subject: string; h
   try {
     const data = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: ['vcarusobusiness@gmail.com'],
+      to: ['paolomangiafico29@gmail.com'],
       subject,
       html
     });

@@ -21,8 +21,8 @@ export class NotificationService {
       
       console.log("Order saved with ID", savedOrder.id, ", now sending email notification");
       
-      // In test mode, all emails will be sent to vcarusobusiness@gmail.com only
-      console.log("TEST MODE: All emails will be sent to vcarusobusiness@gmail.com only");
+      // In test mode, all emails will be sent to paolomangiafico29@gmail.com only
+      console.log("TEST MODE: All emails will be sent to paolomangiafico29@gmail.com only");
       
       // Send email notification
       const emailResult = await SupabaseService.sendOrderEmailNotification(savedOrder.id);

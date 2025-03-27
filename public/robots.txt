@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.edilp2.it/sitemap.xml
+
+# Disallow checkout and cart pages
+Disallow: /checkout
+Disallow: /cart 

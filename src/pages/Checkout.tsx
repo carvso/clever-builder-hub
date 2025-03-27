@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Trash2, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { Customer } from "@/types/order";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Checkout() {
   const { state, removeItem, updateQuantity, checkout } = useCart();
@@ -17,6 +18,11 @@ export default function Checkout() {
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState<string | undefined>(undefined);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const calculateTotal = () => {
     return state.items.reduce((total, item) => {
@@ -40,7 +46,6 @@ export default function Checkout() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     if (!customerInfo.name || !customerInfo.email || !customerInfo.phone) {
       return;
     }
@@ -49,19 +54,16 @@ export default function Checkout() {
       setIsSubmitting(true);
       console.log("Submitting order with customer info:", customerInfo);
       
-      // Submit order
       const result = await checkout(customerInfo, notes);
       console.log("Order submission result:", result);
       
       setOrderId(result.orderId);
       
-      // Mostra il messaggio di successo
       toast({
         title: "Ordine Confermato",
         description: "Il tuo ordine è stato inviato con successo! Riceverai una email di conferma a breve.",
       });
       
-      // Redirect to homepage after successful checkout
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -78,31 +80,45 @@ export default function Checkout() {
   const totalWithIva = total + iva;
 
   return (
-    <div className="min-h-screen bg-light">
-      <div className="container mx-auto px-6 py-12">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="min-h-screen bg-dark"
+    >
+      <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <Link
             to="/catalogo"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-primary mb-8"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-primary mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
             Torna al catalogo
           </Link>
 
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
-            <h1 className="text-2xl font-bold text-dark mb-6">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-secondary rounded-2xl p-6 shadow-lg"
+          >
+            <h1 className="text-2xl font-bold text-white mb-6">
               Conferma Ordine
             </h1>
 
             <form onSubmit={handleSubmit}>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h2 className="text-lg font-semibold mb-4">
+              <div className="grid gap-8">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <h2 className="text-lg font-semibold mb-4 text-white">
                     Informazioni di Contatto
                   </h2>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Nome e Cognome *
                       </label>
                       <input
@@ -111,11 +127,11 @@ export default function Checkout() {
                         value={customerInfo.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        className="w-full px-4 py-2 rounded-xl bg-dark border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary/20"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Email *
                       </label>
                       <input
@@ -124,11 +140,11 @@ export default function Checkout() {
                         value={customerInfo.email}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        className="w-full px-4 py-2 rounded-xl bg-dark border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary/20"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Telefono *
                       </label>
                       <input
@@ -137,11 +153,11 @@ export default function Checkout() {
                         value={customerInfo.phone}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        className="w-full px-4 py-2 rounded-xl bg-dark border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary/20"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Note aggiuntive
                       </label>
                       <textarea
@@ -149,46 +165,53 @@ export default function Checkout() {
                         value={notes}
                         onChange={handleInputChange}
                         rows={3}
-                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        className="w-full px-4 py-2 rounded-xl bg-dark border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary/20"
                         placeholder="Eventuali specifiche sull'ordine..."
                       />
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                <div>
-                  <h2 className="text-lg font-semibold mb-4">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <h2 className="text-lg font-semibold mb-4 text-white">
                     Riepilogo Ordine
                   </h2>
                   <div className="space-y-4">
                     {state.items.length === 0 ? (
-                      <div className="p-4 bg-yellow-50 rounded-xl">
-                        <p className="text-yellow-800">Il tuo carrello è vuoto</p>
+                      <div className="p-4 bg-dark/50 rounded-xl">
+                        <p className="text-gray-300">Il tuo carrello è vuoto</p>
                       </div>
                     ) : (
-                      state.items.map((item) => (
-                        <div
+                      state.items.map((item, index) => (
+                        <motion.div
                           key={item.id}
-                          className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 + index * 0.1 }}
+                          className="flex items-center justify-between p-4 bg-dark/50 rounded-xl"
                         >
                           <div>
-                            <h3 className="font-medium">{item.name}</h3>
-                            <p className="text-sm text-gray-600">{item.price}</p>
+                            <h3 className="font-medium text-white">{item.name}</h3>
+                            <p className="text-sm text-gray-400">{item.price}</p>
                           </div>
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-2">
                               <button
                                 type="button"
                                 onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                                className="px-2 py-1 bg-gray-200 rounded"
+                                className="px-2 py-1 bg-dark rounded hover:bg-primary/20 transition-colors text-white"
                               >
                                 -
                               </button>
-                              <span className="w-8 text-center">{item.quantity}</span>
+                              <span className="w-8 text-center text-white">{item.quantity}</span>
                               <button
                                 type="button"
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="px-2 py-1 bg-gray-200 rounded"
+                                className="px-2 py-1 bg-dark rounded hover:bg-primary/20 transition-colors text-white"
                               >
                                 +
                               </button>
@@ -196,63 +219,83 @@ export default function Checkout() {
                             <button
                               type="button"
                               onClick={() => removeItem(item.id)}
-                              className="text-red-500 hover:text-red-600"
+                              className="text-red-400 hover:text-red-300 transition-colors"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
-                        </div>
+                        </motion.div>
                       ))
                     )}
                   </div>
 
                   {state.items.length > 0 && (
-                    <div className="mt-6 bg-gray-50 rounded-xl p-6">
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="mt-6 bg-dark/50 rounded-xl p-6"
+                    >
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                          <span className="font-medium">Prodotti</span>
-                          <span>{total.toFixed(2)}€</span>
+                          <span className="font-medium text-gray-300">Prodotti</span>
+                          <span className="text-white">{total.toFixed(2)}€</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="font-medium">IVA (22%)</span>
-                          <span>{iva.toFixed(2)}€</span>
+                          <span className="font-medium text-gray-300">IVA (22%)</span>
+                          <span className="text-white">{iva.toFixed(2)}€</span>
                         </div>
-                        <div className="border-t border-gray-200 pt-4">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-gray-300">P.IVA</span>
+                          <span className="text-white">02134040894</span>
+                        </div>
+                        <div className="border-t border-gray-700 pt-4">
                           <div className="flex items-center justify-between font-semibold">
-                            <span>Totale</span>
-                            <span>{totalWithIva.toFixed(2)}€</span>
+                            <span className="text-white">Totale</span>
+                            <span className="text-primary">{totalWithIva.toFixed(2)}€</span>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
 
-                  <div className="mt-6 bg-yellow-50 rounded-xl p-4">
-                    <p className="text-sm text-yellow-800">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                    className="mt-6 bg-dark/50 rounded-xl p-4"
+                  >
+                    <p className="text-sm text-gray-300">
                       Il pagamento verrà effettuato in sede al momento del ritiro.
                     </p>
-                  </div>
+                  </motion.div>
 
-                  <Button 
-                    type="submit"
-                    className="w-full mt-6 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium"
-                    disabled={state.items.length === 0 || isSubmitting || state.isSubmitting}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
                   >
-                    {isSubmitting || state.isSubmitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Invio in corso...
-                      </>
-                    ) : (
-                      "Conferma Ordine"
-                    )}
-                  </Button>
-                </div>
+                    <Button 
+                      type="submit"
+                      className="w-full mt-6 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium"
+                      disabled={state.items.length === 0 || isSubmitting || state.isSubmitting}
+                    >
+                      {isSubmitting || state.isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Invio in corso...
+                        </>
+                      ) : (
+                        "Conferma Ordine"
+                      )}
+                    </Button>
+                  </motion.div>
+                </motion.div>
               </div>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
