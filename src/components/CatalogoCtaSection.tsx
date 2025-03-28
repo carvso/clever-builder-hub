@@ -30,61 +30,51 @@ export default function CatalogoCtaSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 bg-white overflow-hidden">
+    <section ref={sectionRef} className="py-16 bg-dark overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="relative rounded-3xl bg-gray-50 overflow-hidden border border-gray-100">
+        <div className="relative rounded-3xl bg-gradient-to-r from-gray-800 to-gray-900 overflow-hidden">
+          <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+              <path fill="#FFF" d="M47.5,-57.2C59.9,-45.3,67.3,-28.5,71.5,-9.7C75.8,9,76.9,29.8,67.6,44.4C58.3,59.1,38.5,67.7,17.8,73.2C-2.9,78.8,-25.4,81.2,-40.2,72.5C-55,63.8,-62,43.9,-67.9,23.5C-73.8,3.2,-78.6,-17.7,-72.2,-33.8C-65.8,-49.9,-48.1,-61.3,-30.9,-70.5C-13.6,-79.7,3.2,-86.7,18.1,-81.1C33,-75.5,35.1,-69.2,47.5,-57.2Z" transform="translate(100 100)" />
+            </svg>
+          </div>
+          
           <div className="grid md:grid-cols-2 gap-8 py-12 px-8 md:px-12">
-            <div className={`relative ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
-              <div className="relative">
-                <img 
-                  src={getImagePath("/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png")} 
-                  alt="Materiali EdilP2" 
-                  className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
-                />
-                <div className="absolute top-6 left-0 -translate-x-1/4 bg-primary py-3 px-5 rounded-xl shadow-lg text-white">
-                  <div className="text-center">
-                    <p className="text-sm text-white/80">Sconti fino al</p>
-                    <p className="text-xl font-bold">15%</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className={`text-dark space-y-6 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
-                <Package className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Materiali premium</span>
+            <div className={`text-white space-y-6 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-700/50 backdrop-blur-sm rounded-full">
+                <Package className="w-4 h-4" />
+                <span className="text-sm font-medium">Materiali premium</span>
               </div>
               
-              <h2 className="text-3xl md:text-4xl font-bold leading-tight text-gray-900">
+              <h2 className="text-3xl md:text-4xl font-bold leading-tight">
                 Completa il tuo progetto con i migliori materiali
               </h2>
               
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-300 text-lg">
                 Oltre al noleggio mezzi, EdilP2 offre una vasta gamma di materiali edili 
                 di prima qualità per ogni fase del tuo progetto di costruzione.
               </p>
               
               <div className="flex flex-wrap gap-6 pt-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-full bg-primary/10">
-                    <ShieldCheck className="w-5 h-5 text-primary" />
+                  <div className="p-2 rounded-full bg-gray-700/50">
+                    <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Qualità Certificata</h3>
-                    <p className="text-gray-600 text-sm">
+                    <h3 className="font-semibold">Qualità Certificata</h3>
+                    <p className="text-gray-300 text-sm">
                       Materiali testati e conformi alle normative
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-full bg-primary/10">
-                    <Truck className="w-5 h-5 text-primary" />
+                  <div className="p-2 rounded-full bg-gray-700/50">
+                    <Truck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Consegna in Cantiere</h3>
-                    <p className="text-gray-600 text-sm">
+                    <h3 className="font-semibold">Consegna in Cantiere</h3>
+                    <p className="text-gray-300 text-sm">
                       Trasporto e scarico direttamente in loco
                     </p>
                   </div>
@@ -94,13 +84,29 @@ export default function CatalogoCtaSection() {
               <div className="pt-4">
                 <Link 
                   to="/catalogo" 
-                  className={`inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium hover-lift ${
+                  className={`inline-flex items-center gap-2 px-6 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors font-medium hover-lift ${
                     isVisible ? 'animate-scale-in delay-200' : 'opacity-0'
                   }`}
                 >
                   Esplora il nostro catalogo
                   <ArrowRight className="w-4 h-4" />
                 </Link>
+              </div>
+            </div>
+            
+            <div className={`flex items-center justify-center ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
+              <div className="relative">
+                <img 
+                  src={getImagePath("/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png")} 
+                  alt="Materiali edili di qualità" 
+                  className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
+                />
+                <div className="absolute bottom-6 right-0 translate-x-1/3 bg-gray-800 py-3 px-5 rounded-xl shadow-lg">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-400">Disponibili da</p>
+                    <p className="text-xl font-bold text-white">€0.50/pz</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
