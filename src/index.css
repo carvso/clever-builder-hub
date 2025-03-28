@@ -72,18 +72,16 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(20px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
   
   @keyframes slideInLeft {
     from {
       opacity: 0;
-      transform: translateX(-30px);
+      transform: translateX(-20px);
     }
     to {
       opacity: 1;
@@ -94,7 +92,7 @@
   @keyframes slideInRight {
     from {
       opacity: 0;
-      transform: translateX(30px);
+      transform: translateX(20px);
     }
     to {
       opacity: 1;
@@ -105,7 +103,7 @@
   @keyframes scaleIn {
     from {
       opacity: 0;
-      transform: scale(0.9);
+      transform: scale(0.95);
     }
     to {
       opacity: 1;
@@ -126,19 +124,19 @@
   }
   
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
+    animation: fadeIn 0.5s ease-in-out forwards;
   }
   
   .animate-slide-in-left {
-    animation: slideInLeft 0.5s ease-out forwards;
+    animation: slideInLeft 0.5s ease-in-out forwards;
   }
   
   .animate-slide-in-right {
-    animation: slideInRight 0.5s ease-out forwards;
+    animation: slideInRight 0.5s ease-in-out forwards;
   }
   
   .animate-scale-in {
-    animation: scaleIn 0.4s ease-out forwards;
+    animation: scaleIn 0.5s ease-in-out forwards;
   }
   
   .animate-pulse-slow {
@@ -167,11 +165,11 @@
   
   /* Effetti hover */
   .hover-lift {
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease-in-out;
   }
   
   .hover-lift:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
   }
   
   .hover-glow {
@@ -181,5 +179,9 @@
   .hover-glow:hover {
     box-shadow: 0 0 15px rgba(230, 126, 34, 0.3);
     transform: translateY(-3px);
+  }
+
+  .bg-gray-50 {
+    --tw-bg-opacity: 1;
   }
 }
