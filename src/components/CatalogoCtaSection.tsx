@@ -30,9 +30,9 @@ export default function CatalogoCtaSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 bg-dark overflow-hidden">
+    <section ref={sectionRef} className="py-16 bg-secondary overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="relative rounded-3xl bg-gradient-to-r from-gray-800 to-gray-900 overflow-hidden">
+        <div className="relative rounded-3xl bg-gradient-to-r from-secondary to-dark overflow-hidden border border-gray-700/50">
           <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
               <path fill="#FFF" d="M47.5,-57.2C59.9,-45.3,67.3,-28.5,71.5,-9.7C75.8,9,76.9,29.8,67.6,44.4C58.3,59.1,38.5,67.7,17.8,73.2C-2.9,78.8,-25.4,81.2,-40.2,72.5C-55,63.8,-62,43.9,-67.9,23.5C-73.8,3.2,-78.6,-17.7,-72.2,-33.8C-65.8,-49.9,-48.1,-61.3,-30.9,-70.5C-13.6,-79.7,3.2,-86.7,18.1,-81.1C33,-75.5,35.1,-69.2,47.5,-57.2Z" transform="translate(100 100)" />
@@ -41,7 +41,7 @@ export default function CatalogoCtaSection() {
           
           <div className="grid md:grid-cols-2 gap-8 py-12 px-8 md:px-12">
             <div className={`text-white space-y-6 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-700/50 backdrop-blur-sm rounded-full">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-dark/50 backdrop-blur-sm rounded-full border border-gray-700/50">
                 <Package className="w-4 h-4" />
                 <span className="text-sm font-medium">Materiali premium</span>
               </div>
@@ -57,7 +57,7 @@ export default function CatalogoCtaSection() {
               
               <div className="flex flex-wrap gap-6 pt-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-full bg-gray-700/50">
+                  <div className="p-2 rounded-full bg-dark/50 border border-gray-700/50">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
@@ -69,7 +69,7 @@ export default function CatalogoCtaSection() {
                 </div>
                 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-full bg-gray-700/50">
+                  <div className="p-2 rounded-full bg-dark/50 border border-gray-700/50">
                     <Truck className="w-5 h-5" />
                   </div>
                   <div>
@@ -84,7 +84,7 @@ export default function CatalogoCtaSection() {
               <div className="pt-4">
                 <Link 
                   to="/catalogo" 
-                  className={`inline-flex items-center gap-2 px-6 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors font-medium hover-lift ${
+                  className={`inline-flex items-center gap-2 px-6 py-3 bg-dark text-white rounded-xl hover:bg-dark/80 transition-colors font-medium hover-lift border border-gray-700/50 ${
                     isVisible ? 'animate-scale-in delay-200' : 'opacity-0'
                   }`}
                 >
@@ -99,9 +99,9 @@ export default function CatalogoCtaSection() {
                 <img 
                   src={getImagePath("/lovable-uploads/7dc003ab-aa4a-4e77-a0f4-a031f5755afd.png")} 
                   alt="Materiali edili di qualità" 
-                  className="rounded-xl shadow-xl max-h-80 object-cover hover-lift"
+                  className="rounded-xl shadow-xl max-h-80 object-cover hover-lift border border-gray-700/50"
                 />
-                <div className="absolute bottom-6 right-0 translate-x-1/3 bg-gray-800 py-3 px-5 rounded-xl shadow-lg">
+                <div className="absolute bottom-6 right-0 translate-x-1/3 bg-dark py-3 px-5 rounded-xl shadow-lg border border-gray-700/50">
                   <div className="text-center">
                     <p className="text-sm text-gray-400">Disponibili da</p>
                     <p className="text-xl font-bold text-white">€0.50/pz</p>
