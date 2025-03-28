@@ -1,19 +1,18 @@
-
 import React from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
 export default function LocationSection() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-secondary">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-dark mb-4">Dove Trovarci</h2>
-          <p className="text-gray-600">Vieni a trovarci nel nostro magazzino</p>
+          <h2 className="text-3xl font-bold text-white mb-4">Dove Trovarci</h2>
+          <p className="text-gray-300">Vieni a trovarci nel nostro magazzino</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div className="space-y-6">
-            <div className="bg-light rounded-2xl p-6">
+            <div className="bg-white rounded-2xl p-6">
               <div className="flex items-start gap-4">
                 <MapPin className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
@@ -27,7 +26,7 @@ export default function LocationSection() {
               </div>
             </div>
 
-            <div className="bg-light rounded-2xl p-6">
+            <div className="bg-white rounded-2xl p-6">
               <div className="flex items-start gap-4">
                 <Phone className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
@@ -40,7 +39,7 @@ export default function LocationSection() {
               </div>
             </div>
 
-            <div className="bg-light rounded-2xl p-6">
+            <div className="bg-white rounded-2xl p-6">
               <div className="flex items-start gap-4">
                 <Mail className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
