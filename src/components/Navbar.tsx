@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -5,9 +6,6 @@ import { ShoppingCart, Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Cart from "./Cart";
@@ -61,14 +59,19 @@ export default function Navbar() {
 
         {/* Cart and Mobile Menu */}
         <div className="flex items-center gap-4">
-          <Link to="/carrello" className="relative">
-            <ShoppingCart className="w-6 h-6 text-gray-300 hover:text-primary transition-colors" />
-            {state.items.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                {state.items.length}
-              </span>
-            )}
-          </Link>
+          <Sheet>
+            <SheetTrigger className="relative">
+              <ShoppingCart className="w-6 h-6 text-gray-300 hover:text-primary transition-colors" />
+              {state.items.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {state.items.length}
+                </span>
+              )}
+            </SheetTrigger>
+            <SheetContent className="bg-gray-800 border-gray-700 text-white">
+              <Cart />
+            </SheetContent>
+          </Sheet>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden text-gray-300 hover:text-primary transition-colors"

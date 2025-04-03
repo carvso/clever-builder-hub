@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import PartnerCarousel from "@/components/PartnerCarousel";
@@ -26,7 +27,7 @@ const Index = () => {
       <HeroSection />
       <MaterialsCTASection />
       <PartnerCarousel />
-      <div className="py-12 bg-secondary">
+      <div className="py-12 bg-dark">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12 text-white">I nostri servizi</h2>
           <div className="grid md:grid-cols-2 gap-8">

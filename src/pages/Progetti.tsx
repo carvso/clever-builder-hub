@@ -113,7 +113,7 @@ export default function Progetti() {
   );
   
   return (
-    <div className="min-h-screen bg-gray-50 overflow-hidden">
+    <div className="min-h-screen bg-dark overflow-hidden">
       {/* Banner superior per noleggio macchinari */}
       <div className={`bg-primary relative overflow-hidden ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
         <div className="container mx-auto px-6 py-4">
@@ -138,17 +138,17 @@ export default function Progetti() {
       <main className="py-12">
         <div className="container mx-auto px-6">
           <div className={`text-center max-w-2xl mx-auto mb-12 ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-white mb-4">
               I Nostri Progetti
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               Scopri come i nostri macchinari e materiali hanno contribuito a realizzare progetti 
               di ogni tipo a Siracusa, Solarino, Floridia e in tutta la provincia siciliana.
             </p>
           </div>
           
           {/* Banner per materiali */}
-          <div className={`mb-8 bg-gray-100 rounded-2xl overflow-hidden ${isPageLoaded ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}>
+          <div className={`mb-8 bg-secondary/40 rounded-2xl overflow-hidden ${isPageLoaded ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}>
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 relative h-full">
                 <img 
@@ -163,10 +163,10 @@ export default function Progetti() {
                 </div>
               </div>
               <div className="p-6 md:p-8 md:w-2/3">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                <h3 className="text-2xl font-bold text-white mb-3">
                   Materiali di prima qualità per il tuo progetto
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-300 mb-6">
                   Tutti i materiali utilizzati nei nostri progetti sono disponibili nel nostro catalogo.
                   Offriamo cementi, rasanti, mattoni, inerti e tutto il necessario per costruzioni di qualità,
                   con consegna rapida direttamente in cantiere.
@@ -184,7 +184,7 @@ export default function Progetti() {
           
           {/* Filters */}
           <div className={`bg-white rounded-xl shadow-sm p-4 mb-8 ${isPageLoaded ? 'animate-slide-in-left delay-100' : 'opacity-0'}`}>
-            <div className="flex gap-4 overflow-x-auto pb-4 md:pb-0">
+            <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
                 <button
                   key={category}
@@ -193,7 +193,7 @@ export default function Progetti() {
                     selectedCategory === category 
                       ? "border-primary bg-primary/10 text-primary" 
                       : "border-gray-200 text-gray-700 hover:border-primary hover:text-primary"
-                  } transition-colors whitespace-nowrap text-sm font-medium hover-lift`}
+                  } transition-colors text-sm font-medium hover-lift`}
                 >
                   {category}
                 </button>
@@ -204,12 +204,12 @@ export default function Progetti() {
           {/* Featured Projects (larger layout) */}
           {selectedCategory === "Tutti" && (
             <div className={`mb-12 ${isPageLoaded ? 'animate-fade-in delay-200' : 'opacity-0'}`}>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Progetti in evidenza</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Progetti in evidenza</h2>
               <div className="grid lg:grid-cols-2 gap-8">
                 {projects.filter(p => p.featured).map((project) => (
                   <div 
                     key={project.id}
-                    className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow hover-lift"
+                    className="group bg-secondary/40 rounded-2xl overflow-hidden border border-gray-700 hover:shadow-lg transition-shadow hover-lift"
                   >
                     <div className="relative h-72 overflow-hidden">
                       <img
@@ -236,17 +236,17 @@ export default function Progetti() {
                       </div>
                     </div>
                     <div className="p-6">
-                      <p className="text-gray-600 mb-6">{project.description}</p>
+                      <p className="text-gray-300 mb-6">{project.description}</p>
                       
                       <div className="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                          <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                             <Construction className="w-4 h-4 text-primary" />
                             Macchinari utilizzati
                           </h4>
                           <ul className="space-y-1">
                             {project.services.map((service, idx) => (
-                              <li key={idx} className="text-sm text-gray-600">• {service}</li>
+                              <li key={idx} className="text-sm text-gray-300">• {service}</li>
                             ))}
                           </ul>
                           
@@ -260,13 +260,13 @@ export default function Progetti() {
                         </div>
                         
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                          <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                             <User className="w-4 h-4 text-primary" />
                             Materiali impiegati
                           </h4>
                           <ul className="space-y-1">
                             {project.materials.map((material, idx) => (
-                              <li key={idx} className="text-sm text-gray-600">• {material}</li>
+                              <li key={idx} className="text-sm text-gray-300">• {material}</li>
                             ))}
                           </ul>
                           
@@ -291,7 +291,7 @@ export default function Progetti() {
             {filteredProjects.map((project, index) => (
               <div
                 key={project.id}
-                className={`bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow hover-lift ${
+                className={`bg-secondary/40 rounded-2xl overflow-hidden border border-gray-700 hover:shadow-lg transition-shadow hover-lift ${
                   isPageLoaded ? `animate-fade-in delay-${Math.min(index * 100, 500)}` : 'opacity-0'
                 }`}
               >
@@ -302,31 +302,31 @@ export default function Progetti() {
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 backdrop-blur-sm text-primary text-xs font-medium px-3 py-1 rounded-full">
+                    <span className="bg-dark/90 backdrop-blur-sm text-primary text-xs font-medium px-3 py-1 rounded-full">
                       {project.category}
                     </span>
                   </div>
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-white mb-2">
                     {project.title}
                   </h3>
                   
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="flex items-center gap-1 text-gray-500 text-sm">
+                    <span className="flex items-center gap-1 text-gray-400 text-sm">
                       <Calendar className="w-4 h-4" />
                       {project.date}
                     </span>
-                    <span className="flex items-center gap-1 text-gray-500 text-sm">
+                    <span className="flex items-center gap-1 text-gray-400 text-sm">
                       <Building className="w-4 h-4" />
                       {project.client}
                     </span>
                   </div>
                   
-                  <p className="text-gray-600 mb-6 line-clamp-3">{project.description}</p>
+                  <p className="text-gray-300 mb-6 line-clamp-3">{project.description}</p>
                   
-                  <div className="pt-4 border-t border-gray-100 flex justify-between">
+                  <div className="pt-4 border-t border-gray-700 flex justify-between">
                     <Link 
                       to="/servizi" 
                       className="inline-flex items-center gap-1 text-primary hover:text-primary/80 text-sm font-medium"
@@ -349,11 +349,11 @@ export default function Progetti() {
           </div>
 
           {/* CTA finale alla pagina di noleggio */}
-          <div className={`mt-16 bg-primary/5 rounded-2xl p-8 border border-primary/10 ${isPageLoaded ? 'animate-fade-in delay-300' : 'opacity-0'}`}>
+          <div className={`mt-16 bg-primary/10 rounded-2xl p-8 border border-primary/20 ${isPageLoaded ? 'animate-fade-in delay-300' : 'opacity-0'}`}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Realizziamo il tuo progetto insieme</h3>
-                <p className="text-gray-600">
+                <h3 className="text-2xl font-bold text-white mb-2">Realizziamo il tuo progetto insieme</h3>
+                <p className="text-gray-300">
                   Hai un progetto simile? Metti a frutto la nostra esperienza e i nostri macchinari.
                   Contattaci per un preventivo personalizzato o scopri le nostre soluzioni di noleggio.
                 </p>
@@ -367,7 +367,7 @@ export default function Progetti() {
                 </Link>
                 <Link 
                   to="/catalogo" 
-                  className="px-6 py-3 bg-white border border-primary text-primary rounded-xl hover:bg-primary/5 transition-colors text-sm font-medium whitespace-nowrap hover-lift"
+                  className="px-6 py-3 bg-secondary border border-primary text-white rounded-xl hover:bg-secondary/80 transition-colors text-sm font-medium whitespace-nowrap hover-lift"
                 >
                   Acquista materiali
                 </Link>
@@ -378,7 +378,7 @@ export default function Progetti() {
       </main>
       
       {/* Alternanza di CTA dedicate */}
-      <div className="py-12 bg-white">
+      <div className="py-12 bg-secondary">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-8">
             <NoleggioCtaSection />

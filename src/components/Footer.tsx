@@ -1,9 +1,10 @@
+
 import { Facebook, Instagram, Mail, MapPin, Phone, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-secondary to-dark text-white pt-16 pb-8">
+    <footer className="bg-dark text-white pt-16 pb-8">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-8">
           <div className="col-span-2">
@@ -19,13 +20,13 @@ export default function Footer() {
               soluzioni innovative.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-dark flex items-center justify-center hover:bg-primary transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-dark flex items-center justify-center hover:bg-primary transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-dark flex items-center justify-center hover:bg-primary transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary transition-colors">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
