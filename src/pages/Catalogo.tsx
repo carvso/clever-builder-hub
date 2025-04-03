@@ -12,7 +12,7 @@ export default function Catalogo() {
 
   return (
     <div className="min-h-screen bg-dark overflow-hidden">
-      <main className="py-12">
+      <main className="pt-12">
         <div className="container mx-auto px-6">
           <div className={`text-center max-w-2xl mx-auto mb-12 ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
             <h1 className="text-4xl font-bold text-white mb-4">
