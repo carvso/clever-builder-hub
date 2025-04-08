@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 
 const partners = [
@@ -48,9 +47,9 @@ export default function PartnerCarousel() {
   }, [isAnimating]);
 
   return (
-    <div className="bg-secondary py-16 overflow-hidden">
+    <div className="bg-white py-16 overflow-hidden">
       <div className="container mx-auto px-6">
-        <h2 className="text-center text-2xl font-semibold text-white mb-12">
+        <h2 className="text-center text-2xl font-semibold text-dark mb-12">
           I nostri partner
         </h2>
         <div className="relative">
@@ -64,7 +63,7 @@ export default function PartnerCarousel() {
               {[...partners, ...partners].map((partner, index) => (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-48 h-24 bg-dark rounded-lg flex items-center justify-center text-gray-400"
+                  className="flex-shrink-0 w-48 h-24 bg-white rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow p-4"
                   style={{
                     backgroundImage: partner ? `url(${partner})` : 'none',
                     backgroundSize: 'contain',
