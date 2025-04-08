@@ -48,10 +48,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <p className="text-xs text-primary font-medium mb-2">
             {product.category}
           </p>
-          <h3 className="text-lg font-semibold text-white mb-2">
+          <h3 className="text-lg font-semibold text-white mb-2 break-words">
             {product.name}
           </h3>
-          <p className="text-sm text-gray-400 mb-4">
+          <p className="text-sm text-gray-400 mb-4 break-words">
             {product.description}
           </p>
         </div>

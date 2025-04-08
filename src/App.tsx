@@ -10,7 +10,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Catalogo from "./pages/Catalogo";
 import Checkout from "./pages/Checkout";
-import Servizi from "./pages/Servizi";
+import Mezzi from "./pages/Mezzi";
 import Progetti from "./pages/Progetti";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
@@ -33,7 +33,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/catalogo" element={<Catalogo />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/mezzi" element={<Servizi />} />
+              <Route path="/mezzi" element={<Mezzi />} />
               <Route path="/progetti" element={<Progetti />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
