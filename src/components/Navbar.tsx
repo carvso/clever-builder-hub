@@ -14,7 +14,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Catalogo", href: "/catalogo" },
-  { name: "Mezzi", href: "/servizi" },
+  { name: "Mezzi", href: "/mezzi" },
   { name: "Progetti", href: "/progetti" },
 ];
 
