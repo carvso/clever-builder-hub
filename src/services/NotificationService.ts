@@ -68,17 +68,17 @@ export class NotificationService {
       console.log("Saving mock order...");
       const saveResult = await SupabaseService.saveOrder(mockOrder);
       
-      if (!saveResult || !saveResult.success) {
-        console.error("Failed to save mock order:", saveResult?.error || "Unknown error");
+      if (!saveResult) {
+        console.error("Failed to save mock order");
         return;
       }
 
-      console.log("Mock order saved with ID:", saveResult.orderId);
+      console.log("Mock order saved with ID:", saveResult.id);
 
       // Now test the Edge Function
-      if (saveResult.orderId) {
-        console.log("Testing Edge Function with order ID:", saveResult.orderId);
-        const notifyResult = await SupabaseService.sendOrderEmailNotification(saveResult.orderId);
+      if (saveResult.id) {
+        console.log("Testing Edge Function with order ID:", saveResult.id);
+        const notifyResult = await SupabaseService.sendOrderEmailNotification(saveResult.id);
         
         console.log("Edge Function test result:", {
           success: notifyResult.success,

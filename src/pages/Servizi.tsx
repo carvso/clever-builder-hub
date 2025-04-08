@@ -1,5 +1,5 @@
 
-import { Check, Star, User, Filter } from "lucide-react";
+import { Check, Star, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
 import { getImagePath } from "@/utils/imageUtils";
@@ -71,38 +71,6 @@ const vehicles = [
     withDriver: true,
   },
   {
-    id: 5,
-    name: "Escavatore Doosan DX140",
-    description: "Escavatore cingolato potente per scavi di medie e grandi dimensioni",
-    image: getImagePath("/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png"),
-    features: [
-      "Peso: 14 tonnellate",
-      "Profondità di scavo: 5.5m",
-      "Potenza: 115 CV",
-      "Benne varie dimensioni",
-    ],
-    category: "Movimento terra",
-    rating: 4.8,
-    reviews: 94,
-    withDriver: true,
-  },
-  {
-    id: 6,
-    name: "Escavatore Yanmar SV26",
-    description: "Escavatore cingolato compatto ideale per lavori in spazi ristretti",
-    image: getImagePath("/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png"),
-    features: [
-      "Peso: 2.6 tonnellate",
-      "Profondità scavo: 2.8m",
-      "Larghezza: 1.5m",
-      "Martello demolitore disponibile",
-    ],
-    category: "Movimento terra",
-    rating: 4.7,
-    reviews: 92,
-    withDriver: true,
-  },
-  {
     id: 7,
     name: "Camion Gru",
     description: "Camion con gru telescopica per sollevamento e trasporto materiali",
@@ -116,22 +84,6 @@ const vehicles = [
     category: "Sollevamento",
     rating: 4.8,
     reviews: 65,
-    withDriver: true,
-  },
-  {
-    id: 8,
-    name: "Miniescavatore Doosan",
-    description: "Mini escavatore con operatore per scavi di precisione",
-    image: getImagePath("/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png"),
-    features: [
-      "Peso: 1.8 tonnellate",
-      "Larghezza: 98cm",
-      "Accessori intercambiabili",
-      "Ideale per scavi in giardini",
-    ],
-    category: "Movimento terra",
-    rating: 4.9,
-    reviews: 87,
     withDriver: true,
   },
 ];
@@ -156,7 +108,7 @@ export default function Servizi() {
     return true;
   });
 
-  const categories = ["Tutti i mezzi", "Movimento terra", "Sollevamento", "Trasporto", "Compattazione"];
+  const categories = ["Tutti i mezzi", "Movimento terra", "Sollevamento", "Trasporto"];
 
   return (
     <div className="min-h-screen bg-dark overflow-hidden">

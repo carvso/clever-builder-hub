@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { ShoppingCart, Menu } from "lucide-react";
@@ -9,15 +9,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Cart from "./Cart";
-import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Catalogo", href: "/catalogo" },
-  { name: "Servizi", href: "/servizi" },
+  { name: "Mezzi", href: "/servizi" },
   { name: "Progetti", href: "/progetti" },
-  { name: "Blog", href: "/blog" },
 ];
 
 export default function Navbar() {
