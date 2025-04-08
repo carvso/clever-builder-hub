@@ -125,7 +125,7 @@ export default function Progetti() {
               </p>
             </div>
             <Link
-              to="/servizi"
+              to="/mezzi"
               className="px-4 py-2 bg-white text-primary rounded-full text-sm font-medium hover:bg-gray-100 transition-colors hover-lift flex items-center gap-2 whitespace-nowrap"
             >
               Esplora mezzi
@@ -251,7 +251,7 @@ export default function Progetti() {
                           </ul>
                           
                           <Link 
-                            to="/servizi" 
+                            to="/mezzi" 
                             className="inline-flex items-center gap-1 text-primary hover:text-primary/80 text-sm font-medium mt-3"
                           >
                             Esplora il noleggio 
@@ -328,7 +328,7 @@ export default function Progetti() {
                   
                   <div className="pt-4 border-t border-gray-700 flex justify-between">
                     <Link 
-                      to="/servizi" 
+                      to="/mezzi" 
                       className="inline-flex items-center gap-1 text-primary hover:text-primary/80 text-sm font-medium"
                     >
                       Noleggia macchinari
@@ -360,7 +360,7 @@ export default function Progetti() {
               </div>
               <div className="flex gap-4">
                 <Link 
-                  to="/servizi" 
+                  to="/mezzi" 
                   className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium whitespace-nowrap hover-lift"
                 >
                   Noleggia macchinari

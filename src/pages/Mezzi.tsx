@@ -1,4 +1,3 @@
-
 import { Check, Star, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
@@ -42,7 +41,7 @@ const vehicles = [
     id: 3,
     name: "Cat Maia (Mini Pala)",
     description: "Mini pala caricatrice ideale per movimentazione materiali in spazi ristretti",
-    image: getImagePath("/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png"),
+    image: "https://sc04.alicdn.com/kf/H83c9800209bf4eefa994e7a5aefd1092F/250813069/H83c9800209bf4eefa994e7a5aefd1092F.jpg",
     features: [
       "Capacità operativa: 900kg",
       "Altezza di scarico: 2.3m",
@@ -74,7 +73,7 @@ const vehicles = [
     id: 7,
     name: "Camion Gru",
     description: "Camion con gru telescopica per sollevamento e trasporto materiali",
-    image: getImagePath("/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png"),
+    image: getImagePath("/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png"),
     features: [
       "Portata: 10 tonnellate",
       "Sbraccio gru: fino a 20m",

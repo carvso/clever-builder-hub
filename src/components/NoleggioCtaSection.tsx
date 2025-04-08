@@ -1,4 +1,3 @@
-
 import { ArrowRight, Truck, Construction, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
@@ -84,7 +83,7 @@ export default function NoleggioCtaSection() {
             
             <div className="pt-4">
               <Link 
-                to="/servizi" 
+                to="/mezzi" 
                 className={`inline-flex items-center gap-2 px-6 py-3 bg-white text-primary rounded-xl hover:bg-white/90 transition-colors font-medium hover-lift ${
                   isVisible ? 'animate-scale-in delay-200' : 'opacity-0'
                 }`}
