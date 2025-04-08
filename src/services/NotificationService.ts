@@ -1,3 +1,4 @@
+
 import { Order } from "@/types/order";
 import { SupabaseService } from "./SupabaseService";
 
@@ -67,8 +68,8 @@ export class NotificationService {
       console.log("Saving mock order...");
       const saveResult = await SupabaseService.saveOrder(mockOrder);
       
-      if (!saveResult.success) {
-        console.error("Failed to save mock order:", saveResult.error);
+      if (!saveResult || !saveResult.success) {
+        console.error("Failed to save mock order:", saveResult?.error || "Unknown error");
         return;
       }
 

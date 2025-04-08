@@ -1,15 +1,15 @@
+
 import { Check, Star, User, Filter } from "lucide-react";
 import { useState, useEffect } from "react";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
 import { getImagePath } from "@/utils/imageUtils";
+import { Link } from "react-router-dom";
 
 const vehicles = [
   {
     id: 1,
     name: "Euro Cargo Scarrabile",
     description: "Camion con sistema scarrabile per trasporto di container e materiali",
-    price: "280€/giorno",
-    withDriverPrice: "420€/giorno",
     image: "https://www.ricciato.com/resources/product/10242/gallery/01_Camion_allestito_gancio_scarrabile_Iveco_120E25K_angolare_destra.jpg",
     features: [
       "Portata: 12 tonnellate",
@@ -26,8 +26,6 @@ const vehicles = [
     id: 2,
     name: "Escavatore Yanmar Vio 57",
     description: "Escavatore compatto con raggio di rotazione zero per spazi ristretti",
-    price: "180€/giorno",
-    withDriverPrice: "320€/giorno",
     image: getImagePath("/lovable-uploads/2a91b4df-0a54-4b26-90e6-d8f4c43328aa.png"),
     features: [
       "Peso: 5.7 tonnellate",
@@ -44,8 +42,6 @@ const vehicles = [
     id: 3,
     name: "Cat Maia (Mini Pala)",
     description: "Mini pala caricatrice ideale per movimentazione materiali in spazi ristretti",
-    price: "150€/giorno",
-    withDriverPrice: "290€/giorno",
     image: getImagePath("/lovable-uploads/b626251b-fdc0-4163-9b91-f73d5364a140.png"),
     features: [
       "Capacità operativa: 900kg",
@@ -62,8 +58,6 @@ const vehicles = [
     id: 4,
     name: "Muletto Linda",
     description: "Carrello elevatore per movimentazione pallet e materiali pesanti",
-    price: "120€/giorno",
-    withDriverPrice: "260€/giorno",
     image: "https://www.orzicarrellielevatori.com/wp-content/uploads/2024/07/IMG20240617095459.jpg",
     features: [
       "Portata: 2.5 tonnellate",
@@ -80,8 +74,6 @@ const vehicles = [
     id: 5,
     name: "Escavatore Doosan DX140",
     description: "Escavatore cingolato potente per scavi di medie e grandi dimensioni",
-    price: "250€/giorno",
-    withDriverPrice: "450€/giorno",
     image: getImagePath("/lovable-uploads/3a3896f1-3cf7-4bd7-9e58-94834f7ebf28.png"),
     features: [
       "Peso: 14 tonnellate",
@@ -98,8 +90,6 @@ const vehicles = [
     id: 6,
     name: "Escavatore Yanmar SV26",
     description: "Escavatore cingolato compatto ideale per lavori in spazi ristretti",
-    price: "180€/giorno",
-    withDriverPrice: "320€/giorno",
     image: getImagePath("/lovable-uploads/4ea76724-e5cf-43f2-9eea-a9c81ff8659a.png"),
     features: [
       "Peso: 2.6 tonnellate",
@@ -116,8 +106,6 @@ const vehicles = [
     id: 7,
     name: "Camion Gru",
     description: "Camion con gru telescopica per sollevamento e trasporto materiali",
-    price: "300€/giorno",
-    withDriverPrice: "480€/giorno",
     image: getImagePath("/lovable-uploads/0e6d83a4-82f6-4011-b648-cb9a9b2f807c.png"),
     features: [
       "Portata: 10 tonnellate",
@@ -134,8 +122,6 @@ const vehicles = [
     id: 8,
     name: "Miniescavatore Doosan",
     description: "Mini escavatore con operatore per scavi di precisione",
-    price: "160€/giorno",
-    withDriverPrice: "290€/giorno",
     image: getImagePath("/lovable-uploads/aeda115b-2290-4756-93e2-9c9fb997e90d.png"),
     features: [
       "Peso: 1.8 tonnellate",
@@ -275,16 +261,16 @@ export default function Servizi() {
                   
                   <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                     <div>
-                      <span className="block text-xl font-bold text-white">
-                        {withDriver ? vehicle.withDriverPrice : vehicle.price}
-                      </span>
-                      <span className="text-sm text-gray-400">
+                      <span className="block text-sm text-gray-400">
                         {withDriver ? "Conducente e assicurazione inclusi" : "Assicurazione inclusa"}
                       </span>
                     </div>
-                    <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium">
-                      Prenota ora
-                    </button>
+                    <Link 
+                      to="/checkout" 
+                      className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                    >
+                      Richiedi preventivo
+                    </Link>
                   </div>
                 </div>
               </div>

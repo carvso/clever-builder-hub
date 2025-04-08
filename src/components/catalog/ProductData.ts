@@ -4,7 +4,7 @@ import { Product } from "./ProductCard";
 export const products: Product[] = [
   {
     id: 1,
-    name: "Cemento Portland Buzzi",
+    name: "Cemento Buzzi",
     description: "Cemento di alta qualità per costruzioni durevoli e resistenti",
     category: "Cementi",
     image: "https://edilgroupshop.com/wp-content/uploads/2021/01/CEMENTO-BUZZI-UNICEM-325R_EDILGROUPSHOP.jpg",
@@ -42,28 +42,28 @@ export const products: Product[] = [
     name: "Forati da 12",
     description: "Mattoni forati da 12cm per pareti divisorie interne",
     category: "Mattoni",
-    image: "https://www.danesilaterizi.it/wp-content/uploads/2020/01/Quattro-fori-8.12.24.jpg",
+    image: "https://www.wienerberger.it/var/commerce/products/wienerberger/products/wbs_it_website/wbs_it_website/laterizi_classici/846664/assets/asset5.imgTransformer/crop_1to1/lg-5/1559906453056/18311225.jpg",
   },
   {
     id: 7,
     name: "Forati da 8",
     description: "Mattoni forati da 8cm per tramezzi e pareti divisorie",
     category: "Mattoni",
-    image: "https://www.danesilaterizi.it/wp-content/uploads/2020/01/Quattro-fori-8.12.24.jpg",
+    image: "https://www.wienerberger.it/content/dam/wienerberger/italy/marketing/photography/productshots/wall/single-product/18110825.jpg.imgTransformer/crop_1to1/md-2/1559906789190/18110825.jpg",
   },
   {
     id: 8,
     name: "Forati da 6",
     description: "Mattoni forati da 6cm per pareti leggere",
     category: "Mattoni",
-    image: "https://www.danesilaterizi.it/wp-content/uploads/2020/01/Quattro-fori-8.12.24.jpg",
+    image: "https://www.wienerberger.it/content/dam/wienerberger/italy/marketing/photography/productshots/wall/single-product/18110625.jpg.imgTransformer/crop_1to1/md-2/1559906960283/18110625.jpg",
   },
   {
     id: 9,
     name: "Forati da 4",
     description: "Mattoni forati piccoli da 4cm per rivestimenti",
     category: "Mattoni",
-    image: "https://www.danesilaterizi.it/wp-content/uploads/2020/01/Quattro-fori-8.12.24.jpg",
+    image: "https://branduzzolaterizi.it/wp-content/uploads/2024/07/forato-quattro-fori.jpg",
   },
   {
     id: 10,
@@ -178,7 +178,7 @@ export const products: Product[] = [
     name: "Rete per Cappotto",
     description: "Rete in fibra di vetro per sistemi a cappotto termico",
     category: "Accessori",
-    image: "https://ecomerchant.co.uk/cdn/shop/files/Glass-Fibre-Mesh-Reinforcing-for-Render.png?v=1696937538&width=1000",
+    image: "https://www.fvledilizia.it/3015-large_default/rete-cappotto-gr160-maglia-4x5-1rotolo-50-mq.jpg",
   },
   {
     id: 25,
