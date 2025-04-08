@@ -1,4 +1,4 @@
-import { Check, Star, User } from "lucide-react";
+import { Check, Star, User, Shield, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import CatalogoCtaSection from "@/components/CatalogoCtaSection";
 import { getImagePath } from "@/utils/imageUtils";
@@ -210,16 +210,18 @@ export default function Mezzi() {
                     ))}
                   </ul>
                   
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                    <div>
-                      <span className="block text-sm text-gray-400">
+                  <div className="flex flex-col items-center justify-between pt-4 border-t border-gray-700 gap-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <Shield className="w-4 h-4 text-primary" />
+                      <span>
                         {withDriver ? "Conducente e assicurazione inclusi" : "Assicurazione inclusa"}
                       </span>
                     </div>
                     <Link 
                       to="/checkout" 
-                      className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2"
                     >
+                      <FileText className="w-4 h-4" />
                       Richiedi preventivo
                     </Link>
                   </div>
