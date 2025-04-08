@@ -140,7 +140,7 @@ export default function HeroSection() {
                 </svg>
               </button>
               <button 
-                onClick={() => navigate("/servizi")}
+                onClick={() => navigate("/mezzi")}
                 className="px-6 py-3 bg-secondary border border-primary text-primary rounded-xl hover:bg-primary/10 transition-colors font-medium hover-lift flex items-center gap-2"
               >
                 Noleggia macchinari
