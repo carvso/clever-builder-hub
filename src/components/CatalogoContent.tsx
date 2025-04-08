@@ -1,6 +1,7 @@
+
 import { useState } from "react";
-import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import NoleggioCtaSection from "@/components/NoleggioCtaSection";
 
 // Import our refactored components
@@ -10,11 +11,10 @@ import { Product } from "./catalog/ProductCard";
 import { products, categories } from "./catalog/ProductData";
 
 export default function CatalogoContent() {
-  const { addItem } = useCart();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tutti");
-  const [selectedVariants, setSelectedVariants] = useState<Record<number, string>>({});
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name
@@ -25,51 +25,16 @@ export default function CatalogoContent() {
     return matchesSearch && matchesCategory;
   });
 
-  const handleSelectVariant = (productId: number, variantId: string) => {
-    setSelectedVariants((prev) => ({
-      ...prev,
-      [productId]: variantId,
-    }));
-  };
-
-  const handleAddToCart = (product: Product) => {
-    // If product has variants, check if one is selected
-    if (product.variants && product.variants.length > 0) {
-      const selectedVariantId = selectedVariants[product.id];
-      if (!selectedVariantId) {
-        toast({
-          title: "Seleziona una variante",
-          description: "Per favore seleziona una variante prima di aggiungere al carrello",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Find the selected variant name
-      const selectedVariant = product.variants.find(
-        (v) => v.id === selectedVariantId
-      );
-
-      // Add product with variant info
-      addItem({
-        ...product,
-        name: `${product.name} - ${selectedVariant?.name}`,
-        id: parseInt(`${product.id}${selectedVariantId.replace(/\D/g, '')}`),
-        price: product.price || "€/pz", // Use product price if available
-        quantity: 1, // Add quantity field
-      });
-    } else {
-      // Add product without variants
-      addItem({
-        ...product,
-        price: product.price || "€/pz", // Use product price if available
-        quantity: 1, // Add quantity field
-      });
-    }
-
+  const handleRequestQuote = (product: Product) => {
+    // Store the selected product in sessionStorage to use it in the checkout page
+    sessionStorage.setItem('selectedProduct', JSON.stringify(product));
+    
+    // Navigate directly to checkout
+    navigate('/checkout');
+    
     toast({
-      title: "Prodotto aggiunto al carrello",
-      description: `${product.name} è stato aggiunto al carrello`,
+      title: "Richiesta preventivo",
+      description: `Stai per richiedere un preventivo per ${product.name}`,
     });
   };
 
@@ -96,9 +61,7 @@ export default function CatalogoContent() {
         {/* Products Grid */}
         <ProductGrid 
           products={filteredProducts}
-          selectedVariants={selectedVariants}
-          onSelectVariant={handleSelectVariant}
-          onAddToCart={handleAddToCart}
+          onRequestQuote={handleRequestQuote}
         />
 
         {/* Noleggio CTA */}

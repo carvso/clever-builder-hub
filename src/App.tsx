@@ -12,6 +12,9 @@ import Catalogo from "./pages/Catalogo";
 import Checkout from "./pages/Checkout";
 import Servizi from "./pages/Servizi";
 import Progetti from "./pages/Progetti";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import CookiePolicy from "./pages/CookiePolicy";
 
 // Ottieni il basename dal vite.config (in produzione sarà /${repoName}/)
 const basename = import.meta.env.BASE_URL;
@@ -30,8 +33,11 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/catalogo" element={<Catalogo />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/servizi" element={<Servizi />} />
+              <Route path="/mezzi" element={<Servizi />} />
               <Route path="/progetti" element={<Progetti />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

@@ -1,14 +1,6 @@
 
 import React from "react";
-import { ChevronDown, ShoppingCart } from "lucide-react";
-import { useCart } from "@/context/CartContext";
-import { useToast } from "@/hooks/use-toast";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Type definitions for product variants
@@ -30,17 +22,13 @@ export type Product = {
 interface ProductCardProps {
   product: Product;
   index: number;
-  selectedVariants: Record<number, string>;
-  onSelectVariant: (productId: number, variantId: string) => void;
-  onAddToCart: (product: Product) => void;
+  onRequestQuote: (product: Product) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   index,
-  selectedVariants,
-  onSelectVariant,
-  onAddToCart,
+  onRequestQuote,
 }) => {
   return (
     <div
@@ -68,31 +56,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </p>
         </div>
         <div className="flex flex-col gap-3">
-          {product.variants && product.variants.length > 0 ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full justify-between bg-gray-700 border-gray-600 text-gray-200 hover:bg-gray-600">
-                  {selectedVariants[product.id]
-                    ? `Variante: ${product.variants.find(v => v.id === selectedVariants[product.id])?.name}`
-                    : "Seleziona variante"}
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-gray-700 border-gray-600 text-gray-200">
-                {product.variants.map((variant) => (
-                  <DropdownMenuItem
-                    key={variant.id}
-                    onClick={() => onSelectVariant(product.id, variant.id)}
-                    className="cursor-pointer hover:bg-gray-600"
-                  >
-                    {variant.name}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : null}
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={() => onRequestQuote(product)}
             className="inline-flex items-center justify-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium w-full"
           >
             <ShoppingCart className="w-4 h-4" />

@@ -65,27 +65,27 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-4">Servizi</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/servizi" className="text-gray-400 hover:text-primary transition-colors">
+                <Link to="/mezzi" className="text-gray-400 hover:text-primary transition-colors">
                   Noleggio macchinari
                 </Link>
               </li>
               <li>
-                <Link to="/servizi" className="text-gray-400 hover:text-primary transition-colors">
+                <Link to="/mezzi" className="text-gray-400 hover:text-primary transition-colors">
                   Mezzi con conducente
                 </Link>
               </li>
               <li>
-                <Link to="/servizi" className="text-gray-400 hover:text-primary transition-colors">
+                <Link to="/mezzi" className="text-gray-400 hover:text-primary transition-colors">
                   Consegna in cantiere
                 </Link>
               </li>
               <li>
-                <Link to="/servizi" className="text-gray-400 hover:text-primary transition-colors">
+                <Link to="/mezzi" className="text-gray-400 hover:text-primary transition-colors">
                   Consulenza tecnica
                 </Link>
               </li>
               <li>
-                <Link to="/servizi" className="text-gray-400 hover:text-primary transition-colors">
+                <Link to="/mezzi" className="text-gray-400 hover:text-primary transition-colors">
                   Progettazione
                 </Link>
               </li>
@@ -103,14 +103,19 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <a href="tel:+390123456789" className="text-gray-400 hover:text-primary transition-colors">
-                  +39 01 2345 6789
-                </a>
+                <div className="flex flex-col">
+                  <a href="tel:+393892310650" className="text-gray-400 hover:text-primary transition-colors">
+                    +39 389 231 0650
+                  </a>
+                  <a href="tel:+393898715161" className="text-gray-400 hover:text-primary transition-colors">
+                    +39 389 871 5161
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
-                <a href="mailto:info@edilp2.it" className="text-gray-400 hover:text-primary transition-colors">
-                  info@edilp2.it
+                <a href="mailto:paolomangiafico29@gmail.com" className="text-gray-400 hover:text-primary transition-colors">
+                  paolomangiafico29@gmail.com
                 </a>
               </li>
             </ul>
@@ -119,9 +124,9 @@ export default function Footer() {
         <div className="pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
           <p>© {new Date().getFullYear()} EdilP2 S.r.l. - P.IVA 02134040894 | Tutti i diritti riservati</p>
           <div className="flex justify-center gap-4 mt-2">
-            <a href="#" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-primary transition-colors">Termini e Condizioni</a>
-            <a href="#" className="text-gray-400 hover:text-primary transition-colors">Cookie Policy</a>
+            <Link to="/privacy-policy" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link to="/termini-e-condizioni" className="text-gray-400 hover:text-primary transition-colors">Termini e Condizioni</Link>
+            <Link to="/cookie-policy" className="text-gray-400 hover:text-primary transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>
